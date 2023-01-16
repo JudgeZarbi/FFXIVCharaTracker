@@ -172,11 +172,6 @@ namespace FFXIVCharaTracker.DB
 			UnobtainedMountsSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedMounts)!;
 		}
 
-		internal static Chara MakeDefaultChara()
-		{
-			return new Chara(0, 0);
-		}
-
 		internal void SerialiseData()
 		{
 			IncompleteFolkloreBooks = JsonSerializer.Serialize(IncompleteFolkloreBooksSet);

@@ -165,13 +165,6 @@ namespace FFXIVCharaTracker
             CurCharaData = null;
             CharaLoaded = false;
         }
-		/*CurCharaData!.PvPUnlocked = Common.Functions.Journal.IsQuestCompleted(66640) ||
-			Common.Functions.Journal.IsQuestCompleted(66641) || Common.Functions.Journal.IsQuestCompleted(66642);
-		CurCharaData.FrontlinesUnlocked = Common.Functions.Journal.IsQuestCompleted(67063) ||
-			Common.Functions.Journal.IsQuestCompleted(67064) || Common.Functions.Journal.IsQuestCompleted(67065);
-		CurCharaData.RivalWingsUnlocked = Common.Functions.Journal.IsQuestCompleted(68583);
-		CurCharaData.WondrousTailsUnlocked = Common.Functions.Journal.IsQuestCompleted(67928);
-		CurCharaData.FauxHollowsUnlocked = Common.Functions.Journal.IsQuestCompleted(69501);;*/
 
 		internal void AddNewCharacter()
         {
@@ -246,6 +239,7 @@ namespace FFXIVCharaTracker
 				CurCharaData.UpdateEmoteUnlocks(UiState);
 				CurCharaData.UpdateLevels(UiState);
 				CurCharaData.UpdateMinions(UiState);
+                CurCharaData.UpdateMounts(UiState);
 
 				CurCharaData.UpdateGCRank(UiState);
 				CurCharaData.UpdateChocobo(UiState);
