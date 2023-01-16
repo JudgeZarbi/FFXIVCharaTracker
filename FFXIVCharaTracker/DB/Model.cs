@@ -334,11 +334,10 @@ namespace FFXIVCharaTracker.DB
 						continue;
 					}
 				}
-				else if (item.LevelEquip >= 20)
+				else if (item.LevelEquip >= 25)
 				{
 					var classJobCategory = item.ClassJobCategory.Value;
-					if (classJobCategory != null &&
-						(bool)classJobCategory.GetType().GetProperty(Plugin.ClassJobs.GetRow(ClassID)!.Abbreviation)!.GetValue(classJobCategory)!)
+					if (classJobCategory != null)
 					{
 						LowGear = true;
 					}
