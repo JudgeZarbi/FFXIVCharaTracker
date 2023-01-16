@@ -4,7 +4,7 @@
         <PackagerTargetFile>$(ProjectDir)DalamudPackager.targets</PackagerTargetFile>
     </PropertyGroup>
 
-    <Target Name="DefaultDalamudPackagerDebug"
+    <Target Name="DalamudPackagerDebug"
             AfterTargets="Build"
             Condition="'$(Configuration)' == 'Debug'">
         <DalamudPackager ProjectDir="$(ProjectDir)"
@@ -13,7 +13,7 @@
                          MakeZip="false"/>
     </Target>
 
-    <Target Name="DefaultDalamudPackagerRelease"
+    <Target Name="DalamudPackagerRelease"
             AfterTargets="Build"
             Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)"
