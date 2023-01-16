@@ -1,26 +1,16 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Logging;
+﻿using Dalamud.Logging;
 using FFXIVCharaTracker.DB;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
-using Lumina.Data.Parsing.Layer;
-using Lumina.Excel.GeneratedSheets;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading.Channels;
-using System.Xml.Linq;
-using static FFXIVClientStructs.FFXIV.Client.Game.QuestManager.QuestListArray;
-using static Lumina.Data.Parsing.Layer.LayerCommon;
-using static System.Net.Mime.MediaTypeNames;
+using TextCopy;
 
 namespace FFXIVCharaTracker
 {
@@ -198,6 +188,10 @@ namespace FFXIVCharaTracker
 			}
 			if (chara.WorldID != lastWorld)
 			{
+				if (lastWorld > 0)
+				{
+					ImGui.Unindent();
+				}
 				lastWorld = chara.WorldID;
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
@@ -2669,7 +2663,7 @@ namespace FFXIVCharaTracker
 							if (ImGui.BeginTabItem("Character"))
 							{
 								ImGui.Unindent();
-								if (ImGui.BeginTable("squadChara", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+								if (ImGui.BeginTable("squadChara", 10 , ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 								{
 									ImGui.TableSetupScrollFreeze(1, 0);
 
@@ -2702,6 +2696,13 @@ namespace FFXIVCharaTracker
 										SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
 										SetCellBackground(c.GearRetainer2 ? Green : Red);
 
+										ImGui.TableNextColumn();
+										if (ImGui.Button($"Delete character###{c.CharaID}"))
+										{
+											Plugin.Context.Charas.Remove(c);
+											Plugin.Context.SaveChanges();
+										}
+
 									}
 									ImGui.EndTable();
 								}
@@ -2729,6 +2730,95 @@ namespace FFXIVCharaTracker
 										SetCellBackground(c.CurGear ? Green : Red);
 
 									}
+
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"Tanks", Black);
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"Tanks", White);
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"DPS", White);
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"Healers", White);
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"DRK", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 32).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"BLM", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 25).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"AST", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 33).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"GNB", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 37).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"BRD", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 23).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"SCH", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 28).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"PLD", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 19).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"DNC", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 38).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"SGE", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 40).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextRow();
+									SetCellBackgroundWithText(default, $"WAR", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 21).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"DRG", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 22).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, $"WHM", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 24).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"MCH", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 31).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"MNK", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 20).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"NIN", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 30).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"RDM", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 35).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"RPR", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 39).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"SAM", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 34).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									ImGui.TableNextRow();
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+									SetCellBackgroundWithText(default, $"SMN", White);
+									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 27).AsNoTracking().Count().ToString(), White);
+									ImGui.TableNextColumn();
+									ImGui.TableNextColumn();
+
+
+
 									ImGui.EndTable();
 								}
 								ImGui.EndTabItem();
@@ -6195,6 +6285,37 @@ namespace FFXIVCharaTracker
 
 				}
 #endif
+				if (ImGui.BeginTabItem("Extras"))
+				{
+					if (ImGui.Button("Export character list to clipboard"))
+					{
+						var charas = Plugin.Context.Charas.FromSql($"SELECT * FROM Charas ORDER BY Account ASC, WorldID ASC, CharaID ASC").AsNoTracking();
+						var output = new StringBuilder();
+						foreach (var c in charas)
+						{
+							var classData = Plugin.ClassJobs.GetRow(c.ClassID);
+							output.AppendLine($":{classData.NameEnglish.ToString().Replace(" ", "")}: {c.Forename} {c.Surname} - {Plugin.Worlds.GetRow(c.WorldID)!.Name}");
+						}
+
+						ClipboardService.SetText(output.ToString());
+					}
+					if (ImGui.Button("Reset player combat gear status"))
+					{
+						Plugin.Context.ResetPlayerCombatGear();
+					}
+					if (ImGui.Button("Reset player gather gear status"))
+					{
+						Plugin.Context.ResetPlayerGatherGear();
+					}
+					if (ImGui.Button("Reset retainer combat gear status"))
+					{
+						Plugin.Context.ResetRetainerCombatGear();
+					}
+					if (ImGui.Button("Reset retainer combat gear status"))
+					{
+						Plugin.Context.ResetRetainerGatherGear();
+					}
+				}
 				ImGui.EndTabBar();
 			}
 		}
