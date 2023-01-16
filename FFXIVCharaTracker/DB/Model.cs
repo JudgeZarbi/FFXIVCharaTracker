@@ -61,6 +61,46 @@ namespace FFXIVCharaTracker.DB
 			}
 		}
 
+		internal void ResetRetainerGatherGear()
+		{
+			foreach (var c in Charas)
+			{
+				if (c.RetainerClass == 16 || c.RetainerClass == 17 || c.RetainerClass == 18)
+				{
+					c.GearRetainer1 = false;
+					c.GearRetainer2 = false;
+				}
+			}
+		}
+
+		internal void ResetRetainerCombatGear()
+		{
+			foreach (var c in Charas)
+			{
+				if (!(c.RetainerClass == 16) && !(c.RetainerClass == 17) && !(c.RetainerClass == 18))
+				{
+					c.GearRetainer1 = false;
+					c.GearRetainer2 = false;
+				}
+			}
+		}
+
+		internal void ResetPlayerCombatGear()
+		{
+			foreach (var c in Charas)
+			{
+				c.CurGear = false;
+			}
+		}
+
+		internal void ResetPlayerGatherGear()
+		{
+			foreach (var c in Charas)
+			{
+				c.GatherGear = false;
+			}
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 				=> options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite");
 	}
