@@ -267,6 +267,10 @@ namespace FFXIVCharaTracker
 								if (charaData.ClassID != DropdownToClassID[(uint)dropdownID])
 								{
 									charaData.ClassID = DropdownToClassID[(uint)dropdownID];
+									unsafe
+									{
+										charaData.UpdateLevels(UIState.Instance());
+									}
 									Plugin.Context.SaveChanges();
 								}
 
