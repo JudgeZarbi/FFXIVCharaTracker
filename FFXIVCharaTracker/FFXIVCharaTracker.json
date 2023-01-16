@@ -1,0 +1,11 @@
+{
+  "Author": "JudgeZarbi",
+  "Name": "FFXIV Character Tracker",
+  "Punchline": "Alt management with a side of collection tracking.",
+  "Description": "Alt management with a side of collection tracking.",
+  "InternalName": "FFXIVCharaTracker",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "plugin"
+  ]
+}
