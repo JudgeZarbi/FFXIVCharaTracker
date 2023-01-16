@@ -7,6 +7,7 @@ using ImGuiNET;
 using Lumina.Data.Parsing.Layer;
 using Lumina.Excel.GeneratedSheets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -171,12 +172,39 @@ namespace FFXIVCharaTracker
 		{
 			ImGui.TableSetupScrollFreeze(1, 0);
 
-			ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+			ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 			foreach (var title in objects)
 			{
 				ImGui.TableSetupColumn(title, ImGuiTableColumnFlags.WidthFixed, width * Scale);
 			}
 			ImGui.TableHeadersRow();
+		}
+
+		private void DrawAccountAndWorldInfo(ref int lastAccount, ref uint lastWorld, Chara chara)
+		{
+			if (chara.Account != lastAccount)
+			{
+				if (lastAccount > -1)
+				{
+					ImGui.Unindent();
+					ImGui.Unindent();
+				}
+				lastAccount = chara.Account;
+				lastWorld = 0;
+				ImGui.TableNextRow();
+				ImGui.TableNextColumn();
+				ImGui.Text($"Account {chara.Account + 1}");
+				ImGui.Indent();
+			}
+			if (chara.WorldID != lastWorld)
+			{
+				lastWorld = chara.WorldID;
+				ImGui.TableNextRow();
+				ImGui.TableNextColumn();
+				ImGui.Text($"{Plugin.Worlds.GetRow(chara.WorldID)!.Name}");
+				ImGui.Indent();
+				ImGui.TableNextRow();
+			}
 		}
 
 		internal void Draw()
@@ -241,6 +269,8 @@ namespace FFXIVCharaTracker
 									charaData.ClassID = DropdownToClassID[(uint)dropdownID];
 									Plugin.Context.SaveChanges();
 								}
+
+								DrawTableRowText("Name", true, White, $"{charaData.Forename} {charaData.Surname}");
 
 								DrawTableRowText("Home World", true, White, Plugin.Worlds.GetRow(charaData.WorldID)!.Name);
 
@@ -985,7 +1015,7 @@ namespace FFXIVCharaTracker
 									DrawTableRowText("Byakko Cub", charaData.IsMinionUnlocked(284));
 									DrawTableRowText("Private Moai", charaData.IsMinionUnlocked(278));
 									DrawTableRowText("Monkey King", charaData.IsMinionUnlocked(290));
-									DrawTableRowText("Mudpie (Southern Front Lockbox, Zadnor Lockbox, Saint Mocianne's Arboretum", charaData.IsMinionUnlocked(312));
+									DrawTableRowText("Mudpie", charaData.IsMinionUnlocked(312));
 									DrawTableRowText("Scarlet Peacock", charaData.IsMinionUnlocked(303));
 									DrawTableRowText("Abroader Otter", charaData.IsMinionUnlocked(329));
 									DrawTableRowText("Seitei", charaData.IsMinionUnlocked(327));
@@ -994,7 +1024,7 @@ namespace FFXIVCharaTracker
 									DrawTableRowText("Sharksucker-class Insubmersible", charaData.IsMinionUnlocked(348));
 									DrawTableRowText("Magitek Helldiver F1", charaData.IsMinionUnlocked(383));
 									DrawTableRowText("Dáinsleif F1", charaData.IsMinionUnlocked(389));
-									DrawTableRowText("Save the Princess (Delubrum Reginae", charaData.IsMinionUnlocked(404));
+									DrawTableRowText("Save the Princess", charaData.IsMinionUnlocked(404));
 									DrawTableRowText("Wind-up Gunnhildr", charaData.IsMinionUnlocked(418));
 
 									ImGui.EndTable();
@@ -2528,7 +2558,7 @@ namespace FFXIVCharaTracker
 
 										DrawTableRowText("The Bozjan Southern Front", charaData.IsQuestComplete(69477));
 										DrawTableRowText("Castrum Lacus Litore", charaData.IsQuestComplete(69487) || QuestManager.GetQuestSequence(69487) > 0);
-										DrawTableRowText("Delubrum Reginae", charaData.IsQuestComplete(68148) || QuestManager.GetQuestSequence(68148) > 0);
+										DrawTableRowText("Delubrum Reginae", charaData.IsQuestComplete(69562) || QuestManager.GetQuestSequence(69562) > 0);
 										DrawTableRowText("Zadnor", charaData.IsQuestComplete(69620));
 										DrawTableRowText("The Dalriada", charaData.IsQuestComplete(69624) || QuestManager.GetQuestSequence(69624) > 0);
 										DrawTableRowText("Bozja complete", charaData.IsQuestComplete(69624));
@@ -2627,16 +2657,19 @@ namespace FFXIVCharaTracker
 					{
 						var charas = Plugin.Context.Charas.FromSql($"SELECT * FROM Charas ORDER BY Account ASC, WorldID ASC, CharaID ASC").AsNoTracking();
 						Scale = ImGui.GetIO().FontGlobalScale;
+						var lastAccount = -1;
+						var lastWorld = (uint)0;
 						ImGui.Indent();
 						if (ImGui.BeginTabBar("squadSubtypes"))
 						{
 							if (ImGui.BeginTabItem("Character"))
 							{
+								ImGui.Unindent();
 								if (ImGui.BeginTable("squadChara", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 								{
 									ImGui.TableSetupScrollFreeze(1, 0);
 
-									ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+									ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 									ImGui.TableSetupColumn("Chocobo level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 									ImGui.TableSetupColumn("Grand Company rank", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
 									ImGui.TableSetupColumn("Retainer class", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
@@ -2649,6 +2682,8 @@ namespace FFXIVCharaTracker
 
 									foreach (var c in charas)
 									{
+										DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 										SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 										var chocoLevel = c.ChocoboLevel;
 										SetCellBackgroundWithText(chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red), chocoLevel.ToString(), Black);
@@ -2662,6 +2697,7 @@ namespace FFXIVCharaTracker
 										level = c.LevelRetainer2;
 										SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
 										SetCellBackground(c.GearRetainer2 ? Green : Red);
+
 									}
 									ImGui.EndTable();
 								}
@@ -2669,12 +2705,16 @@ namespace FFXIVCharaTracker
 							}
 							if (ImGui.BeginTabItem("DoW/DoM"))
 							{
+								ImGui.Unindent();
+
 								if (ImGui.BeginTable("squadDoWDoM", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 								{
 									SetUpSquadTableHeaders(100, "Class", "Level", "Story completion", "Low level gear", "Current level gear");
 
 									foreach (var c in charas)
 									{
+										DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 										SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 										SetCellBackgroundWithText(default, CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Plugin.ClassJobs.GetRow(c.ClassID)!.Name), White);
 										var level = c.ClassLevel;
@@ -2683,6 +2723,7 @@ namespace FFXIVCharaTracker
 										SetCellBackgroundWithText(storyProgress == Data.MaxStoryLevel ? Green : (storyProgress > 0 ? Yellow : Red), StoryProgressToString[storyProgress], Black);
 										SetCellBackground(c.LowGear || c.ClassLevel == Data.MaxLevel ? Green : Red);
 										SetCellBackground(c.CurGear ? Green : Red);
+
 									}
 									ImGui.EndTable();
 								}
@@ -2690,11 +2731,13 @@ namespace FFXIVCharaTracker
 							}
 							if (ImGui.BeginTabItem("DoH/DoL"))
 							{
+								ImGui.Unindent();
+
 								if (ImGui.BeginTable("squadDoHDoL", 28, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 								{
 									ImGui.TableSetupScrollFreeze(1, 0);
 
-									ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+									ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 									ImGui.TableSetupColumn("Carpenter", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 									ImGui.TableSetupColumn("Blacksmith", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 									ImGui.TableSetupColumn("Armourer", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
@@ -2723,6 +2766,8 @@ namespace FFXIVCharaTracker
 
 									foreach (var c in charas)
 									{
+										DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 										SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 										var level = c.LevelCrp;
 										SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
@@ -2791,6 +2836,7 @@ namespace FFXIVCharaTracker
 											var locked = c.LockedCustomDeliveriesSet.Contains(Plugin.SatisfactionNpcs.GetRow((uint)i)!.Npc.Value!.RowId);
 											SetCellBackgroundWithText(locked ? Red : (c.CustomDeliveryRanksSet[i - 1] == Data.MaxCustomDeliveryRank) ? Green : Yellow, locked ? "Locked" : $"Rank {c.CustomDeliveryRanksSet[i - 1]}", Black);
 										}
+
 									}
 									ImGui.EndTable();
 								}
@@ -2803,12 +2849,17 @@ namespace FFXIVCharaTracker
 								{
 									if (ImGui.BeginTabItem("Sidequests"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesSidequest", 10, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Throw", "Step Dance", "Harvest Dance", "Ball Dance", "Manderville Dance", "Most Gentlemanly", "Spectacles", "Manderville Mambo", "Lali-ho");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(85) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(101) ? Green : Red);
@@ -2819,6 +2870,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsEmoteUnlocked(148) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(198) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(199) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2826,12 +2878,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Tribe"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesTribe", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Sundrop Dance", "Moogle Dance", "Moonlift Dance", "Ritual Prayer", "Charmed", "Yol Dance", "Gratuity", "Lali Hop");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												ImGui.TableSetBgColor(ImGuiTableBgTarget.CellBg, ImGui.GetColorU32(c.IsEmoteUnlocked(120) ? Green : Red));
 												SetCellBackground(c.IsEmoteUnlocked(126) ? Green : Red);
@@ -2841,6 +2898,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsEmoteUnlocked(176) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(194) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(217) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2849,12 +2907,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Gold Saucer"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesSaucer", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Thavnairian Dance", "Gold Dance", "Aback", "Big Grin", "Bee's Knees", "Sheathe Weapon", "Draw Weapon");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(118) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(119) ? Green : Red);
@@ -2863,6 +2926,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsEmoteUnlocked(216) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(237) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(238) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2871,17 +2935,23 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Squadron"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesSquadron", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Squats", "Push-ups", "Sit-ups", "Breath Control");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(155) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(156) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(157) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(158) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2890,16 +2960,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("GC Seals"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesGC", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Attention", "At Ease", "Reflect");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(164) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(165) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(82) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2908,15 +2984,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Hunts"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesHunts", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Winded", "Tremble");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(170) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(169) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2925,15 +3007,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("PvP"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesPvP", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Elucidate", "Reprimand");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(182) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(196) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2942,15 +3030,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Deep/Variant Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Sweat", "Wow");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(180) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(246) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2959,16 +3053,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Eureka"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Shiver", "Scheme", "Fist Pump");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(181) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(189) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(195) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2977,16 +3077,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Bozja"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Guard", "Malevolence", "Wring Hands");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(214) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(215) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(222) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -2995,18 +3101,24 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Treasure Hunts"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesTreasure", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Confirm", "Paint it Black", "Paint it Red", "Paint it Yellow", "Paint it Blue");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(188) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(224) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(225) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(226) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(227) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3015,12 +3127,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Ishgardian Restoration"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesResto", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Lean", "Insist", "Break Fast", "Read", "High Five", "Eat Rice Ball", "Eat Apple", "Sweep Up");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(203) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(208) ? Green : Red);
@@ -3030,6 +3147,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsEmoteUnlocked(220) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(221) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(223) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3038,12 +3156,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Mog Station"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadEmotesMog", 41, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Bomb Dance", "Huzzah", "Eureka", "Black Ranger Pose A", "Black Ranger Pose B", "Yellow Ranger Pose A", "Yellow Ranger Pose B", "Red Ranger Pose A", "Red Ranger Pose B", "Eastern Greeting", "Dote", "Songbird", "Play Dead", "Eastern Stretch", "Eastern Dance", "Pretty Please", "Power Up", "Cheer On", "Cheer Wave", "Cheer Jump", "Megaflare", "Splash", "Crimson Lotus", "Box Step", "Side Step", "Senor Sabotender", "Get Fantasy", "Popoto Step", "Toast", "Heel Toe", "Goobbue Do", "Consider", "Flame Dance", "Wasshoi", "Flower Shower", "Pantomime", "Vexed", "Drink Tea", "Deride");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsEmoteUnlocked(109) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(110) ? Green : Red);
@@ -3085,21 +3208,28 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsEmoteUnlocked(230) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(239) ? Green : Red);
 												SetCellBackground(c.IsEmoteUnlocked(245) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
 										ImGui.EndTabItem();
 										if (ImGui.BeginTabItem("Other"))
 										{
+											ImGui.Unindent();
+											ImGui.Unindent();
+
 											if (ImGui.BeginTable("squadEmotesOther", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 											{
 												SetUpSquadTableHeaders(125, "Headache", "Embrace");
 
 												foreach (var c in charas)
 												{
+													DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 													SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 													SetCellBackground(c.IsEmoteUnlocked(204) ? Green : Red);
 													SetCellBackground(c.IsEmoteUnlocked(113) ? Green : Red);
+
 												}
 												ImGui.EndTable();
 											}
@@ -3118,12 +3248,17 @@ namespace FFXIVCharaTracker
 								{
 									if (ImGui.BeginTabItem("Gold Saucer"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Great Lengths", "Lexen-tails", "Styled for Hire", "Fashionably Feathered", "Rainmaker", "Curls", "Adventure", "Ponytails");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(27970) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(24801) ? Green : Red);
@@ -3133,6 +3268,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsHairstyleUnlocked(13704) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(13705) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(10084) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3140,14 +3276,20 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Eureka"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesEureka", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Form and Function");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(24233) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3155,16 +3297,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Bozja"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Both Ways", "Early to Rise", "Wind Caller");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(33706) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(32835) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(31407) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3172,15 +3320,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Deep Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Gyr Abanian Plait", "Samsonian Locks");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(23369) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(16703) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3188,16 +3342,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Ishgardian Restoration"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesResto", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Saintly Style", "Controlled Chaos", "Modern Legend");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(31406) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(30113) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(28615) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3205,15 +3365,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Alliance Raids"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Scanning for Style", "Battle-ready Bobs");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(33708) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(33707) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3221,15 +3387,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Island Sanctuary"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Practical Ponytails", "Tall Tails");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(38443) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(38442) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3237,12 +3409,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Mog Station"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadhairstylesMog", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Sharlayan Rebellion", "Sharlayan Studies", "Master & Commander", "Scion Special Issue", "Scion Special Issue II", "Scion Special Issue III", "Pulse", "Liberating Locks", "Clowning Around", "A Wicked Wake");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsHairstyleUnlocked(39472) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(32836) ? Green : Red);
@@ -3254,6 +3431,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsHairstyleUnlocked(36812) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(36618) ? Green : Red);
 												SetCellBackground(c.IsHairstyleUnlocked(28614) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3270,12 +3448,17 @@ namespace FFXIVCharaTracker
 								{
 									if (ImGui.BeginTabItem("Achievements"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsAchievement", 30, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Black Chocobo Chick", "Beady Eye", "Wind-up Cursor", "Wind-up Leader", "Minion of Light", "Wind-up Odin", "Wind-up Warrior of Light ", "Wind-up Goblin", "Wind-up Gilgamesh", "Wind-up Nanamo", "Wind-up Firion", "Komainu", "Mammet #003L", "Mammet #003G", "Mammet #003U", "Princely Hatchling", "Fledgling Apkallu", "Wind-up Louisoix", "Shalloweye", "Clockwork Twintania", "Penguin Prince", "Hellpup", "Faepup", "The Major-General", "Malone", "Laladile", "Much-coveted Mora", "Dolphin Calf", "Gull");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(54) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(36) ? Green : Red);
@@ -3306,6 +3489,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(396) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(410) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(408) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3313,12 +3497,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Tribes"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsTribe", 29, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Wind-up Sylph", "Wind-up Violet", "Wind-up Amalj'aa", "Wind-up Founder", "Wind-up Kobold", "Wind-up Kobolder", "Wind-up Sahagin", "Wind-up Sea Devil", "Wind-up Dezul Qualan", "Wind-up Ixal", "Wind-up Gundu Warrior", "Wind-up Zundu Warrior", "Wind-up Vath", "Wind-up Gnath", "Wind-up Dragonet", "Wind-up Ohl Deeh", "Wind-up Kojin", "Wind-up Redback", "Zephyrous Zabuton", "Wind-up Ananta", "Wind-up Qalyana", "Attendee #777", "Wind-up Pixie", "The Behelmeted Serpent of Ronka", "The Behatted Serpent of Ronka", "Lalinator 5.H0", "Wind-up Arkasodara", "Lumini");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(50) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(123) ? Green : Red);
@@ -3348,6 +3537,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(380) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(444) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(457) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3355,12 +3545,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Bozja"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsBozja", 24, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Mameshiba", "Koala Joey", "Salt & Pepper Seal", "Axolotl Eft", "Wind-up Ravana", "Wind-up Shinryu", "Tengu Doll", "White Whittret", "Aurelia Polyp", "Byakko Cub", "Private Moai", "Monkey King", "Mudpie (Southern Front Lockbox, Zadnor Lockbox, Saint Mocianne's Arboretum", "Scarlet Peacock", "Abroader Otter", "Seitei", "Wind-up Weapon", "Chameleon", "Sharksucker-class Insubmersible", "Magitek Helldiver F1", "DÃ¡insleif F1", "Save the Princess (Delubrum Reginae", "Wind-up Gunnhildr");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(267) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(271) ? Green : Red);
@@ -3385,6 +3580,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(389) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(404) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(418) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3392,12 +3588,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Crafted"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsCrafted", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Magic Broom", "Clockwork Barrow", "Model Magitek Bit", "Private Moai", "Wind-up Dullahan", "Steam-powered Gobwalker G-VII", "Bantam Train", "Gravel Golem", "Model Vanguard", "Wind-up Aldgoat", "Wind-up Qiqirn", "Plush Cushion", "Nana Bear", "Wind-up Illuminatus", "Wind-up Chimera", "Wind-up Sadu", "Wind-up Magnai", "Adventurer's Basket", "Wind-up Ifrit", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Wind-up Shinryu", "Byakko Cub", "Scarlet Peacock", "Seitei", "Atrophied Atomos", "Wanderer's Campfire");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(81) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(140) ? Green : Red);
@@ -3433,6 +3634,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(327) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(136) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(414) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3440,12 +3642,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Deep Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsDeep", 44, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Miniature Minecart", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Gestahl", "Owlet", "Ugly Duckling", "Paissa Brat", "Korpokkur Kid", "Hunting Hawk", "Wind-up Ifrit", "Morpho", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Dwarf Rabbit", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Sasquatch", "Hecteye", "Shaggy Shoat", "Wind-up Edda", "Baby Brachiosaur", "Castaway Chocobo Chick", "Tiny Tatsunoko", "Bombfish", "Bom Boko", "Odder Otter", "Ghido", "Road Sparrow", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Frilled Dragon");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(23) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(27) ? Green : Red);
@@ -3490,6 +3697,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(262) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(265) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(292) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3497,12 +3705,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsDungeon", 59, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Morbol Seedling", "Bite-sized Pudding", "Demon Brick", "Slime Puddle", "Baby Opo-opo", "Naughty Nanka", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Korpokkur Kid", "Calca", "Brina", "Morpho", "Calamari", "Shaggy Shoat", "Bullpup", "Bombfish", "Ivon Coeurlfist Doll", "Ghido", "Road Sparrow", "Dress-up Yugiri", "Mock-up Grynewaht", "Magitek Avenger F1", "Salt & Pepper Seal", "White Whittret", "Monkey King", "Mudpie", "Wind-up Weapon", "Armadillo Bowler", "Clionid Larva", "Tiny Echevore", "Forgiven Hate", "Black Hayate", "Chameleon", "Shoebill", "Little Leannan", "Ancient One", "Ephemeral Necromancer", "Drippy", "Magitek Predator F1", "Prince Lunatender", "Tiny Troll", "Wind-up Magus Sisters", "Wind-up Anima", "Hippo Calf", "Caduceus", "Starbird", "Optimus Omicron", "Teacup Kapikulu", "Wind-up Scarmiglione", "Sponge Silkie", "Sewer Skink", "Wind-up Cagnazzo");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(12) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(42) ? Green : Red);
@@ -3562,6 +3775,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(463) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(464) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(471) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3569,12 +3783,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Eureka"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsEureka", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Calca", "Wind-up Fafnir", "The Prince Of Anemos", "Wind-up Mithra", "Copycat Bulb", "Wind-up Tarutaru", "Dhalmel Calf", "Wind-up Elvaan", "Conditional Virtue", "Yukinko Snowflake");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(178) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(285) ? Green : Red);
@@ -3586,6 +3805,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(314) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(318) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(319) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3593,12 +3813,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("FATE"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsFate", 16, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Baby Bun", "Infant Imp", "Pudgy Puk", "Smallshell", "Gold Rush Minecart", "Fox Kit", "Wind-up Ixion", "Micro Gigantender", "Butterfly Effect", "Ironfrog Ambler", "Tinker's Bell", "Little Leafman", "Amaro Hatchling", "Wee Ea", "Wind-up Daivadipa");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(14) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(18) ? Green : Red);
@@ -3615,6 +3840,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(377) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(423) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(442) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3622,12 +3848,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Gathering"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsGather", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Tiny Tortoise", "Gigantpole", "Kidragora", "Coblyn Larva", "Magic Bucket", "Castaway Chocobo Chick", "Tiny Tatsunoko");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(24) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(30) ? Green : Red);
@@ -3636,6 +3867,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(188) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(237) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(244) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3643,12 +3875,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Mog Station/Collector's Edition"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsMog", 47, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Baby Behemoth", "Tender Lamb", "Wind-up Edvya", "Wind-up Shantotto", "Wind-up Moogle", "Wind-up Minfilia", "Wind-up Thancred", "Wind-up Y'shtola", "Wind-up Yda", "Wind-up Papalymo", "Wind-up Urianger", "Hoary The Snowman", "Wind-up Kain", "Wind-up Alisaie", "Wind-up Tataru", "Wind-up Iceheart", "Pumpkin Butler", "Wind-up Yugiri", "Panda Cub", "Doman Magpie", "Dress-up Y'shtola", "Wind-up Krile", "Continental Eye", "Wind-up Rikku", "Wind-up Lulu", "Angel Of Mercy", "Wind-up Yuna", "Wind-up Bartz", "Wind-up Lyse", "Wind-up Gosetsu", "Motley Egg", "Wind-up Cirina", "Little Yin", "Little Yang", "Wind-up Tifa", "Wind-up Cloud", "Wind-up Aerith", "Wind-up Fran", "Brave New Y'shtola", "Wind-up Ardbert", "Wind-up Edge", "Wind-up Rydia", "Wind-up Rosa", "Wind-up Rudy", "Squirrel Emperor", "Wind-up Porom");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(5) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(46) ? Green : Red);
@@ -3696,6 +3933,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(420) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(421) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(400) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3703,18 +3941,24 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("PvP"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsPvp", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Fenrir Pup", "Wind-up Cheerleader", "Clockwork Lantern", "Minitek Conveyor", "Protonaught");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(183) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(191) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(291) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(324) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(446) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3722,12 +3966,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Quest"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsQuest", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Chigoe Larva", "Cactuar Cutting", "Goobbue Sproutling", "Coeurl Kitten", "Wolf Pup", "Mini Mole", "Wind-up Gentleman", "Accompaniment Node", "Gigi", "Anima", "Palico", "Wind-up Alpha", "The Great Serpent Of Ronka", "Golden Dhyata");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(15) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(33) ? Green : Red);
@@ -3743,6 +3992,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(304) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(337) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(437) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3750,12 +4000,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Raid"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsRaid", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Wind-up Onion Knight", "Puff Of Darkness", "Wind-up Echidna", "Faustlet", "Wind-up Calofisteri", "Toy Alexander", "Wind-up Scathach", "Wind-up Exdeath", "Wind-up Kefka", "Construct 8", "OMG", "Wind-up Ramza", "Eden Minor", "Pod 054", "Pod 316", "Wind-up Ryne", "2B Automaton", "2P Automaton", "Wind-up Gaia", "Smaller Stubby", "9S Automaton", "Nosferatu", "Wind-up Azeyma", "Wind-up Erichthonios", "Wind-up Halone");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(92) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(101) ? Green : Red);
@@ -3782,6 +4037,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(451) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(466) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(474) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3789,12 +4045,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Ishgardian Restoration"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsSkybuilder", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Plush Cushion", "Nutkin", "Atrophied Atomos", "Gaelikitten", "Owlet", "Ugly Duckling", "Clockwork Barrow", "Paissa Brat", "Hunting Hawk", "Morpho", "Calamari", "Dwarf Rabbit", "Shaggy Shoat", "Bullpup", "Baby Brachiosaur", "Pegasus Colt", "Miniature White Knight", "Dress-up Estinien", "Paissa Patissier", "Paissa Threadpuller", "Cerberpup", "Weatherproof Gaelicat", "Petit Pteranodon", "Trike");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(66) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(97) ? Green : Red);
@@ -3820,6 +4081,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(384) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(388) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(406) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3827,12 +4089,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Treasure Hunt"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsTreasure", 28, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Paissa Brat", "Dwarf Rabbit", "Wind-up Namazu", "Wind-up Matanga", "The Gold Whisker", "Capybara Pup", "Hedgehoglet", "Wind-up Fuath", "Sungold Talos", "Golden Beaver", "Royal Lunatender", "Wind-up Aidoneus", "Wind-up Philos");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(23) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(27) ? Green : Red);
@@ -3861,6 +4128,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(443) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(477) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(465) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3868,17 +4136,23 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Trial"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsTrial", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Wind-up Ultros", "Enkidu", "Poogie", "Giant Beaver");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(104) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(122) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(301) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(342) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3886,12 +4160,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Venture"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsVenture", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Minute Mindflayer", "Tiny Tapir", "Miniature Minecart", "Littlefoot", "Fat Cat", "Gestahl", "Bom Boko", "Odder Otter", "Mameshiba", "Koala Joey", "Axolotl Eft", "Tengu Doll", "Bacon Bits", "Mystic Weapon", "Domakin", "Wind-up Hobgoblin", "Allagan Melon", "Greener Gleaner", "Flag", "Crabe De La Crabe", "Wind-up Grebuloff", "Wind-up Kangaroo", "Chewy", "Blue-footed Booby", "Clockwork Novus D");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(56) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(94) ? Green : Red);
@@ -3918,6 +4197,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(448) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(453) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(449) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3925,12 +4205,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Voyages"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsVoyage", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Aurelia Polyp", "Abroader Otter", "Sharksucker-class Insubmersible", "Meerkat", "Silver Dasher", "Syldrion-class Insubmersible", "Benben Stone", "Suzusaurus");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(283) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(329) ? Green : Red);
@@ -3940,6 +4225,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(397) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(413) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(469) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3947,12 +4233,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Wondrous Tails/Faux Hollows"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadminionsTails", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Dress-up Thancred", "Dress-up Alisaie", "Wind-up Estinien", "Wind-up Khloe", "Wind-up Hien", "Wind-up Zhloe", "Wind-up Omega-M", "Wind-up Omega-F", "Sand Fox", "Anteater", "Brave New Urianger", "Pterosquirrel", "Corgi");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMinionUnlocked(217) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(218) ? Green : Red);
@@ -3967,6 +4258,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMinionUnlocked(429) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(462) ? Green : Red);
 												SetCellBackground(c.IsMinionUnlocked(467) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -3979,12 +4271,18 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Gil"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsGil", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Wayward Hatchling", "Cherry Bomb", "Tiny Rat", "Baby Raptor", "Baby Bat", "Mammet #001");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(3) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(1) ? Green : Red);
@@ -3992,6 +4290,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsMinionUnlocked(25) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(26) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(2) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -3999,12 +4298,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("MGP"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Zu Hatchling", "Heavy Hatchling", "Black Coeurl", "Water Imp", "Wind-up Nero Tol Scaeva", "Piggy", "Wind-up Daivadipa", "Mama Automaton");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(83) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(106) ? Green : Red);
@@ -4014,6 +4319,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsMinionUnlocked(187) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(442) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(470) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4021,16 +4327,23 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Poetics"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsPoetics", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Wide-eyed Fawn", "Dust Bunny", "Fledgling Dodo");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(17) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(28) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(37) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4038,12 +4351,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Hunt Currency"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsHunts", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Wind-up Succubus", "Treasure Box", "Behemoth Heir", "Griffin Hatchling", "Tora-jiro", "Wind-up Meateater", "Bitty Duckbill", "Cute Justice", "Nagxian Cat", "Wind-up Nu Mou");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(82) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(93) ? Green : Red);
@@ -4055,6 +4374,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsMinionUnlocked(358) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(428) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(326) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4062,16 +4382,23 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Grand Company"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsGc", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Storm Hatchling", "Serpent Hatchling", "Flame Hatchling");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(9) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(10) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(11) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4079,15 +4406,22 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Island Sanctuary"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsSanctuary", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Felicitous Fuzzball", "Sky Blue Back");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(456) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(468) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4095,15 +4429,22 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Other"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadminionsOther", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Wind-up Sun", "Wind-up Moon");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMinionUnlocked(65) ? Green : Red);
 														SetCellBackground(c.IsMinionUnlocked(236) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4124,12 +4465,17 @@ namespace FFXIVCharaTracker
 								{
 									if (ImGui.BeginTabItem("Achievements"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsAchievement", 40, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Ahriman", "Behemoth", "Gilded Magitek Armor", "Warlion", "Warbear", "Storm Warsteed", "Serpent Warsteed", "Flame Warsteed", "Parade Chocobo", "Logistics System", "War Panther", "Gloria-class Airship", "Astrope", "Aerodynamics System", "Goten", "Ginga", "Raigo", "Battle Lion", "Battle Bear", "Battle Panther", "Centurio Tiger", "Magitek Avenger", "Magitek Death Claw", "Safeguard System", "Juedi", "Magitek Avenger A1", "Demi-Ozma", "War Tiger", "Triceratops", "Amaro", "Battle Tiger", "Morbol", "Construct VII", "Hybodus", "Pteranodon", "Cerberus", "Al-iklil", "Victor", "Silkie");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(9) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(18) ? Green : Red);
@@ -4170,6 +4516,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(246) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(267) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(304) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4177,12 +4524,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Tribes"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsTribe", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Cavalry Drake", "Laurel Goobbue", "Cavalry Elbst", "Bomb Palanquin", "Direwolf", "Sanuwa", "Kongamato", "Cloud Mallow", "Striped Ray", "Marid", "True Griffin", "Mikoshi", "Portly Porxie", "Great Vessel Of Ronka", "Rolling Tankard", "Hippo Cart", "Miw Miisv");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(19) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(20) ? Green : Red);
@@ -4201,6 +4553,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(223) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(287) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(298) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4208,17 +4561,23 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Bozja"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsBozja", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Construct 14", "Gabriel Î‘", "Gabriel Mark III", "Deinonychus");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(213) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(224) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(241) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(212) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4226,15 +4585,21 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Crafted"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsCrafted", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Flying Chair", "Magicked Bed");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(140) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(193) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4242,17 +4607,23 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Deep Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsDeep", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Disembodied Head", "Black Pegasus", "Dodo", "Sil'dihn Throne");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(92) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(100) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(159) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(303) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4260,14 +4631,20 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Dungeon"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsDungeon", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Magitek Predator");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(121) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4275,16 +4652,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Eureka"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Tyrannosaur", "Eldthurs", "Eurekan Petrel");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(150) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(178) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(184) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4292,17 +4675,23 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("FATE"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsFate", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Ixion", "Ironfrog Mover", "Level Checker", "Wivre");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(130) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(191) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(268) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(273) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4310,12 +4699,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Mog Station/Collector's Edition"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsMog", 49, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Coeurl", "Fat Chocobo", "Draught Chocobo", "Sleipnir", "Ceremony Chocobo", "Griffin", "Amber Draught Chocobo", "Twintania", "Witch's Broom", "White Devil", "Red Baron", "Original Fat Chocobo", "Bennu", "Fat Moogle", "Eggshilaration System", "Syldra", "Managarm", "Mystic Panda", "Starlight Bear", "Aquamarine Carbuncle", "Citrine Carbuncle", "Nezha Chariot", "Broken Heart", "Broken Heart", "Red Hare", "Indigo Whale", "SDS Fenrir", "Fatter Cat", "Fat Black Chocobo", "Magicked Carpet", "Grani", "Circus Ahriman", "Sunspun Cumulus", "Spriggan Stonecarrier", "Kingly Peacock", "Rubellite Carbuncle", "Chocobo Carriage", "Snowman", "Lunar Whale", "Polar Bear", "Cruise Chaser", "Arion", "Papa Paissa", "Megashiba", "Mechanical Lotus", "Magicked Umbrella", "Magicked Parasol", "Set Of Ceruleum Balloons");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(8) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(25) ? Green : Red);
@@ -4365,6 +4759,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(300) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(301) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(310) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4372,22 +4767,20 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("PvP"))
 									{
-										if (ImGui.BeginTable("squadmountsPvp", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+										ImGui.Unindent();
+										ImGui.Unindent();
+
+										if (ImGui.BeginTable("squadmountsPvp", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Magitek Sky Armor", "Unicorn", "Kirin", "Firebird", "Kamuy Of The Nine Tails", "Ehll Tou", "Landerwaffe", "Magicked Card", "Argos", "Anden III");
+											SetUpSquadTableHeaders(125, "Magitek Sky Armor");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-												SetCellBackground(c.IsMountUnlocked(15) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(47) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(105) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(181) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(230) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(245) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(254) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(263) ? Green : Red);
-												SetCellBackground(c.IsMountUnlocked(311) ? Green : Red);
+												SetCellBackground(c.IsMountUnlocked(174) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4395,12 +4788,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Raid"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsRaid", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Gobwalker", "Arrhidaeus", "Alte Roite", "Air Force", "Model O", "Skyslipper", "Ramuh", "Eden", "Demi-Phoinix", "Sunforged");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(58) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(101) ? Green : Red);
@@ -4412,6 +4810,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(234) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(265) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(305) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4419,12 +4818,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Ishgardian Restoration"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsSkybuilder", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Pegasus", "Ufiti", "Dhalmel", "Albino Karakul", "Megalotragus", "Big Shell", "Antelope Doe", "Antelope Stag");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(67) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(211) ? Green : Red);
@@ -4434,6 +4838,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(236) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(242) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(243) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4441,16 +4846,22 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Treasure Hunt"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsTreasure", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Alkonost", "Phaethon", "Pinky");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(281) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(313) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(314) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4458,12 +4869,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Trial"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsTrial", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Nightmare", "Aithon", "Xanthos", "Gullfaxi", "Enbarr", "Markab", "Boreas", "White Lanner", "Rose Lanner", "Round Lanner", "Warring Lanner", "Dark Lanner", "Sophic Lanner", "Demonic Lanner", "Blissful Kamuy", "Reveling Kamuy", "Legendary Kamuy", "Auspicious Kamuy", "Lunar Kamuy", "Rathalos", "Euphonious Kamuy", "Hallowed Kamuy", "Fae Gwiber", "Innocent Gwiber", "Shadow Gwiber", "Ruby Gwiber", "Gwiber Of Light", "Emerald Gwiber", "Diamond Gwiber", "Lynx Of Eternal Darkness", "Lynx Of Divine Light", "Bluefeather Lynx", "Lynx Of Imperious Wind", "Lynx Of Righteous Fire");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(22) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(28) ? Green : Red);
@@ -4499,6 +4915,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(293) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(306) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(315) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4506,14 +4923,20 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Voyages"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsVoyage", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Zu");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(73) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4521,12 +4944,17 @@ namespace FFXIVCharaTracker
 									}
 									if (ImGui.BeginTabItem("Wondrous Tails/Faux Hollows"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadmountsTails", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(125, "Ixion", "Incitatus", "Construct VI-S", "Calydontis", "Troll", "Wondrous Lanner");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsMountUnlocked(130) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(231) ? Green : Red);
@@ -4534,6 +4962,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsMountUnlocked(266) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(288) ? Green : Red);
 												SetCellBackground(c.IsMountUnlocked(299) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4546,17 +4975,24 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Gil"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadmountsGil", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Gilded Mikoshi", "Resplendent Vessel Of Ronka", "Magitek Avenger G1", "Chrysomallos");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMountUnlocked(252) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(253) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(141) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(317) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4564,12 +5000,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("MGP"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadmountsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Adamantoise", "Fenrir", "Archon Throne", "Korpokkur Kolossus", "Typhon", "Sabotender Emperador", "Pod 602", "Blackjack");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMountUnlocked(46) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(49) ? Green : Red);
@@ -4579,6 +5021,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsMountUnlocked(180) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(284) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(312) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4586,16 +5029,23 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Hunt Currency"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadmountsHunts", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Wyvern", "Forgiven Reticence", "Vinegaroon");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMountUnlocked(70) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(207) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(291) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4603,18 +5053,25 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Island Sanctuary"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadmountsSanctuary", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(125, "Garlond GL-II", "Island Mandragora", "Island Onion Prince", "Island Eggplant Knight", "Island Alligator");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsMountUnlocked(277) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(255) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(256) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(257) ? Green : Red);
 														SetCellBackground(c.IsMountUnlocked(286) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4635,12 +5092,17 @@ namespace FFXIVCharaTracker
 								{
 									if (ImGui.BeginTabItem("General"))
 									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+
 										if (ImGui.BeginTable("squadoptionalGeneral", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
 											SetUpSquadTableHeaders(300, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
 
 											foreach (var c in charas)
 											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 												SetCellBackground(c.IsQuestComplete(66750) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(66748) ? Green : Red);
@@ -4652,6 +5114,7 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsQuestComplete(68583) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(67928) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(69501) ? Green : Red);
+
 											}
 											ImGui.EndTable();
 										}
@@ -4664,12 +5127,18 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Dungeons"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadDungeonsArr", 21, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Halatali", "The Sunken Temple of Qarn", "Cutter's Cry", "Dzemael Darkhold", "The Aurum Vale", "Amdapor Keep", "The Wanderer's Palace", "Copperbell Mines (Hard)", "Haukke Manor (Hard)", "Pharos Sirius", "Brayflox's Longstop (Hard)", "Halatali (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle", "The Stone Vigil (Hard)", "The Tam-Tara Deepcroft (Hard)", "Sastasha (Hard)", "The Sunken Temple of Qarn (Hard)", "Amdapor Keep (Hard)", "The Wanderer's Palace (Hard)");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(7) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(9) ? Green : Red);
@@ -4691,6 +5160,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(26) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(29) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(30) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4698,12 +5168,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Trials"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadTrialsArr", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Battle on the Big Bridge", "A Relic Reborn: The Chimera", "A Relic Reborn: The Hydra", "The Minstrel's Ballad: Ultima's Bane", "The Howling Eye (Extreme)", "The Navel (Extreme)", "The Bowl of Embers (Extreme)", "The Dragon's Neck", "The Whorleater (Extreme)", "Thornmarch (Extreme)", "The Striking Tree (Extreme)", "Battle in the Big Keep", "Akh Afah Amphitheatre (Extreme)", "Urth's Fount");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20021) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20019) ? Green : Red);
@@ -4719,6 +5195,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(20030) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20025) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20027) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4726,12 +5203,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Raids"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadRaidsArr", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Binding Coil of Bahamut - Turn 1", "The Binding Coil of Bahamut - Turn 2", "The Binding Coil of Bahamut - Turn 3", "The Binding Coil of Bahamut - Turn 4", "The Binding Coil of Bahamut - Turn 5", "The Second Coil of Bahamut - Turn 1", "The Second Coil of Bahamut - Turn 2", "The Second Coil of Bahamut - Turn 3", "The Second Coil of Bahamut - Turn 4", "The Second Coil of Bahamut - Turn 1 (Savage)", "The Second Coil of Bahamut - Turn 2 (Savage)", "The Second Coil of Bahamut - Turn 3 (Savage)", "The Second Coil of Bahamut - Turn 4 (Savage)", "The Final Coil of Bahamut - Turn 1", "The Final Coil of Bahamut - Turn 2", "The Final Coil of Bahamut - Turn 3", "The Final Coil of Bahamut - Turn 4");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(30002) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(30003) ? Green : Red);
@@ -4750,6 +5233,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(30017) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(30018) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(30019) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4767,12 +5251,18 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Dungeons"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadDungeonsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Dusk Vigil", "Neverreap", "The Fractal Continuum", "Saint Mocianne's Arboretum", "Pharos Sirius (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle (Hard)", "The Great Gubal Library (Hard)", "Sohm Al (Hard)", "The Palace of the Dead");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(36) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(33) ? Green : Red);
@@ -4784,6 +5274,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(47) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(49) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(67092) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4791,12 +5282,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Trials"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadTrialsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Limitless Blue (Extreme)", "Thok ast Thok (Extreme)", "Containment Bay S1T7", "The Minstrel's Ballad: Thordan's Reign", "Containment Bay S1T7 (Extreme)", "Containment Bay P1T6", "The Minstrel's Ballad: Nidhogg's Rage", "Containment Bay P1T6 (Extreme)", "Containment Bay Z1T9", "Containment Bay Z1T9 (Extreme)");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20034) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20032) ? Green : Red);
@@ -4808,6 +5305,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(20042) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20043) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20044) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4820,12 +5318,19 @@ namespace FFXIVCharaTracker
 												{
 													if (ImGui.BeginTabItem("Normal Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadNormalRaidsHw", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "Alexander - The Fist of the Father", "Alexander - The Cuff of the Father", "Alexander - The Arm of the Father", "Alexander - The Burden of the Father", "Alexander - The Fist of the Father (Savage)", "Alexander - The Cuff of the Father (Savage)", "Alexander - The Arm of the Father (Savage)", "Alexander - The Burden of the Father (Savage)", "Alexander - The Fist of the Son", "Alexander - The Cuff of the Son", "Alexander - The Arm of the Son", "Alexander - The Burden of the Son (Savage)", "Alexander - The Fist of the Son (Savage)", "Alexander - The Cuff of the Son (Savage)", "Alexander - The Arm of the Son (Savage)", "Alexander - The Burden of the Son (Savage)", "Alexander - The Eyes of the Creator", "Alexander - The Breath of the Creator", "Alexander - The Heart of the Creator", "Alexander - The Soul of the Creator", "Alexander - The Eyes of the Creator (Savage)", "Alexander - The Breath of the Creator (Savage)", "Alexander - The Heart of the Creator (Savage)", "Alexander - The Soul of the Creator (Savage)");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30021) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30022) ? Green : Red);
@@ -4851,6 +5356,7 @@ namespace FFXIVCharaTracker
 																SetCellBackground(c.IsInstanceUnlocked(30044) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30045) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30046) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -4858,16 +5364,24 @@ namespace FFXIVCharaTracker
 													}
 													if (ImGui.BeginTabItem("Alliance Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadAllianceRaidsHw", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "The Void Ark", "The Weeping City of Mhach", "Dun Scaith");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30029) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30038) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30047) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -4890,12 +5404,18 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Dungeons"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadDungeonsSb", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Shisui of the Violet Tides", "Kugane Castle", "The Temple of the Fist", "Hell's Lid", "The Fractal Continuum (Hard)", "The Swallow's Compass", "Saint Mocianne's Arboretum (Hard)", "Heaven-on-High");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(50) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(57) ? Green : Red);
@@ -4905,6 +5425,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(61) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(62) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(68667) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4912,12 +5433,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Trials"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadTrialsSb", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Emanation (Extreme)", "The Pool of Tribute (Extreme)", "The Great Hunt", "The Minstrel's Ballad: Shinryu's Domain", "The Jade Stoa", "The Jade Stoa (Extreme)", "The Great Hunt (Extreme)", "The Minstrel's Ballad: Tsukuyomi's Pain", "Hells' Kier", "Kugane Ohashi", "The Wreath of Snakes", "Hells' Kier (Extreme)", "The Wreath of Snakes (Extreme)");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20049) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20047) ? Green : Red);
@@ -4932,6 +5459,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(20060) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20058) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20061) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -4944,12 +5472,19 @@ namespace FFXIVCharaTracker
 												{
 													if (ImGui.BeginTabItem("Normal Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadNormalRaidsSb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "Deltascape V1.0", "Deltascape V2.0", "Deltascape V3.0", "Deltascape V4.0", "Deltascape V1.0 (Savage)", "Deltascape V2.0 (Savage)", "Deltascape V3.0 (Savage)", "Deltascape V4.0 (Savage)", "Sigmascape V1.0", "Sigmascape V2.0", "Sigmascape V3.0", "Sigmascape V4.0", "Sigmascape V1.0 (Savage)", "Sigmascape V2.0 (Savage)", "Sigmascape V3.0 (Savage)", "Sigmascape V4.0 (Savage)", "Alphascape V1.0", "Alphascape V2.0", "Alphascape V3.0", "Alphascape V4.0", "Alphascape V1.0 (Savage)", "Alphascape V2.0 (Savage)", "Alphascape V3.0 (Savage)", "Alphascape V4.0 (Savage)");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30049) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30050) ? Green : Red);
@@ -4975,6 +5510,7 @@ namespace FFXIVCharaTracker
 																SetCellBackground(c.IsInstanceUnlocked(30074) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30075) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30076) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -4982,16 +5518,24 @@ namespace FFXIVCharaTracker
 													}
 													if (ImGui.BeginTabItem("Alliance Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadAllianceRaidsSb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "The Royal City of Rabanastre", "The Ridorana Lighthouse", "The Orbonne Monastery");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30058) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30068) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30077) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -5004,17 +5548,24 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Eureka"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadEurekaSb", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Forbidden Land, Eureka Anemos", "The Forbidden Land, Eureka Pagos", "The Forbidden Land, Eureka Pyros", "The Forbidden Land, Eureka Hydatos");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsQuestComplete(68614) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(68478) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(68148) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(68149) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5032,15 +5583,22 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Dungeons"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadDungeonsShb", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Akadaemia Anyder", "The Twinning");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(71) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20013) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5048,12 +5606,18 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Trials"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadTrialsShb", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Crown of the Immaculate (Extreme)", "The Minstrel's Ballad: Hades' Elegy", "Cinder Drift", "Cinder Drift (Extreme)", "Memoria Misera (Extreme)", "The Seat of Sacrifice (Extreme)", "Castrum Marinum", "The Cloud Deck", "Castrum Marinum (Extreme)", "The Cloud Deck (Extreme)");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20065) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20067) ? Green : Red);
@@ -5065,6 +5629,7 @@ namespace FFXIVCharaTracker
 														SetCellBackground(c.IsInstanceUnlocked(20075) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20074) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20076) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5077,12 +5642,19 @@ namespace FFXIVCharaTracker
 												{
 													if (ImGui.BeginTabItem("Normal Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadNormalRaidsShb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "Eden's Gate: Resurrection", "Eden's Gate: Descent", "Eden's Gate: Inundation", "Eden's Gate: Sepulture", "Eden's Gate: Resurrection (Savage)", "Eden's Gate: Descent (Savage)", "Eden's Gate: Inundation (Savage)", "Eden's Gate: Sepulture (Savage)", "Eden's Verse: Fulmination", "Eden's Verse: Furor", "Eden's Verse: Iconoclasm", "Eden's Verse: Refulgence", "Eden's Verse: Fulmination (Savage)", "Eden's Verse: Furor (Savage)", "Eden's Verse: Iconoclasm (Savage)", "Eden's Verse: Refulgence (Savage)", "Eden's Promise: Umbra", "Eden's Promise: Litany", "Eden's Promise: Anamorphosis", "Eden's Promise: Eternity", "Eden's Promise: Umbra (Savage)", "Eden's Promise: Litany (Savage)", "Eden's Promise: Anamorphosis (Savage)", "Eden's Promise: Eternity (Savage)");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30078) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30082) ? Green : Red);
@@ -5108,6 +5680,7 @@ namespace FFXIVCharaTracker
 																SetCellBackground(c.IsInstanceUnlocked(30100) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30102) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30104) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -5115,16 +5688,24 @@ namespace FFXIVCharaTracker
 													}
 													if (ImGui.BeginTabItem("Alliance Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadAllianceRaidsShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "The Copied Factory", "The Puppets' Bunker", "The Tower at Paradigm's Breach");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30087) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30096) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30105) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -5137,16 +5718,23 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Bozja"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadBozjaShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Bozjan Southern Front", "Zadnor", "Bozja complete");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsQuestComplete(69477) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(69620) ? Green : Red);
 														SetCellBackground(c.IsQuestComplete(69624) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5164,15 +5752,22 @@ namespace FFXIVCharaTracker
 										{
 											if (ImGui.BeginTabItem("Dungeons"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadDungeonsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "Smileton", "The Stigma Dreamscape");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20030) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(79) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5180,18 +5775,25 @@ namespace FFXIVCharaTracker
 											}
 											if (ImGui.BeginTabItem("Trials"))
 											{
+												ImGui.Unindent();
+												ImGui.Unindent();
+												ImGui.Unindent();
+
 												if (ImGui.BeginTable("squadTrialsEw", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
 													SetUpSquadTableHeaders(300, "The Minstrel's Ballad: Hydaelyn's Call", "The Minstrel's Ballad: Zodiark's Fall", "The Minstrel's Ballad: Endsinger's Aria", "Storm's Crown (Extreme)", "Mount Ordeals (Extreme)");
 
 													foreach (var c in charas)
 													{
+														DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 														SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 														SetCellBackground(c.IsInstanceUnlocked(20078) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20081) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20083) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20085) ? Green : Red);
 														SetCellBackground(c.IsInstanceUnlocked(20087) ? Green : Red);
+
 													}
 													ImGui.EndTable();
 												}
@@ -5204,12 +5806,19 @@ namespace FFXIVCharaTracker
 												{
 													if (ImGui.BeginTabItem("Normal Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadNormalRaidsEw", 17, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "Asphodelos: The First Circle", "Asphodelos: The Second Circle", "Asphodelos: The Third Circle", "Asphodelos: The Fourth Circle", "Asphodelos: The First Circle (Savage)", "Asphodelos: The Second Circle (Savage)", "Asphodelos: The Third Circle (Savage)", "Asphodelos: The Fourth Circle (Savage)", "Abyssos: The Fifth Circle", "Abyssos: The Sixth Circle", "Abyssos: The Seventh Circle", "Abyssos: The Eighth Circle", "Abyssos: The Fifth Circle (Savage)", "Abyssos: The Sixth Circle (Savage)", "Abyssos: The Seventh Circle (Savage)", "Abyssos: The Eighth Circle (Savage)");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30111) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30113) ? Green : Red);
@@ -5227,6 +5836,7 @@ namespace FFXIVCharaTracker
 																SetCellBackground(c.IsInstanceUnlocked(30121) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30119) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30123) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
@@ -5234,15 +5844,23 @@ namespace FFXIVCharaTracker
 													}
 													if (ImGui.BeginTabItem("Alliance Raids"))
 													{
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+														ImGui.Unindent();
+
 														if (ImGui.BeginTable("squadAllianceRaidsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
 															SetUpSquadTableHeaders(300, "Aglaia", "Euphrosyne");
 
 															foreach (var c in charas)
 															{
+																DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
 																SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
 																SetCellBackground(c.IsInstanceUnlocked(30115) ? Green : Red);
 																SetCellBackground(c.IsInstanceUnlocked(30125) ? Green : Red);
+
 															}
 															ImGui.EndTable();
 														}
