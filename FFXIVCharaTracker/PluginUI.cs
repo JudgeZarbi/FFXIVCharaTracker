@@ -165,7 +165,7 @@ namespace FFXIVCharaTracker
 			ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 			foreach (var title in objects)
 			{
-				ImGui.TableSetupColumn(title, ImGuiTableColumnFlags.WidthFixed, width * Scale);
+				ImGui.TableSetupColumn(title, ImGuiTableColumnFlags.WidthFixed, (width > 0 ? width : ImGui.CalcTextSize(title).X) * Scale);
 			}
 			ImGui.TableHeadersRow();
 		}
@@ -2948,7 +2948,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesSidequest", 10, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Throw", "Step Dance", "Harvest Dance", "Ball Dance", "Manderville Dance", "Most Gentlemanly", "Spectacles", "Manderville Mambo", "Lali-ho");
+											SetUpSquadTableHeaders(0, "Throw", "Step Dance", "Harvest Dance", "Ball Dance", "Manderville Dance", "Most Gentlemanly", "Spectacles", "Manderville Mambo", "Lali-ho");
 
 											foreach (var c in charas)
 											{
@@ -2977,7 +2977,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesTribe", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Sundrop Dance", "Moogle Dance", "Moonlift Dance", "Ritual Prayer", "Charmed", "Yol Dance", "Gratuity", "Lali Hop");
+											SetUpSquadTableHeaders(0, "Sundrop Dance", "Moogle Dance", "Moonlift Dance", "Ritual Prayer", "Charmed", "Yol Dance", "Gratuity", "Lali Hop");
 
 											foreach (var c in charas)
 											{
@@ -3006,7 +3006,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesSaucer", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Thavnairian Dance", "Gold Dance", "Aback", "Big Grin", "Bee's Knees", "Sheathe Weapon", "Draw Weapon");
+											SetUpSquadTableHeaders(0, "Thavnairian Dance", "Gold Dance", "Aback", "Big Grin", "Bee's Knees", "Sheathe Weapon", "Draw Weapon");
 
 											foreach (var c in charas)
 											{
@@ -3034,7 +3034,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesSquadron", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Squats", "Push-ups", "Sit-ups", "Breath Control");
+											SetUpSquadTableHeaders(0, "Squats", "Push-ups", "Sit-ups", "Breath Control");
 
 											foreach (var c in charas)
 											{
@@ -3059,7 +3059,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesGC", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Attention", "At Ease", "Reflect");
+											SetUpSquadTableHeaders(0, "Attention", "At Ease", "Reflect");
 
 											foreach (var c in charas)
 											{
@@ -3083,7 +3083,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesHunts", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Winded", "Tremble");
+											SetUpSquadTableHeaders(0, "Winded", "Tremble");
 
 											foreach (var c in charas)
 											{
@@ -3106,7 +3106,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesPvP", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Elucidate", "Reprimand");
+											SetUpSquadTableHeaders(0, "Elucidate", "Reprimand");
 
 											foreach (var c in charas)
 											{
@@ -3129,7 +3129,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Sweat", "Wow");
+											SetUpSquadTableHeaders(0, "Sweat", "Wow");
 
 											foreach (var c in charas)
 											{
@@ -3152,7 +3152,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Shiver", "Scheme", "Fist Pump");
+											SetUpSquadTableHeaders(0, "Shiver", "Scheme", "Fist Pump");
 
 											foreach (var c in charas)
 											{
@@ -3176,7 +3176,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Guard", "Malevolence", "Wring Hands");
+											SetUpSquadTableHeaders(0, "Guard", "Malevolence", "Wring Hands");
 
 											foreach (var c in charas)
 											{
@@ -3200,7 +3200,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesTreasure", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Confirm", "Paint it Black", "Paint it Red", "Paint it Yellow", "Paint it Blue");
+											SetUpSquadTableHeaders(0, "Confirm", "Paint it Black", "Paint it Red", "Paint it Yellow", "Paint it Blue");
 
 											foreach (var c in charas)
 											{
@@ -3226,7 +3226,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesResto", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Lean", "Insist", "Break Fast", "Read", "High Five", "Eat Rice Ball", "Eat Apple", "Sweep Up");
+											SetUpSquadTableHeaders(0, "Lean", "Insist", "Break Fast", "Read", "High Five", "Eat Rice Ball", "Eat Apple", "Sweep Up");
 
 											foreach (var c in charas)
 											{
@@ -3255,7 +3255,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadEmotesMog", 41, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Bomb Dance", "Huzzah", "Eureka", "Black Ranger Pose A", "Black Ranger Pose B", "Yellow Ranger Pose A", "Yellow Ranger Pose B", "Red Ranger Pose A", "Red Ranger Pose B", "Eastern Greeting", "Dote", "Songbird", "Play Dead", "Eastern Stretch", "Eastern Dance", "Pretty Please", "Power Up", "Cheer On", "Cheer Wave", "Cheer Jump", "Megaflare", "Splash", "Crimson Lotus", "Box Step", "Side Step", "Senor Sabotender", "Get Fantasy", "Popoto Step", "Toast", "Heel Toe", "Goobbue Do", "Consider", "Flame Dance", "Wasshoi", "Flower Shower", "Pantomime", "Vexed", "Drink Tea", "Deride");
+											SetUpSquadTableHeaders(0, "Bomb Dance", "Huzzah", "Eureka", "Black Ranger Pose A", "Black Ranger Pose B", "Yellow Ranger Pose A", "Yellow Ranger Pose B", "Red Ranger Pose A", "Red Ranger Pose B", "Eastern Greeting", "Dote", "Songbird", "Play Dead", "Eastern Stretch", "Eastern Dance", "Pretty Please", "Power Up", "Cheer On", "Cheer Wave", "Cheer Jump", "Megaflare", "Splash", "Crimson Lotus", "Box Step", "Side Step", "Senor Sabotender", "Get Fantasy", "Popoto Step", "Toast", "Heel Toe", "Goobbue Do", "Consider", "Flame Dance", "Wasshoi", "Flower Shower", "Pantomime", "Vexed", "Drink Tea", "Deride");
 
 											foreach (var c in charas)
 											{
@@ -3314,7 +3314,7 @@ namespace FFXIVCharaTracker
 
 											if (ImGui.BeginTable("squadEmotesOther", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 											{
-												SetUpSquadTableHeaders(125, "Headache", "Embrace");
+												SetUpSquadTableHeaders(0, "Headache", "Embrace");
 
 												foreach (var c in charas)
 												{
@@ -3347,7 +3347,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Great Lengths", "Lexen-tails", "Styled for Hire", "Fashionably Feathered", "Rainmaker", "Curls", "Adventure", "Ponytails");
+											SetUpSquadTableHeaders(0, "Great Lengths", "Lexen-tails", "Styled for Hire", "Fashionably Feathered", "Rainmaker", "Curls", "Adventure", "Ponytails");
 
 											foreach (var c in charas)
 											{
@@ -3375,7 +3375,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesEureka", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Form and Function");
+											SetUpSquadTableHeaders(0, "Form and Function");
 
 											foreach (var c in charas)
 											{
@@ -3396,7 +3396,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Both Ways", "Early to Rise", "Wind Caller");
+											SetUpSquadTableHeaders(0, "Both Ways", "Early to Rise", "Wind Caller");
 
 											foreach (var c in charas)
 											{
@@ -3419,7 +3419,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Gyr Abanian Plait", "Samsonian Locks");
+											SetUpSquadTableHeaders(0, "Gyr Abanian Plait", "Samsonian Locks");
 
 											foreach (var c in charas)
 											{
@@ -3441,7 +3441,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesResto", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Saintly Style", "Controlled Chaos", "Modern Legend");
+											SetUpSquadTableHeaders(0, "Saintly Style", "Controlled Chaos", "Modern Legend");
 
 											foreach (var c in charas)
 											{
@@ -3464,7 +3464,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Scanning for Style", "Battle-ready Bobs");
+											SetUpSquadTableHeaders(0, "Scanning for Style", "Battle-ready Bobs");
 
 											foreach (var c in charas)
 											{
@@ -3486,7 +3486,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Practical Ponytails", "Tall Tails");
+											SetUpSquadTableHeaders(0, "Practical Ponytails", "Tall Tails");
 
 											foreach (var c in charas)
 											{
@@ -3508,7 +3508,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadhairstylesMog", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Sharlayan Rebellion", "Sharlayan Studies", "Master & Commander", "Scion Special Issue", "Scion Special Issue II", "Scion Special Issue III", "Pulse", "Liberating Locks", "Clowning Around", "A Wicked Wake");
+											SetUpSquadTableHeaders(0, "Sharlayan Rebellion", "Sharlayan Studies", "Master & Commander", "Scion Special Issue", "Scion Special Issue II", "Scion Special Issue III", "Pulse", "Liberating Locks", "Clowning Around", "A Wicked Wake");
 
 											foreach (var c in charas)
 											{
@@ -3547,7 +3547,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsAchievement", 30, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Black Chocobo Chick", "Beady Eye", "Wind-up Cursor", "Wind-up Leader", "Minion of Light", "Wind-up Odin", "Wind-up Warrior of Light ", "Wind-up Goblin", "Wind-up Gilgamesh", "Wind-up Nanamo", "Wind-up Firion", "Komainu", "Mammet #003L", "Mammet #003G", "Mammet #003U", "Princely Hatchling", "Fledgling Apkallu", "Wind-up Louisoix", "Shalloweye", "Clockwork Twintania", "Penguin Prince", "Hellpup", "Faepup", "The Major-General", "Malone", "Laladile", "Much-coveted Mora", "Dolphin Calf", "Gull");
+											SetUpSquadTableHeaders(0, "Black Chocobo Chick", "Beady Eye", "Wind-up Cursor", "Wind-up Leader", "Minion of Light", "Wind-up Odin", "Wind-up Warrior of Light ", "Wind-up Goblin", "Wind-up Gilgamesh", "Wind-up Nanamo", "Wind-up Firion", "Komainu", "Mammet #003L", "Mammet #003G", "Mammet #003U", "Princely Hatchling", "Fledgling Apkallu", "Wind-up Louisoix", "Shalloweye", "Clockwork Twintania", "Penguin Prince", "Hellpup", "Faepup", "The Major-General", "Malone", "Laladile", "Much-coveted Mora", "Dolphin Calf", "Gull");
 
 											foreach (var c in charas)
 											{
@@ -3596,7 +3596,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsTribe", 29, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Wind-up Sylph", "Wind-up Violet", "Wind-up Amalj'aa", "Wind-up Founder", "Wind-up Kobold", "Wind-up Kobolder", "Wind-up Sahagin", "Wind-up Sea Devil", "Wind-up Dezul Qualan", "Wind-up Ixal", "Wind-up Gundu Warrior", "Wind-up Zundu Warrior", "Wind-up Vath", "Wind-up Gnath", "Wind-up Dragonet", "Wind-up Ohl Deeh", "Wind-up Kojin", "Wind-up Redback", "Zephyrous Zabuton", "Wind-up Ananta", "Wind-up Qalyana", "Attendee #777", "Wind-up Pixie", "The Behelmeted Serpent of Ronka", "The Behatted Serpent of Ronka", "Lalinator 5.H0", "Wind-up Arkasodara", "Lumini");
+											SetUpSquadTableHeaders(0, "Wind-up Sylph", "Wind-up Violet", "Wind-up Amalj'aa", "Wind-up Founder", "Wind-up Kobold", "Wind-up Kobolder", "Wind-up Sahagin", "Wind-up Sea Devil", "Wind-up Dezul Qualan", "Wind-up Ixal", "Wind-up Gundu Warrior", "Wind-up Zundu Warrior", "Wind-up Vath", "Wind-up Gnath", "Wind-up Dragonet", "Wind-up Ohl Deeh", "Wind-up Kojin", "Wind-up Redback", "Zephyrous Zabuton", "Wind-up Ananta", "Wind-up Qalyana", "Attendee #777", "Wind-up Pixie", "The Behelmeted Serpent of Ronka", "The Behatted Serpent of Ronka", "Lalinator 5.H0", "Wind-up Arkasodara", "Lumini");
 
 											foreach (var c in charas)
 											{
@@ -3644,7 +3644,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsBozja", 24, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Mameshiba", "Koala Joey", "Salt & Pepper Seal", "Axolotl Eft", "Wind-up Ravana", "Wind-up Shinryu", "Tengu Doll", "White Whittret", "Aurelia Polyp", "Byakko Cub", "Private Moai", "Monkey King", "Mudpie (Southern Front Lockbox, Zadnor Lockbox, Saint Mocianne's Arboretum", "Scarlet Peacock", "Abroader Otter", "Seitei", "Wind-up Weapon", "Chameleon", "Sharksucker-class Insubmersible", "Magitek Helldiver F1", "DÃ¡insleif F1", "Save the Princess (Delubrum Reginae", "Wind-up Gunnhildr");
+											SetUpSquadTableHeaders(0, "Mameshiba", "Koala Joey", "Salt & Pepper Seal", "Axolotl Eft", "Wind-up Ravana", "Wind-up Shinryu", "Tengu Doll", "White Whittret", "Aurelia Polyp", "Byakko Cub", "Private Moai", "Monkey King", "Mudpie (Southern Front Lockbox, Zadnor Lockbox, Saint Mocianne's Arboretum", "Scarlet Peacock", "Abroader Otter", "Seitei", "Wind-up Weapon", "Chameleon", "Sharksucker-class Insubmersible", "Magitek Helldiver F1", "DÃ¡insleif F1", "Save the Princess (Delubrum Reginae", "Wind-up Gunnhildr");
 
 											foreach (var c in charas)
 											{
@@ -3687,7 +3687,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsCrafted", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Magic Broom", "Clockwork Barrow", "Model Magitek Bit", "Private Moai", "Wind-up Dullahan", "Steam-powered Gobwalker G-VII", "Bantam Train", "Gravel Golem", "Model Vanguard", "Wind-up Aldgoat", "Wind-up Qiqirn", "Plush Cushion", "Nana Bear", "Wind-up Illuminatus", "Wind-up Chimera", "Wind-up Sadu", "Wind-up Magnai", "Adventurer's Basket", "Wind-up Ifrit", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Wind-up Shinryu", "Byakko Cub", "Scarlet Peacock", "Seitei", "Atrophied Atomos", "Wanderer's Campfire");
+											SetUpSquadTableHeaders(0, "Magic Broom", "Clockwork Barrow", "Model Magitek Bit", "Private Moai", "Wind-up Dullahan", "Steam-powered Gobwalker G-VII", "Bantam Train", "Gravel Golem", "Model Vanguard", "Wind-up Aldgoat", "Wind-up Qiqirn", "Plush Cushion", "Nana Bear", "Wind-up Illuminatus", "Wind-up Chimera", "Wind-up Sadu", "Wind-up Magnai", "Adventurer's Basket", "Wind-up Ifrit", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Wind-up Shinryu", "Byakko Cub", "Scarlet Peacock", "Seitei", "Atrophied Atomos", "Wanderer's Campfire");
 
 											foreach (var c in charas)
 											{
@@ -3741,7 +3741,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsDeep", 44, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Miniature Minecart", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Gestahl", "Owlet", "Ugly Duckling", "Paissa Brat", "Korpokkur Kid", "Hunting Hawk", "Wind-up Ifrit", "Morpho", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Dwarf Rabbit", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Sasquatch", "Hecteye", "Shaggy Shoat", "Wind-up Edda", "Baby Brachiosaur", "Castaway Chocobo Chick", "Tiny Tatsunoko", "Bombfish", "Bom Boko", "Odder Otter", "Ghido", "Road Sparrow", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Frilled Dragon");
+											SetUpSquadTableHeaders(0, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Miniature Minecart", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Gestahl", "Owlet", "Ugly Duckling", "Paissa Brat", "Korpokkur Kid", "Hunting Hawk", "Wind-up Ifrit", "Morpho", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Dwarf Rabbit", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Sasquatch", "Hecteye", "Shaggy Shoat", "Wind-up Edda", "Baby Brachiosaur", "Castaway Chocobo Chick", "Tiny Tatsunoko", "Bombfish", "Bom Boko", "Odder Otter", "Ghido", "Road Sparrow", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Frilled Dragon");
 
 											foreach (var c in charas)
 											{
@@ -3804,7 +3804,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsDungeon", 59, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Morbol Seedling", "Bite-sized Pudding", "Demon Brick", "Slime Puddle", "Baby Opo-opo", "Naughty Nanka", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Korpokkur Kid", "Calca", "Brina", "Morpho", "Calamari", "Shaggy Shoat", "Bullpup", "Bombfish", "Ivon Coeurlfist Doll", "Ghido", "Road Sparrow", "Dress-up Yugiri", "Mock-up Grynewaht", "Magitek Avenger F1", "Salt & Pepper Seal", "White Whittret", "Monkey King", "Mudpie", "Wind-up Weapon", "Armadillo Bowler", "Clionid Larva", "Tiny Echevore", "Forgiven Hate", "Black Hayate", "Chameleon", "Shoebill", "Little Leannan", "Ancient One", "Ephemeral Necromancer", "Drippy", "Magitek Predator F1", "Prince Lunatender", "Tiny Troll", "Wind-up Magus Sisters", "Wind-up Anima", "Hippo Calf", "Caduceus", "Starbird", "Optimus Omicron", "Teacup Kapikulu", "Wind-up Scarmiglione", "Sponge Silkie", "Sewer Skink", "Wind-up Cagnazzo");
+											SetUpSquadTableHeaders(0, "Morbol Seedling", "Bite-sized Pudding", "Demon Brick", "Slime Puddle", "Baby Opo-opo", "Naughty Nanka", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Korpokkur Kid", "Calca", "Brina", "Morpho", "Calamari", "Shaggy Shoat", "Bullpup", "Bombfish", "Ivon Coeurlfist Doll", "Ghido", "Road Sparrow", "Dress-up Yugiri", "Mock-up Grynewaht", "Magitek Avenger F1", "Salt & Pepper Seal", "White Whittret", "Monkey King", "Mudpie", "Wind-up Weapon", "Armadillo Bowler", "Clionid Larva", "Tiny Echevore", "Forgiven Hate", "Black Hayate", "Chameleon", "Shoebill", "Little Leannan", "Ancient One", "Ephemeral Necromancer", "Drippy", "Magitek Predator F1", "Prince Lunatender", "Tiny Troll", "Wind-up Magus Sisters", "Wind-up Anima", "Hippo Calf", "Caduceus", "Starbird", "Optimus Omicron", "Teacup Kapikulu", "Wind-up Scarmiglione", "Sponge Silkie", "Sewer Skink", "Wind-up Cagnazzo");
 
 											foreach (var c in charas)
 											{
@@ -3882,7 +3882,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsEureka", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Calca", "Wind-up Fafnir", "The Prince Of Anemos", "Wind-up Mithra", "Copycat Bulb", "Wind-up Tarutaru", "Dhalmel Calf", "Wind-up Elvaan", "Conditional Virtue", "Yukinko Snowflake");
+											SetUpSquadTableHeaders(0, "Calca", "Wind-up Fafnir", "The Prince Of Anemos", "Wind-up Mithra", "Copycat Bulb", "Wind-up Tarutaru", "Dhalmel Calf", "Wind-up Elvaan", "Conditional Virtue", "Yukinko Snowflake");
 
 											foreach (var c in charas)
 											{
@@ -3912,7 +3912,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsFate", 16, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Baby Bun", "Infant Imp", "Pudgy Puk", "Smallshell", "Gold Rush Minecart", "Fox Kit", "Wind-up Ixion", "Micro Gigantender", "Butterfly Effect", "Ironfrog Ambler", "Tinker's Bell", "Little Leafman", "Amaro Hatchling", "Wee Ea", "Wind-up Daivadipa");
+											SetUpSquadTableHeaders(0, "Baby Bun", "Infant Imp", "Pudgy Puk", "Smallshell", "Gold Rush Minecart", "Fox Kit", "Wind-up Ixion", "Micro Gigantender", "Butterfly Effect", "Ironfrog Ambler", "Tinker's Bell", "Little Leafman", "Amaro Hatchling", "Wee Ea", "Wind-up Daivadipa");
 
 											foreach (var c in charas)
 											{
@@ -3947,7 +3947,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsGather", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Tiny Tortoise", "Gigantpole", "Kidragora", "Coblyn Larva", "Magic Bucket", "Castaway Chocobo Chick", "Tiny Tatsunoko");
+											SetUpSquadTableHeaders(0, "Tiny Tortoise", "Gigantpole", "Kidragora", "Coblyn Larva", "Magic Bucket", "Castaway Chocobo Chick", "Tiny Tatsunoko");
 
 											foreach (var c in charas)
 											{
@@ -3974,7 +3974,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsMog", 47, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Baby Behemoth", "Tender Lamb", "Wind-up Edvya", "Wind-up Shantotto", "Wind-up Moogle", "Wind-up Minfilia", "Wind-up Thancred", "Wind-up Y'shtola", "Wind-up Yda", "Wind-up Papalymo", "Wind-up Urianger", "Hoary The Snowman", "Wind-up Kain", "Wind-up Alisaie", "Wind-up Tataru", "Wind-up Iceheart", "Pumpkin Butler", "Wind-up Yugiri", "Panda Cub", "Doman Magpie", "Dress-up Y'shtola", "Wind-up Krile", "Continental Eye", "Wind-up Rikku", "Wind-up Lulu", "Angel Of Mercy", "Wind-up Yuna", "Wind-up Bartz", "Wind-up Lyse", "Wind-up Gosetsu", "Motley Egg", "Wind-up Cirina", "Little Yin", "Little Yang", "Wind-up Tifa", "Wind-up Cloud", "Wind-up Aerith", "Wind-up Fran", "Brave New Y'shtola", "Wind-up Ardbert", "Wind-up Edge", "Wind-up Rydia", "Wind-up Rosa", "Wind-up Rudy", "Squirrel Emperor", "Wind-up Porom");
+											SetUpSquadTableHeaders(0, "Baby Behemoth", "Tender Lamb", "Wind-up Edvya", "Wind-up Shantotto", "Wind-up Moogle", "Wind-up Minfilia", "Wind-up Thancred", "Wind-up Y'shtola", "Wind-up Yda", "Wind-up Papalymo", "Wind-up Urianger", "Hoary The Snowman", "Wind-up Kain", "Wind-up Alisaie", "Wind-up Tataru", "Wind-up Iceheart", "Pumpkin Butler", "Wind-up Yugiri", "Panda Cub", "Doman Magpie", "Dress-up Y'shtola", "Wind-up Krile", "Continental Eye", "Wind-up Rikku", "Wind-up Lulu", "Angel Of Mercy", "Wind-up Yuna", "Wind-up Bartz", "Wind-up Lyse", "Wind-up Gosetsu", "Motley Egg", "Wind-up Cirina", "Little Yin", "Little Yang", "Wind-up Tifa", "Wind-up Cloud", "Wind-up Aerith", "Wind-up Fran", "Brave New Y'shtola", "Wind-up Ardbert", "Wind-up Edge", "Wind-up Rydia", "Wind-up Rosa", "Wind-up Rudy", "Squirrel Emperor", "Wind-up Porom");
 
 											foreach (var c in charas)
 											{
@@ -4040,7 +4040,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsPvp", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Fenrir Pup", "Wind-up Cheerleader", "Clockwork Lantern", "Minitek Conveyor", "Protonaught");
+											SetUpSquadTableHeaders(0, "Fenrir Pup", "Wind-up Cheerleader", "Clockwork Lantern", "Minitek Conveyor", "Protonaught");
 
 											foreach (var c in charas)
 											{
@@ -4065,7 +4065,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsQuest", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Chigoe Larva", "Cactuar Cutting", "Goobbue Sproutling", "Coeurl Kitten", "Wolf Pup", "Mini Mole", "Wind-up Gentleman", "Accompaniment Node", "Gigi", "Anima", "Palico", "Wind-up Alpha", "The Great Serpent Of Ronka", "Golden Dhyata");
+											SetUpSquadTableHeaders(0, "Chigoe Larva", "Cactuar Cutting", "Goobbue Sproutling", "Coeurl Kitten", "Wolf Pup", "Mini Mole", "Wind-up Gentleman", "Accompaniment Node", "Gigi", "Anima", "Palico", "Wind-up Alpha", "The Great Serpent Of Ronka", "Golden Dhyata");
 
 											foreach (var c in charas)
 											{
@@ -4099,7 +4099,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsRaid", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Wind-up Onion Knight", "Puff Of Darkness", "Wind-up Echidna", "Faustlet", "Wind-up Calofisteri", "Toy Alexander", "Wind-up Scathach", "Wind-up Exdeath", "Wind-up Kefka", "Construct 8", "OMG", "Wind-up Ramza", "Eden Minor", "Pod 054", "Pod 316", "Wind-up Ryne", "2B Automaton", "2P Automaton", "Wind-up Gaia", "Smaller Stubby", "9S Automaton", "Nosferatu", "Wind-up Azeyma", "Wind-up Erichthonios", "Wind-up Halone");
+											SetUpSquadTableHeaders(0, "Wind-up Onion Knight", "Puff Of Darkness", "Wind-up Echidna", "Faustlet", "Wind-up Calofisteri", "Toy Alexander", "Wind-up Scathach", "Wind-up Exdeath", "Wind-up Kefka", "Construct 8", "OMG", "Wind-up Ramza", "Eden Minor", "Pod 054", "Pod 316", "Wind-up Ryne", "2B Automaton", "2P Automaton", "Wind-up Gaia", "Smaller Stubby", "9S Automaton", "Nosferatu", "Wind-up Azeyma", "Wind-up Erichthonios", "Wind-up Halone");
 
 											foreach (var c in charas)
 											{
@@ -4144,7 +4144,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsSkybuilder", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Plush Cushion", "Nutkin", "Atrophied Atomos", "Gaelikitten", "Owlet", "Ugly Duckling", "Clockwork Barrow", "Paissa Brat", "Hunting Hawk", "Morpho", "Calamari", "Dwarf Rabbit", "Shaggy Shoat", "Bullpup", "Baby Brachiosaur", "Pegasus Colt", "Miniature White Knight", "Dress-up Estinien", "Paissa Patissier", "Paissa Threadpuller", "Cerberpup", "Weatherproof Gaelicat", "Petit Pteranodon", "Trike");
+											SetUpSquadTableHeaders(0, "Plush Cushion", "Nutkin", "Atrophied Atomos", "Gaelikitten", "Owlet", "Ugly Duckling", "Clockwork Barrow", "Paissa Brat", "Hunting Hawk", "Morpho", "Calamari", "Dwarf Rabbit", "Shaggy Shoat", "Bullpup", "Baby Brachiosaur", "Pegasus Colt", "Miniature White Knight", "Dress-up Estinien", "Paissa Patissier", "Paissa Threadpuller", "Cerberpup", "Weatherproof Gaelicat", "Petit Pteranodon", "Trike");
 
 											foreach (var c in charas)
 											{
@@ -4188,7 +4188,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsTreasure", 28, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Paissa Brat", "Dwarf Rabbit", "Wind-up Namazu", "Wind-up Matanga", "The Gold Whisker", "Capybara Pup", "Hedgehoglet", "Wind-up Fuath", "Sungold Talos", "Golden Beaver", "Royal Lunatender", "Wind-up Aidoneus", "Wind-up Philos");
+											SetUpSquadTableHeaders(0, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Paissa Brat", "Dwarf Rabbit", "Wind-up Namazu", "Wind-up Matanga", "The Gold Whisker", "Capybara Pup", "Hedgehoglet", "Wind-up Fuath", "Sungold Talos", "Golden Beaver", "Royal Lunatender", "Wind-up Aidoneus", "Wind-up Philos");
 
 											foreach (var c in charas)
 											{
@@ -4235,7 +4235,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsTrial", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Wind-up Ultros", "Enkidu", "Poogie", "Giant Beaver");
+											SetUpSquadTableHeaders(0, "Wind-up Ultros", "Enkidu", "Poogie", "Giant Beaver");
 
 											foreach (var c in charas)
 											{
@@ -4259,7 +4259,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsVenture", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Minute Mindflayer", "Tiny Tapir", "Miniature Minecart", "Littlefoot", "Fat Cat", "Gestahl", "Bom Boko", "Odder Otter", "Mameshiba", "Koala Joey", "Axolotl Eft", "Tengu Doll", "Bacon Bits", "Mystic Weapon", "Domakin", "Wind-up Hobgoblin", "Allagan Melon", "Greener Gleaner", "Flag", "Crabe De La Crabe", "Wind-up Grebuloff", "Wind-up Kangaroo", "Chewy", "Blue-footed Booby", "Clockwork Novus D");
+											SetUpSquadTableHeaders(0, "Minute Mindflayer", "Tiny Tapir", "Miniature Minecart", "Littlefoot", "Fat Cat", "Gestahl", "Bom Boko", "Odder Otter", "Mameshiba", "Koala Joey", "Axolotl Eft", "Tengu Doll", "Bacon Bits", "Mystic Weapon", "Domakin", "Wind-up Hobgoblin", "Allagan Melon", "Greener Gleaner", "Flag", "Crabe De La Crabe", "Wind-up Grebuloff", "Wind-up Kangaroo", "Chewy", "Blue-footed Booby", "Clockwork Novus D");
 
 											foreach (var c in charas)
 											{
@@ -4304,7 +4304,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsVoyage", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Aurelia Polyp", "Abroader Otter", "Sharksucker-class Insubmersible", "Meerkat", "Silver Dasher", "Syldrion-class Insubmersible", "Benben Stone", "Suzusaurus");
+											SetUpSquadTableHeaders(0, "Aurelia Polyp", "Abroader Otter", "Sharksucker-class Insubmersible", "Meerkat", "Silver Dasher", "Syldrion-class Insubmersible", "Benben Stone", "Suzusaurus");
 
 											foreach (var c in charas)
 											{
@@ -4332,7 +4332,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadminionsTails", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Dress-up Thancred", "Dress-up Alisaie", "Wind-up Estinien", "Wind-up Khloe", "Wind-up Hien", "Wind-up Zhloe", "Wind-up Omega-M", "Wind-up Omega-F", "Sand Fox", "Anteater", "Brave New Urianger", "Pterosquirrel", "Corgi");
+											SetUpSquadTableHeaders(0, "Dress-up Thancred", "Dress-up Alisaie", "Wind-up Estinien", "Wind-up Khloe", "Wind-up Hien", "Wind-up Zhloe", "Wind-up Omega-M", "Wind-up Omega-F", "Sand Fox", "Anteater", "Brave New Urianger", "Pterosquirrel", "Corgi");
 
 											foreach (var c in charas)
 											{
@@ -4371,7 +4371,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsGil", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Wayward Hatchling", "Cherry Bomb", "Tiny Rat", "Baby Raptor", "Baby Bat", "Mammet #001");
+													SetUpSquadTableHeaders(0, "Wayward Hatchling", "Cherry Bomb", "Tiny Rat", "Baby Raptor", "Baby Bat", "Mammet #001");
 
 													foreach (var c in charas)
 													{
@@ -4398,7 +4398,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Zu Hatchling", "Heavy Hatchling", "Black Coeurl", "Water Imp", "Wind-up Nero Tol Scaeva", "Piggy", "Wind-up Daivadipa", "Mama Automaton");
+													SetUpSquadTableHeaders(0, "Zu Hatchling", "Heavy Hatchling", "Black Coeurl", "Water Imp", "Wind-up Nero Tol Scaeva", "Piggy", "Wind-up Daivadipa", "Mama Automaton");
 
 													foreach (var c in charas)
 													{
@@ -4427,7 +4427,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsPoetics", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Wide-eyed Fawn", "Dust Bunny", "Fledgling Dodo");
+													SetUpSquadTableHeaders(0, "Wide-eyed Fawn", "Dust Bunny", "Fledgling Dodo");
 
 													foreach (var c in charas)
 													{
@@ -4451,7 +4451,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsHunts", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Wind-up Succubus", "Treasure Box", "Behemoth Heir", "Griffin Hatchling", "Tora-jiro", "Wind-up Meateater", "Bitty Duckbill", "Cute Justice", "Nagxian Cat", "Wind-up Nu Mou");
+													SetUpSquadTableHeaders(0, "Wind-up Succubus", "Treasure Box", "Behemoth Heir", "Griffin Hatchling", "Tora-jiro", "Wind-up Meateater", "Bitty Duckbill", "Cute Justice", "Nagxian Cat", "Wind-up Nu Mou");
 
 													foreach (var c in charas)
 													{
@@ -4482,7 +4482,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsGc", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Storm Hatchling", "Serpent Hatchling", "Flame Hatchling");
+													SetUpSquadTableHeaders(0, "Storm Hatchling", "Serpent Hatchling", "Flame Hatchling");
 
 													foreach (var c in charas)
 													{
@@ -4506,7 +4506,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsSanctuary", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Felicitous Fuzzball", "Sky Blue Back");
+													SetUpSquadTableHeaders(0, "Felicitous Fuzzball", "Sky Blue Back");
 
 													foreach (var c in charas)
 													{
@@ -4529,7 +4529,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadminionsOther", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Wind-up Sun", "Wind-up Moon");
+													SetUpSquadTableHeaders(0, "Wind-up Sun", "Wind-up Moon");
 
 													foreach (var c in charas)
 													{
@@ -4564,7 +4564,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsAchievement", 40, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Ahriman", "Behemoth", "Gilded Magitek Armor", "Warlion", "Warbear", "Storm Warsteed", "Serpent Warsteed", "Flame Warsteed", "Parade Chocobo", "Logistics System", "War Panther", "Gloria-class Airship", "Astrope", "Aerodynamics System", "Goten", "Ginga", "Raigo", "Battle Lion", "Battle Bear", "Battle Panther", "Centurio Tiger", "Magitek Avenger", "Magitek Death Claw", "Safeguard System", "Juedi", "Magitek Avenger A1", "Demi-Ozma", "War Tiger", "Triceratops", "Amaro", "Battle Tiger", "Morbol", "Construct VII", "Hybodus", "Pteranodon", "Cerberus", "Al-iklil", "Victor", "Silkie");
+											SetUpSquadTableHeaders(0, "Ahriman", "Behemoth", "Gilded Magitek Armor", "Warlion", "Warbear", "Storm Warsteed", "Serpent Warsteed", "Flame Warsteed", "Parade Chocobo", "Logistics System", "War Panther", "Gloria-class Airship", "Astrope", "Aerodynamics System", "Goten", "Ginga", "Raigo", "Battle Lion", "Battle Bear", "Battle Panther", "Centurio Tiger", "Magitek Avenger", "Magitek Death Claw", "Safeguard System", "Juedi", "Magitek Avenger A1", "Demi-Ozma", "War Tiger", "Triceratops", "Amaro", "Battle Tiger", "Morbol", "Construct VII", "Hybodus", "Pteranodon", "Cerberus", "Al-iklil", "Victor", "Silkie");
 
 											foreach (var c in charas)
 											{
@@ -4623,7 +4623,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsTribe", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Cavalry Drake", "Laurel Goobbue", "Cavalry Elbst", "Bomb Palanquin", "Direwolf", "Sanuwa", "Kongamato", "Cloud Mallow", "Striped Ray", "Marid", "True Griffin", "Mikoshi", "Portly Porxie", "Great Vessel Of Ronka", "Rolling Tankard", "Hippo Cart", "Miw Miisv");
+											SetUpSquadTableHeaders(0, "Cavalry Drake", "Laurel Goobbue", "Cavalry Elbst", "Bomb Palanquin", "Direwolf", "Sanuwa", "Kongamato", "Cloud Mallow", "Striped Ray", "Marid", "True Griffin", "Mikoshi", "Portly Porxie", "Great Vessel Of Ronka", "Rolling Tankard", "Hippo Cart", "Miw Miisv");
 
 											foreach (var c in charas)
 											{
@@ -4660,7 +4660,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsBozja", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Construct 14", "Gabriel Î‘", "Gabriel Mark III", "Deinonychus");
+											SetUpSquadTableHeaders(0, "Construct 14", "Gabriel Î‘", "Gabriel Mark III", "Deinonychus");
 
 											foreach (var c in charas)
 											{
@@ -4684,7 +4684,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsCrafted", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Flying Chair", "Magicked Bed");
+											SetUpSquadTableHeaders(0, "Flying Chair", "Magicked Bed");
 
 											foreach (var c in charas)
 											{
@@ -4706,7 +4706,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsDeep", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Disembodied Head", "Black Pegasus", "Dodo", "Sil'dihn Throne");
+											SetUpSquadTableHeaders(0, "Disembodied Head", "Black Pegasus", "Dodo", "Sil'dihn Throne");
 
 											foreach (var c in charas)
 											{
@@ -4730,7 +4730,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsDungeon", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Magitek Predator");
+											SetUpSquadTableHeaders(0, "Magitek Predator");
 
 											foreach (var c in charas)
 											{
@@ -4751,7 +4751,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Tyrannosaur", "Eldthurs", "Eurekan Petrel");
+											SetUpSquadTableHeaders(0, "Tyrannosaur", "Eldthurs", "Eurekan Petrel");
 
 											foreach (var c in charas)
 											{
@@ -4774,7 +4774,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsFate", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Ixion", "Ironfrog Mover", "Level Checker", "Wivre");
+											SetUpSquadTableHeaders(0, "Ixion", "Ironfrog Mover", "Level Checker", "Wivre");
 
 											foreach (var c in charas)
 											{
@@ -4798,7 +4798,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsMog", 49, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Coeurl", "Fat Chocobo", "Draught Chocobo", "Sleipnir", "Ceremony Chocobo", "Griffin", "Amber Draught Chocobo", "Twintania", "Witch's Broom", "White Devil", "Red Baron", "Original Fat Chocobo", "Bennu", "Fat Moogle", "Eggshilaration System", "Syldra", "Managarm", "Mystic Panda", "Starlight Bear", "Aquamarine Carbuncle", "Citrine Carbuncle", "Nezha Chariot", "Broken Heart", "Broken Heart", "Red Hare", "Indigo Whale", "SDS Fenrir", "Fatter Cat", "Fat Black Chocobo", "Magicked Carpet", "Grani", "Circus Ahriman", "Sunspun Cumulus", "Spriggan Stonecarrier", "Kingly Peacock", "Rubellite Carbuncle", "Chocobo Carriage", "Snowman", "Lunar Whale", "Polar Bear", "Cruise Chaser", "Arion", "Papa Paissa", "Megashiba", "Mechanical Lotus", "Magicked Umbrella", "Magicked Parasol", "Set Of Ceruleum Balloons");
+											SetUpSquadTableHeaders(0, "Coeurl", "Fat Chocobo", "Draught Chocobo", "Sleipnir", "Ceremony Chocobo", "Griffin", "Amber Draught Chocobo", "Twintania", "Witch's Broom", "White Devil", "Red Baron", "Original Fat Chocobo", "Bennu", "Fat Moogle", "Eggshilaration System", "Syldra", "Managarm", "Mystic Panda", "Starlight Bear", "Aquamarine Carbuncle", "Citrine Carbuncle", "Nezha Chariot", "Broken Heart", "Broken Heart", "Red Hare", "Indigo Whale", "SDS Fenrir", "Fatter Cat", "Fat Black Chocobo", "Magicked Carpet", "Grani", "Circus Ahriman", "Sunspun Cumulus", "Spriggan Stonecarrier", "Kingly Peacock", "Rubellite Carbuncle", "Chocobo Carriage", "Snowman", "Lunar Whale", "Polar Bear", "Cruise Chaser", "Arion", "Papa Paissa", "Megashiba", "Mechanical Lotus", "Magicked Umbrella", "Magicked Parasol", "Set Of Ceruleum Balloons");
 
 											foreach (var c in charas)
 											{
@@ -4866,7 +4866,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsPvp", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Magitek Sky Armor");
+											SetUpSquadTableHeaders(0, "Magitek Sky Armor");
 
 											foreach (var c in charas)
 											{
@@ -4887,7 +4887,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsRaid", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Gobwalker", "Arrhidaeus", "Alte Roite", "Air Force", "Model O", "Skyslipper", "Ramuh", "Eden", "Demi-Phoinix", "Sunforged");
+											SetUpSquadTableHeaders(0, "Gobwalker", "Arrhidaeus", "Alte Roite", "Air Force", "Model O", "Skyslipper", "Ramuh", "Eden", "Demi-Phoinix", "Sunforged");
 
 											foreach (var c in charas)
 											{
@@ -4917,7 +4917,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsSkybuilder", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Pegasus", "Ufiti", "Dhalmel", "Albino Karakul", "Megalotragus", "Big Shell", "Antelope Doe", "Antelope Stag");
+											SetUpSquadTableHeaders(0, "Pegasus", "Ufiti", "Dhalmel", "Albino Karakul", "Megalotragus", "Big Shell", "Antelope Doe", "Antelope Stag");
 
 											foreach (var c in charas)
 											{
@@ -4945,7 +4945,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsTreasure", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Alkonost", "Phaethon", "Pinky");
+											SetUpSquadTableHeaders(0, "Alkonost", "Phaethon", "Pinky");
 
 											foreach (var c in charas)
 											{
@@ -4968,7 +4968,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsTrial", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Nightmare", "Aithon", "Xanthos", "Gullfaxi", "Enbarr", "Markab", "Boreas", "White Lanner", "Rose Lanner", "Round Lanner", "Warring Lanner", "Dark Lanner", "Sophic Lanner", "Demonic Lanner", "Blissful Kamuy", "Reveling Kamuy", "Legendary Kamuy", "Auspicious Kamuy", "Lunar Kamuy", "Rathalos", "Euphonious Kamuy", "Hallowed Kamuy", "Fae Gwiber", "Innocent Gwiber", "Shadow Gwiber", "Ruby Gwiber", "Gwiber Of Light", "Emerald Gwiber", "Diamond Gwiber", "Lynx Of Eternal Darkness", "Lynx Of Divine Light", "Bluefeather Lynx", "Lynx Of Imperious Wind", "Lynx Of Righteous Fire");
+											SetUpSquadTableHeaders(0, "Nightmare", "Aithon", "Xanthos", "Gullfaxi", "Enbarr", "Markab", "Boreas", "White Lanner", "Rose Lanner", "Round Lanner", "Warring Lanner", "Dark Lanner", "Sophic Lanner", "Demonic Lanner", "Blissful Kamuy", "Reveling Kamuy", "Legendary Kamuy", "Auspicious Kamuy", "Lunar Kamuy", "Rathalos", "Euphonious Kamuy", "Hallowed Kamuy", "Fae Gwiber", "Innocent Gwiber", "Shadow Gwiber", "Ruby Gwiber", "Gwiber Of Light", "Emerald Gwiber", "Diamond Gwiber", "Lynx Of Eternal Darkness", "Lynx Of Divine Light", "Bluefeather Lynx", "Lynx Of Imperious Wind", "Lynx Of Righteous Fire");
 
 											foreach (var c in charas)
 											{
@@ -5022,7 +5022,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsVoyage", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Zu");
+											SetUpSquadTableHeaders(0, "Zu");
 
 											foreach (var c in charas)
 											{
@@ -5043,7 +5043,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadmountsTails", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(125, "Ixion", "Incitatus", "Construct VI-S", "Calydontis", "Troll", "Wondrous Lanner");
+											SetUpSquadTableHeaders(0, "Ixion", "Incitatus", "Construct VI-S", "Calydontis", "Troll", "Wondrous Lanner");
 
 											foreach (var c in charas)
 											{
@@ -5075,7 +5075,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadmountsGil", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Gilded Mikoshi", "Resplendent Vessel Of Ronka", "Magitek Avenger G1", "Chrysomallos");
+													SetUpSquadTableHeaders(0, "Gilded Mikoshi", "Resplendent Vessel Of Ronka", "Magitek Avenger G1", "Chrysomallos");
 
 													foreach (var c in charas)
 													{
@@ -5100,7 +5100,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadmountsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Adamantoise", "Fenrir", "Archon Throne", "Korpokkur Kolossus", "Typhon", "Sabotender Emperador", "Pod 602", "Blackjack");
+													SetUpSquadTableHeaders(0, "Adamantoise", "Fenrir", "Archon Throne", "Korpokkur Kolossus", "Typhon", "Sabotender Emperador", "Pod 602", "Blackjack");
 
 													foreach (var c in charas)
 													{
@@ -5129,7 +5129,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadmountsHunts", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Wyvern", "Forgiven Reticence", "Vinegaroon");
+													SetUpSquadTableHeaders(0, "Wyvern", "Forgiven Reticence", "Vinegaroon");
 
 													foreach (var c in charas)
 													{
@@ -5153,7 +5153,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadmountsSanctuary", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(125, "Garlond GL-II", "Island Mandragora", "Island Onion Prince", "Island Eggplant Knight", "Island Alligator");
+													SetUpSquadTableHeaders(0, "Garlond GL-II", "Island Mandragora", "Island Onion Prince", "Island Eggplant Knight", "Island Alligator");
 
 													foreach (var c in charas)
 													{
@@ -5191,7 +5191,7 @@ namespace FFXIVCharaTracker
 
 										if (ImGui.BeginTable("squadoptionalGeneral", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(300, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
+											SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
 
 											foreach (var c in charas)
 											{
@@ -5227,7 +5227,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadDungeonsArr", 21, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Halatali", "The Sunken Temple of Qarn", "Cutter's Cry", "Dzemael Darkhold", "The Aurum Vale", "Amdapor Keep", "The Wanderer's Palace", "Copperbell Mines (Hard)", "Haukke Manor (Hard)", "Pharos Sirius", "Brayflox's Longstop (Hard)", "Halatali (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle", "The Stone Vigil (Hard)", "The Tam-Tara Deepcroft (Hard)", "Sastasha (Hard)", "The Sunken Temple of Qarn (Hard)", "Amdapor Keep (Hard)", "The Wanderer's Palace (Hard)");
+													SetUpSquadTableHeaders(0, "Halatali", "The Sunken Temple of Qarn", "Cutter's Cry", "Dzemael Darkhold", "The Aurum Vale", "Amdapor Keep", "The Wanderer's Palace", "Copperbell Mines (Hard)", "Haukke Manor (Hard)", "Pharos Sirius", "Brayflox's Longstop (Hard)", "Halatali (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle", "The Stone Vigil (Hard)", "The Tam-Tara Deepcroft (Hard)", "Sastasha (Hard)", "The Sunken Temple of Qarn (Hard)", "Amdapor Keep (Hard)", "The Wanderer's Palace (Hard)");
 
 													foreach (var c in charas)
 													{
@@ -5268,7 +5268,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadTrialsArr", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Battle on the Big Bridge", "A Relic Reborn: The Chimera", "A Relic Reborn: The Hydra", "The Minstrel's Ballad: Ultima's Bane", "The Howling Eye (Extreme)", "The Navel (Extreme)", "The Bowl of Embers (Extreme)", "The Dragon's Neck", "The Whorleater (Extreme)", "Thornmarch (Extreme)", "The Striking Tree (Extreme)", "Battle in the Big Keep", "Akh Afah Amphitheatre (Extreme)", "Urth's Fount");
+													SetUpSquadTableHeaders(0, "Battle on the Big Bridge", "A Relic Reborn: The Chimera", "A Relic Reborn: The Hydra", "The Minstrel's Ballad: Ultima's Bane", "The Howling Eye (Extreme)", "The Navel (Extreme)", "The Bowl of Embers (Extreme)", "The Dragon's Neck", "The Whorleater (Extreme)", "Thornmarch (Extreme)", "The Striking Tree (Extreme)", "Battle in the Big Keep", "Akh Afah Amphitheatre (Extreme)", "Urth's Fount");
 
 													foreach (var c in charas)
 													{
@@ -5303,7 +5303,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadRaidsArr", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Binding Coil of Bahamut - Turn 1", "The Binding Coil of Bahamut - Turn 2", "The Binding Coil of Bahamut - Turn 3", "The Binding Coil of Bahamut - Turn 4", "The Binding Coil of Bahamut - Turn 5", "The Second Coil of Bahamut - Turn 1", "The Second Coil of Bahamut - Turn 2", "The Second Coil of Bahamut - Turn 3", "The Second Coil of Bahamut - Turn 4", "The Second Coil of Bahamut - Turn 1 (Savage)", "The Second Coil of Bahamut - Turn 2 (Savage)", "The Second Coil of Bahamut - Turn 3 (Savage)", "The Second Coil of Bahamut - Turn 4 (Savage)", "The Final Coil of Bahamut - Turn 1", "The Final Coil of Bahamut - Turn 2", "The Final Coil of Bahamut - Turn 3", "The Final Coil of Bahamut - Turn 4");
+													SetUpSquadTableHeaders(0, "The Binding Coil of Bahamut - Turn 1", "The Binding Coil of Bahamut - Turn 2", "The Binding Coil of Bahamut - Turn 3", "The Binding Coil of Bahamut - Turn 4", "The Binding Coil of Bahamut - Turn 5", "The Second Coil of Bahamut - Turn 1", "The Second Coil of Bahamut - Turn 2", "The Second Coil of Bahamut - Turn 3", "The Second Coil of Bahamut - Turn 4", "The Second Coil of Bahamut - Turn 1 (Savage)", "The Second Coil of Bahamut - Turn 2 (Savage)", "The Second Coil of Bahamut - Turn 3 (Savage)", "The Second Coil of Bahamut - Turn 4 (Savage)", "The Final Coil of Bahamut - Turn 1", "The Final Coil of Bahamut - Turn 2", "The Final Coil of Bahamut - Turn 3", "The Final Coil of Bahamut - Turn 4");
 
 													foreach (var c in charas)
 													{
@@ -5351,7 +5351,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadDungeonsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Dusk Vigil", "Neverreap", "The Fractal Continuum", "Saint Mocianne's Arboretum", "Pharos Sirius (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle (Hard)", "The Great Gubal Library (Hard)", "Sohm Al (Hard)", "The Palace of the Dead");
+													SetUpSquadTableHeaders(0, "The Dusk Vigil", "Neverreap", "The Fractal Continuum", "Saint Mocianne's Arboretum", "Pharos Sirius (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle (Hard)", "The Great Gubal Library (Hard)", "Sohm Al (Hard)", "The Palace of the Dead");
 
 													foreach (var c in charas)
 													{
@@ -5382,7 +5382,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadTrialsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Limitless Blue (Extreme)", "Thok ast Thok (Extreme)", "Containment Bay S1T7", "The Minstrel's Ballad: Thordan's Reign", "Containment Bay S1T7 (Extreme)", "Containment Bay P1T6", "The Minstrel's Ballad: Nidhogg's Rage", "Containment Bay P1T6 (Extreme)", "Containment Bay Z1T9", "Containment Bay Z1T9 (Extreme)");
+													SetUpSquadTableHeaders(0, "The Limitless Blue (Extreme)", "Thok ast Thok (Extreme)", "Containment Bay S1T7", "The Minstrel's Ballad: Thordan's Reign", "Containment Bay S1T7 (Extreme)", "Containment Bay P1T6", "The Minstrel's Ballad: Nidhogg's Rage", "Containment Bay P1T6 (Extreme)", "Containment Bay Z1T9", "Containment Bay Z1T9 (Extreme)");
 
 													foreach (var c in charas)
 													{
@@ -5419,7 +5419,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadNormalRaidsHw", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "Alexander - The Fist of the Father", "Alexander - The Cuff of the Father", "Alexander - The Arm of the Father", "Alexander - The Burden of the Father", "Alexander - The Fist of the Father (Savage)", "Alexander - The Cuff of the Father (Savage)", "Alexander - The Arm of the Father (Savage)", "Alexander - The Burden of the Father (Savage)", "Alexander - The Fist of the Son", "Alexander - The Cuff of the Son", "Alexander - The Arm of the Son", "Alexander - The Burden of the Son (Savage)", "Alexander - The Fist of the Son (Savage)", "Alexander - The Cuff of the Son (Savage)", "Alexander - The Arm of the Son (Savage)", "Alexander - The Burden of the Son (Savage)", "Alexander - The Eyes of the Creator", "Alexander - The Breath of the Creator", "Alexander - The Heart of the Creator", "Alexander - The Soul of the Creator", "Alexander - The Eyes of the Creator (Savage)", "Alexander - The Breath of the Creator (Savage)", "Alexander - The Heart of the Creator (Savage)", "Alexander - The Soul of the Creator (Savage)");
+															SetUpSquadTableHeaders(0, "Alexander - The Fist of the Father", "Alexander - The Cuff of the Father", "Alexander - The Arm of the Father", "Alexander - The Burden of the Father", "Alexander - The Fist of the Father (Savage)", "Alexander - The Cuff of the Father (Savage)", "Alexander - The Arm of the Father (Savage)", "Alexander - The Burden of the Father (Savage)", "Alexander - The Fist of the Son", "Alexander - The Cuff of the Son", "Alexander - The Arm of the Son", "Alexander - The Burden of the Son (Savage)", "Alexander - The Fist of the Son (Savage)", "Alexander - The Cuff of the Son (Savage)", "Alexander - The Arm of the Son (Savage)", "Alexander - The Burden of the Son (Savage)", "Alexander - The Eyes of the Creator", "Alexander - The Breath of the Creator", "Alexander - The Heart of the Creator", "Alexander - The Soul of the Creator", "Alexander - The Eyes of the Creator (Savage)", "Alexander - The Breath of the Creator (Savage)", "Alexander - The Heart of the Creator (Savage)", "Alexander - The Soul of the Creator (Savage)");
 
 															foreach (var c in charas)
 															{
@@ -5465,7 +5465,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadAllianceRaidsHw", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "The Void Ark", "The Weeping City of Mhach", "Dun Scaith");
+															SetUpSquadTableHeaders(0, "The Void Ark", "The Weeping City of Mhach", "Dun Scaith");
 
 															foreach (var c in charas)
 															{
@@ -5504,7 +5504,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadDungeonsSb", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Shisui of the Violet Tides", "Kugane Castle", "The Temple of the Fist", "Hell's Lid", "The Fractal Continuum (Hard)", "The Swallow's Compass", "Saint Mocianne's Arboretum (Hard)", "Heaven-on-High");
+													SetUpSquadTableHeaders(0, "Shisui of the Violet Tides", "Kugane Castle", "The Temple of the Fist", "Hell's Lid", "The Fractal Continuum (Hard)", "The Swallow's Compass", "Saint Mocianne's Arboretum (Hard)", "Heaven-on-High");
 
 													foreach (var c in charas)
 													{
@@ -5533,7 +5533,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadTrialsSb", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Emanation (Extreme)", "The Pool of Tribute (Extreme)", "The Great Hunt", "The Minstrel's Ballad: Shinryu's Domain", "The Jade Stoa", "The Jade Stoa (Extreme)", "The Great Hunt (Extreme)", "The Minstrel's Ballad: Tsukuyomi's Pain", "Hells' Kier", "Kugane Ohashi", "The Wreath of Snakes", "Hells' Kier (Extreme)", "The Wreath of Snakes (Extreme)");
+													SetUpSquadTableHeaders(0, "Emanation (Extreme)", "The Pool of Tribute (Extreme)", "The Great Hunt", "The Minstrel's Ballad: Shinryu's Domain", "The Jade Stoa", "The Jade Stoa (Extreme)", "The Great Hunt (Extreme)", "The Minstrel's Ballad: Tsukuyomi's Pain", "Hells' Kier", "Kugane Ohashi", "The Wreath of Snakes", "Hells' Kier (Extreme)", "The Wreath of Snakes (Extreme)");
 
 													foreach (var c in charas)
 													{
@@ -5573,7 +5573,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadNormalRaidsSb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "Deltascape V1.0", "Deltascape V2.0", "Deltascape V3.0", "Deltascape V4.0", "Deltascape V1.0 (Savage)", "Deltascape V2.0 (Savage)", "Deltascape V3.0 (Savage)", "Deltascape V4.0 (Savage)", "Sigmascape V1.0", "Sigmascape V2.0", "Sigmascape V3.0", "Sigmascape V4.0", "Sigmascape V1.0 (Savage)", "Sigmascape V2.0 (Savage)", "Sigmascape V3.0 (Savage)", "Sigmascape V4.0 (Savage)", "Alphascape V1.0", "Alphascape V2.0", "Alphascape V3.0", "Alphascape V4.0", "Alphascape V1.0 (Savage)", "Alphascape V2.0 (Savage)", "Alphascape V3.0 (Savage)", "Alphascape V4.0 (Savage)");
+															SetUpSquadTableHeaders(0, "Deltascape V1.0", "Deltascape V2.0", "Deltascape V3.0", "Deltascape V4.0", "Deltascape V1.0 (Savage)", "Deltascape V2.0 (Savage)", "Deltascape V3.0 (Savage)", "Deltascape V4.0 (Savage)", "Sigmascape V1.0", "Sigmascape V2.0", "Sigmascape V3.0", "Sigmascape V4.0", "Sigmascape V1.0 (Savage)", "Sigmascape V2.0 (Savage)", "Sigmascape V3.0 (Savage)", "Sigmascape V4.0 (Savage)", "Alphascape V1.0", "Alphascape V2.0", "Alphascape V3.0", "Alphascape V4.0", "Alphascape V1.0 (Savage)", "Alphascape V2.0 (Savage)", "Alphascape V3.0 (Savage)", "Alphascape V4.0 (Savage)");
 
 															foreach (var c in charas)
 															{
@@ -5619,7 +5619,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadAllianceRaidsSb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "The Royal City of Rabanastre", "The Ridorana Lighthouse", "The Orbonne Monastery");
+															SetUpSquadTableHeaders(0, "The Royal City of Rabanastre", "The Ridorana Lighthouse", "The Orbonne Monastery");
 
 															foreach (var c in charas)
 															{
@@ -5648,7 +5648,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadEurekaSb", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Forbidden Land, Eureka Anemos", "The Forbidden Land, Eureka Pagos", "The Forbidden Land, Eureka Pyros", "The Forbidden Land, Eureka Hydatos");
+													SetUpSquadTableHeaders(0, "The Forbidden Land, Eureka Anemos", "The Forbidden Land, Eureka Pagos", "The Forbidden Land, Eureka Pyros", "The Forbidden Land, Eureka Hydatos");
 
 													foreach (var c in charas)
 													{
@@ -5683,7 +5683,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadDungeonsShb", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Akadaemia Anyder", "The Twinning");
+													SetUpSquadTableHeaders(0, "Akadaemia Anyder", "The Twinning");
 
 													foreach (var c in charas)
 													{
@@ -5706,7 +5706,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadTrialsShb", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Crown of the Immaculate (Extreme)", "The Minstrel's Ballad: Hades' Elegy", "Cinder Drift", "Cinder Drift (Extreme)", "Memoria Misera (Extreme)", "The Seat of Sacrifice (Extreme)", "Castrum Marinum", "The Cloud Deck", "Castrum Marinum (Extreme)", "The Cloud Deck (Extreme)");
+													SetUpSquadTableHeaders(0, "The Crown of the Immaculate (Extreme)", "The Minstrel's Ballad: Hades' Elegy", "Cinder Drift", "Cinder Drift (Extreme)", "Memoria Misera (Extreme)", "The Seat of Sacrifice (Extreme)", "Castrum Marinum", "The Cloud Deck", "Castrum Marinum (Extreme)", "The Cloud Deck (Extreme)");
 
 													foreach (var c in charas)
 													{
@@ -5743,7 +5743,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadNormalRaidsShb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "Eden's Gate: Resurrection", "Eden's Gate: Descent", "Eden's Gate: Inundation", "Eden's Gate: Sepulture", "Eden's Gate: Resurrection (Savage)", "Eden's Gate: Descent (Savage)", "Eden's Gate: Inundation (Savage)", "Eden's Gate: Sepulture (Savage)", "Eden's Verse: Fulmination", "Eden's Verse: Furor", "Eden's Verse: Iconoclasm", "Eden's Verse: Refulgence", "Eden's Verse: Fulmination (Savage)", "Eden's Verse: Furor (Savage)", "Eden's Verse: Iconoclasm (Savage)", "Eden's Verse: Refulgence (Savage)", "Eden's Promise: Umbra", "Eden's Promise: Litany", "Eden's Promise: Anamorphosis", "Eden's Promise: Eternity", "Eden's Promise: Umbra (Savage)", "Eden's Promise: Litany (Savage)", "Eden's Promise: Anamorphosis (Savage)", "Eden's Promise: Eternity (Savage)");
+															SetUpSquadTableHeaders(0, "Eden's Gate: Resurrection", "Eden's Gate: Descent", "Eden's Gate: Inundation", "Eden's Gate: Sepulture", "Eden's Gate: Resurrection (Savage)", "Eden's Gate: Descent (Savage)", "Eden's Gate: Inundation (Savage)", "Eden's Gate: Sepulture (Savage)", "Eden's Verse: Fulmination", "Eden's Verse: Furor", "Eden's Verse: Iconoclasm", "Eden's Verse: Refulgence", "Eden's Verse: Fulmination (Savage)", "Eden's Verse: Furor (Savage)", "Eden's Verse: Iconoclasm (Savage)", "Eden's Verse: Refulgence (Savage)", "Eden's Promise: Umbra", "Eden's Promise: Litany", "Eden's Promise: Anamorphosis", "Eden's Promise: Eternity", "Eden's Promise: Umbra (Savage)", "Eden's Promise: Litany (Savage)", "Eden's Promise: Anamorphosis (Savage)", "Eden's Promise: Eternity (Savage)");
 
 															foreach (var c in charas)
 															{
@@ -5789,7 +5789,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadAllianceRaidsShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "The Copied Factory", "The Puppets' Bunker", "The Tower at Paradigm's Breach");
+															SetUpSquadTableHeaders(0, "The Copied Factory", "The Puppets' Bunker", "The Tower at Paradigm's Breach");
 
 															foreach (var c in charas)
 															{
@@ -5818,7 +5818,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadBozjaShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Bozjan Southern Front", "Zadnor", "Bozja complete");
+													SetUpSquadTableHeaders(0, "The Bozjan Southern Front", "Zadnor", "Bozja complete");
 
 													foreach (var c in charas)
 													{
@@ -5852,7 +5852,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadDungeonsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "Smileton", "The Stigma Dreamscape");
+													SetUpSquadTableHeaders(0, "Smileton", "The Stigma Dreamscape");
 
 													foreach (var c in charas)
 													{
@@ -5875,7 +5875,7 @@ namespace FFXIVCharaTracker
 
 												if (ImGui.BeginTable("squadTrialsEw", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 												{
-													SetUpSquadTableHeaders(300, "The Minstrel's Ballad: Hydaelyn's Call", "The Minstrel's Ballad: Zodiark's Fall", "The Minstrel's Ballad: Endsinger's Aria", "Storm's Crown (Extreme)", "Mount Ordeals (Extreme)");
+													SetUpSquadTableHeaders(0, "The Minstrel's Ballad: Hydaelyn's Call", "The Minstrel's Ballad: Zodiark's Fall", "The Minstrel's Ballad: Endsinger's Aria", "Storm's Crown (Extreme)", "Mount Ordeals (Extreme)");
 
 													foreach (var c in charas)
 													{
@@ -5907,7 +5907,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadNormalRaidsEw", 17, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "Asphodelos: The First Circle", "Asphodelos: The Second Circle", "Asphodelos: The Third Circle", "Asphodelos: The Fourth Circle", "Asphodelos: The First Circle (Savage)", "Asphodelos: The Second Circle (Savage)", "Asphodelos: The Third Circle (Savage)", "Asphodelos: The Fourth Circle (Savage)", "Abyssos: The Fifth Circle", "Abyssos: The Sixth Circle", "Abyssos: The Seventh Circle", "Abyssos: The Eighth Circle", "Abyssos: The Fifth Circle (Savage)", "Abyssos: The Sixth Circle (Savage)", "Abyssos: The Seventh Circle (Savage)", "Abyssos: The Eighth Circle (Savage)");
+															SetUpSquadTableHeaders(0, "Asphodelos: The First Circle", "Asphodelos: The Second Circle", "Asphodelos: The Third Circle", "Asphodelos: The Fourth Circle", "Asphodelos: The First Circle (Savage)", "Asphodelos: The Second Circle (Savage)", "Asphodelos: The Third Circle (Savage)", "Asphodelos: The Fourth Circle (Savage)", "Abyssos: The Fifth Circle", "Abyssos: The Sixth Circle", "Abyssos: The Seventh Circle", "Abyssos: The Eighth Circle", "Abyssos: The Fifth Circle (Savage)", "Abyssos: The Sixth Circle (Savage)", "Abyssos: The Seventh Circle (Savage)", "Abyssos: The Eighth Circle (Savage)");
 
 															foreach (var c in charas)
 															{
@@ -5945,7 +5945,7 @@ namespace FFXIVCharaTracker
 
 														if (ImGui.BeginTable("squadAllianceRaidsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 														{
-															SetUpSquadTableHeaders(300, "Aglaia", "Euphrosyne");
+															SetUpSquadTableHeaders(0, "Aglaia", "Euphrosyne");
 
 															foreach (var c in charas)
 															{
