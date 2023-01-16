@@ -50,6 +50,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="TextCopy" Version="6.2.1" />
     <PackageReference Include="XivCommon" Version="7.0.0-alpha.1" />
     <Reference Include="FFXIVClientStructs">
       <HintPath>FFXIVClientStructs.dll</HintPath>
