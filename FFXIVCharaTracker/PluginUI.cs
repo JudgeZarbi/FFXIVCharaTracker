@@ -6243,19 +6243,19 @@ namespace FFXIVCharaTracker
 							var accounts = new List<int>();
 							if (team.TankA != null)
 							{
-								accounts.Add(team.TankA.Account);
+								accounts.Add(team.TankA.Account + 1);
 							}
 							if (team.Dps1A != null)
 							{
-								accounts.Add(team.Dps1A.Account);
+								accounts.Add(team.Dps1A.Account + 1);
 							}
 							if (team.Dps2A != null)
 							{
-								accounts.Add(team.Dps2A.Account);
+								accounts.Add(team.Dps2A.Account + 1);
 							}
 							if (team.HealerA != null)
 							{
-								accounts.Add(team.HealerA.Account);
+								accounts.Add(team.HealerA.Account + 1);
 							}
 							accounts.Sort();
 							ImGui.Text(string.Join(", ", accounts));
