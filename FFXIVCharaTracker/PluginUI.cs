@@ -5988,13 +5988,14 @@ namespace FFXIVCharaTracker
 					var dpsClasses = new uint[] { 20, 22, 23, 25, 27, 30, 31, 34, 35, 38, 39 };
 					var healerClasses = new uint[] { 24, 28, 33, 40 };
 
-					if (ImGui.BeginTable("teams", 5))
+					if (ImGui.BeginTable("teams", 6))
 					{
 						ImGui.TableSetupColumn("Tank", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 						ImGui.TableSetupColumn("DPS 1", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 						ImGui.TableSetupColumn("DPS 2", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 						ImGui.TableSetupColumn("Healer", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
 						ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 50 * Scale);
+						ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 						ImGui.TableHeadersRow();
 
 						foreach (var team in Plugin.Context.Teams)
@@ -6236,6 +6237,28 @@ namespace FFXIVCharaTracker
 								Plugin.Context.Teams.Remove(team);
 								Plugin.Context.SaveChanges();
 							}
+
+							ImGui.TableNextColumn();
+							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
+							var accounts = new List<int>();
+							if (team.TankA != null)
+							{
+								accounts.Add(team.TankA.Account);
+							}
+							if (team.Dps1A != null)
+							{
+								accounts.Add(team.Dps1A.Account);
+							}
+							if (team.Dps2A != null)
+							{
+								accounts.Add(team.Dps2A.Account);
+							}
+							if (team.HealerA != null)
+							{
+								accounts.Add(team.HealerA.Account);
+							}
+							accounts.Sort();
+							ImGui.Text(string.Join(", ", accounts));
 						}
 						ImGui.EndTable();
 					}
