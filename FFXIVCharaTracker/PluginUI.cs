@@ -6050,7 +6050,7 @@ namespace FFXIVCharaTracker
 								for (int n = 0; n < tanks.Length; n++)
 								{
 									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{tanks[n].Forename} {tanks[n].Surname}", is_selected))
+									if (ImGui.Selectable($"{tanks[n].Forename} {tanks[n].Surname} ({tanks[n].Account + 1}, {Plugin.Worlds.GetRow(tanks[n].WorldID)!.Name})", is_selected))
 									{
 										newIndex = n;
 									}
@@ -6100,7 +6100,7 @@ namespace FFXIVCharaTracker
 								for (int n = 0; n < dps1s.Length; n++)
 								{
 									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{dps1s[n].Forename} {dps1s[n].Surname}", is_selected))
+									if (ImGui.Selectable($"{dps1s[n].Forename} {dps1s[n].Surname} ({dps1s[n].Account + 1}, {Plugin.Worlds.GetRow(dps1s[n].WorldID)!.Name})", is_selected))
 									{
 										newIndex = n;
 									}
@@ -6151,7 +6151,7 @@ namespace FFXIVCharaTracker
 								for (int n = 0; n < dps2s.Length; n++)
 								{
 									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{dps2s[n].Forename} {dps2s[n].Surname}", is_selected))
+									if (ImGui.Selectable($"{dps2s[n].Forename} {dps2s[n].Surname} ({dps2s[n].Account + 1}, {Plugin.Worlds.GetRow(dps2s[n].WorldID)!.Name})", is_selected))
 									{
 										newIndex = n;
 									}
@@ -6201,7 +6201,7 @@ namespace FFXIVCharaTracker
 								for (int n = 0; n < healers.Length; n++)
 								{
 									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{healers[n].Forename} {healers[n].Surname}", is_selected))
+									if (ImGui.Selectable($"{healers[n].Forename} {healers[n].Surname} ({healers[n].Account + 1}, {Plugin.Worlds.GetRow(healers[n].WorldID)!.Name})", is_selected))
 									{
 										newIndex = n;
 									}
