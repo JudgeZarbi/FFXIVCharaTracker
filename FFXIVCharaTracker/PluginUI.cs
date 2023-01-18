@@ -6035,13 +6035,15 @@ namespace FFXIVCharaTracker
 							var currentTankName = team.TankA != null ? $"{team.TankA.Forename} {team.TankA.Surname}" : "";
 							var curIndex = Array.IndexOf(tanks, team.TankA);
 							var newIndex = curIndex;
+							var pushedStyle = false;
 							if (curIndex == -1 && team.TankA != null)
 							{
 								ImGui.PushStyleColor(ImGuiCol.Text, Red);
+								pushedStyle = true;
 							}
-							if (ImGui.BeginCombo("###TeamTank", currentTankName))
+							if (ImGui.BeginCombo($"###Team{team.TeamID}Tank", currentTankName))
 							{
-								if (curIndex == -1 && team.TankA != null)
+								if (pushedStyle)
 								{
 									ImGui.PushStyleColor(ImGuiCol.Text, White);
 								}
@@ -6065,14 +6067,15 @@ namespace FFXIVCharaTracker
 									team.TankA = tanks[newIndex];
 									Plugin.Context.SaveChanges();
 								}
-								if (curIndex == -1 && team.TankA != null)
+								if (pushedStyle)
 								{
 									ImGui.PopStyleColor();
 								}
 							}
-							if (curIndex == -1 && team.TankA != null)
+							if (pushedStyle)
 							{
 								ImGui.PopStyleColor();
+								pushedStyle = false;
 							}
 
 							ImGui.TableNextColumn();
@@ -6086,10 +6089,11 @@ namespace FFXIVCharaTracker
 							if (curIndex == -1 && team.Dps1A != null)
 							{
 								ImGui.PushStyleColor(ImGuiCol.Text, Red);
+								pushedStyle = true;
 							}
-							if (ImGui.BeginCombo("###TeamDPS1", currentDps1Name))
+							if (ImGui.BeginCombo($"###Team{team.TeamID}DPS1", currentDps1Name))
 							{
-								if (curIndex == -1 && team.Dps1A != null)
+								if (pushedStyle)
 								{
 									ImGui.PushStyleColor(ImGuiCol.Text, White);
 								}
@@ -6113,15 +6117,17 @@ namespace FFXIVCharaTracker
 									team.Dps1A = dps1s[newIndex];
 									Plugin.Context.SaveChanges();
 								}
-								if (curIndex == -1 && team.Dps1A != null)
+								if (pushedStyle)
 								{
 									ImGui.PopStyleColor();
 								}
 							}
-							if (curIndex == -1 && team.Dps1A != null)
+							if (pushedStyle)
 							{
 								ImGui.PopStyleColor();
+								pushedStyle = false;
 							}
+
 
 							ImGui.TableNextColumn();
 							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
@@ -6133,11 +6139,12 @@ namespace FFXIVCharaTracker
 							newIndex = curIndex;
 							if (curIndex == -1 && team.Dps2A != null)
 							{
-								ImGui.PushStyleColor(ImGuiCol.Text, Red);
+								ImGui.PushStyleColor(ImGuiCol.Text, Red);								pushedStyle = true;
+								pushedStyle = true;
 							}
-							if (ImGui.BeginCombo("###TeamDPS2", currentDps2Name))
+							if (ImGui.BeginCombo($"###Team{team.TeamID}DPS2", currentDps2Name))
 							{
-								if (curIndex == -1 && team.Dps2A != null)
+								if (pushedStyle)
 								{
 									ImGui.PushStyleColor(ImGuiCol.Text, White);
 								}
@@ -6161,14 +6168,15 @@ namespace FFXIVCharaTracker
 									team.Dps2A = dps2s[newIndex];
 									Plugin.Context.SaveChanges();
 								}
-								if (curIndex == -1 && team.Dps2A != null)
+								if (pushedStyle)
 								{
 									ImGui.PopStyleColor();
 								}
 							}
-							if (curIndex == -1 && team.Dps2A != null)
+							if (pushedStyle)
 							{
 								ImGui.PopStyleColor();
+								pushedStyle = false;
 							}
 
 							ImGui.TableNextColumn();
@@ -6182,10 +6190,11 @@ namespace FFXIVCharaTracker
 							if (curIndex == -1 && team.HealerA != null)
 							{
 								ImGui.PushStyleColor(ImGuiCol.Text, Red);
+								pushedStyle = true;
 							}
-							if (ImGui.BeginCombo("###TeamHealer", currentHealerName))
+							if (ImGui.BeginCombo($"###Team{team.TeamID}Healer", currentHealerName))
 							{
-								if (curIndex == -1 && team.HealerA != null)
+								if (pushedStyle)
 								{
 									ImGui.PushStyleColor(ImGuiCol.Text, White);
 								}
@@ -6209,15 +6218,17 @@ namespace FFXIVCharaTracker
 									team.HealerA = healers[newIndex];
 									Plugin.Context.SaveChanges();
 								}
-								if (curIndex == -1 && team.HealerA != null)
+								if (pushedStyle)
 								{
 									ImGui.PopStyleColor();
 								}
 							}
-							if (curIndex == -1 && team.HealerA != null)
+							if (pushedStyle)
 							{
 								ImGui.PopStyleColor();
+								pushedStyle = false;
 							}
+
 							ImGui.TableNextColumn();
 							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
 							if (ImGui.Button($"X###{team.TeamID}"))
@@ -6282,7 +6293,7 @@ namespace FFXIVCharaTracker
 
 						ImGui.EndTable();
 					}
-
+					ImGui.EndTabItem();
 				}
 #endif
 				if (ImGui.BeginTabItem("Extras"))
@@ -6315,6 +6326,7 @@ namespace FFXIVCharaTracker
 					{
 						Plugin.Context.ResetRetainerGatherGear();
 					}
+					ImGui.EndTabItem();
 				}
 				ImGui.EndTabBar();
 			}
