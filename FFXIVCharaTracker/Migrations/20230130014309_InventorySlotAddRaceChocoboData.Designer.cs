@@ -3,6 +3,7 @@ using System;
 using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FFXIVCharaTracker.Migrations
 {
     [DbContext(typeof(CharaContext))]
-    partial class CharaContextModelSnapshot : ModelSnapshot
+    [Migration("20230130014309_InventorySlotAddRaceChocoboData")]
+    partial class InventorySlotAddRaceChocoboData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -63,9 +66,6 @@ namespace FFXIVCharaTracker.Migrations
                     b.Property<string>("IncompleteSecretRecipeBooks")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("IslandSanctuaryLevel")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("LevelAlc")
                         .HasColumnType("INTEGER");
@@ -126,22 +126,6 @@ namespace FFXIVCharaTracker.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedBotanistItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedFisherItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedMinerItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedSpearfisherItems")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

@@ -3,13 +3,16 @@ using FFXIVCharaTracker.DB;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading.Tasks;
 using TextCopy;
 
 namespace FFXIVCharaTracker
@@ -109,16 +112,31 @@ namespace FFXIVCharaTracker
 		private readonly Vector4 Black = new(0, 0, 0, 1);
 		private static float Scale = ImGui.GetIO().FontGlobalScale;
 
+		public CharaContext Context = new();
+		public bool UIUpdated = false;
+
+		private string LastSearch = "";
+		private List<uint> LastSearchResults = new();
+		private readonly Stopwatch SearchTimer = new();
+
+		private readonly ImGuiListClipperPtr Clipper;
+
 		internal PluginUI(Plugin plugin)
         {
             this.Plugin = plugin;
 
             Plugin.PluginInterface.UiBuilder.Draw += this.Draw;
-        }
+
+			unsafe
+			{
+				Clipper = ImGuiNative.ImGuiListClipper_ImGuiListClipper();
+			}
+		}
 
         public void Dispose()
 		{
             Plugin.PluginInterface.UiBuilder.Draw -= this.Draw;
+			Context.Dispose();
         }
 
 		private void DrawTableRowText(string name, bool have, Vector4? colour = null, string? value = null)
@@ -197,8 +215,8 @@ namespace FFXIVCharaTracker
 				ImGui.TableNextColumn();
 				ImGui.Text($"{Plugin.Worlds.GetRow(chara.WorldID)!.Name}");
 				ImGui.Indent();
-				ImGui.TableNextRow();
 			}
+			ImGui.TableNextRow();
 		}
 
 		internal void Draw()
@@ -208,6 +226,9 @@ namespace FFXIVCharaTracker
                 return;
             }
 
+			UIUpdated = false;
+
+			Scale = ImGui.GetIO().FontGlobalScale;
 			ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.FirstUseEver);
 
             var windowFlags = ImGuiWindowFlags.NoCollapse;
@@ -247,8 +268,7 @@ namespace FFXIVCharaTracker
 								ImGui.Combo("###Account", ref account, new string[] { "1", "2", "3", "4", "5", "6", "7", "8" }, 8);
 								if (oldAccount != account)
 								{
-									charaData.Account = account;
-									Plugin.Context.SaveChanges();
+									Plugin.queuedChanges.Enqueue(() => charaData.Account = account);
 								}
 								ImGui.TableNextRow();
 								ImGui.TableNextColumn();
@@ -260,12 +280,11 @@ namespace FFXIVCharaTracker
 									"GNB", "MCH", "MNK", "NIN", "PLD", "RDM", "RPR", "SAM", "SCH", "SGE", "SMN", "WAR", "WHM" }, 19);
 								if (charaData.ClassID != DropdownToClassID[(uint)dropdownID])
 								{
-									charaData.ClassID = DropdownToClassID[(uint)dropdownID];
+									Plugin.queuedChanges.Enqueue(() => charaData.ClassID = DropdownToClassID[(uint)dropdownID]);
 									unsafe
 									{
-										charaData.UpdateLevels(UIState.Instance());
+										Plugin.queuedChanges.Enqueue(() => charaData.UpdateLevels(UIState.Instance()));
 									}
-									Plugin.Context.SaveChanges();
 								}
 
 								DrawTableRowText("Name", true, White, $"{charaData.Forename} {charaData.Surname}");
@@ -276,9 +295,18 @@ namespace FFXIVCharaTracker
 								DrawTableRowText("Chocobo level", true, chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red),
 									chocoLevel.ToString());
 
+								var raceChocoRank = charaData.RaceChocoboRank;
+								var raceChocoPedigree = charaData.RaceChocoboPedigree;
+								DrawTableRowText("Race chocobo", true, raceChocoRank == Data.MaxRaceChocoboLevel && raceChocoPedigree == 9 ? Green : (raceChocoRank >= 40 ? Blue : (raceChocoRank > 0 ? Yellow : Red)),
+									raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree}" : "Not unlocked/updated!");
+
 								var gcRank = charaData.GCRank;
 								DrawTableRowText("Grand Company rank", true, gcRank == Data.MaxGCLevel ? Green : (gcRank > 0 ? Yellow : Red),
 									GCRankToString[gcRank]);
+
+								var sanctuaryRank = charaData.IslandSanctuaryLevel;
+								DrawTableRowText("Island Sanctuary rank", true, sanctuaryRank == Data.MaxIslandSanctuaryLevel ? Green : (sanctuaryRank > 0 ? Yellow : Red),
+									sanctuaryRank.ToString());
 
 								ImGui.EndTable();
 							}
@@ -288,9 +316,6 @@ namespace FFXIVCharaTracker
 								{
 									SetUpTableColumns();
 
-									DrawTableRowText("Retainer class", true, White,
-										Plugin.ClassJobs.GetRow(charaData.RetainerClass)!.Name);
-
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.Text("Storing");
@@ -299,46 +324,59 @@ namespace FFXIVCharaTracker
 									ImGui.InputText("", ref input, 10000);
 									if (input != charaData.RetainersStoringDescription)
 									{
-										charaData.RetainersStoringDescription = input;
-										Plugin.Context.SaveChanges();
+										Plugin.queuedChanges.Enqueue(() => charaData.RetainersStoringDescription = input);
 									}
 									ImGui.EndTable();
 								}
-								if (ImGui.TreeNode("Retainer 1"))
+								foreach (var r in charaData.Retainers)
 								{
-									if (ImGui.BeginTable("tableRetainer1", 2))
+									if (ImGui.TreeNode(r.Name))
 									{
-										SetUpTableColumns();
+										if (ImGui.BeginTable($"tableRetainer{r.RetainerID}", 2))
+										{
+											SetUpTableColumns();
 
-										var level = charaData.LevelRetainer1;
-										DrawTableRowText("Level", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-											level.ToString());
+											var level = r.Level;
+											DrawTableRowText("Level", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
+												level.ToString());
 
-										DrawTableRowText("Gear", charaData.GearRetainer1, null);
+											DrawTableRowText("Gear", r.Gear, null);
 
-										ImGui.EndTable();
+											ImGui.EndTable();
+										}
+										ImGui.TreePop();
+									}
+								}
+								if (ImGui.TreeNode("Missing retainer items"))
+								{
+									if (ImGui.TreeNode("Miner"))
+									{
+										foreach (var item in charaData.GetMissingMinerItems())
+										{
+											ImGui.Text(item);
+										}
+										ImGui.TreePop();
+									}
+									if (ImGui.TreeNode("Botanist"))
+									{
+										foreach (var item in charaData.GetMissingBotanistItems())
+										{
+											ImGui.Text(item);
+										}
+										ImGui.TreePop();
+									}
+									if (ImGui.TreeNode("Fisher"))
+									{
+										foreach (var item in charaData.GetMissingFisherItems())
+										{
+											ImGui.Text(item);
+										}
+										ImGui.TreePop();
 									}
 									ImGui.TreePop();
 								}
-								if (ImGui.TreeNode("Retainer 2"))
-								{
-									if (ImGui.BeginTable("tableRetainer2", 2))
-									{
-										SetUpTableColumns();
-
-										var level = charaData.LevelRetainer2;
-										DrawTableRowText("Level", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-											level.ToString());
-
-										DrawTableRowText("Gear", charaData.GearRetainer2, null);
-										ImGui.EndTable();
-									}
-									ImGui.TreePop();
-								}
-
 								ImGui.TreePop();
 							}
-
 							ImGui.TreePop();
 						}
 						if (ImGui.TreeNode("DoW/DoM"))
@@ -494,9 +532,6 @@ namespace FFXIVCharaTracker
 
 								DrawTableRowText("Folklore books", true, colour, text);
 
-#if DEBUG || RELEASE_DEV
-								DrawTableRowText("Money leves", charaData.LevelCrp >= 84 && charaData.GetStoryProgress() > Data.QuestComplete555);
-#endif
 								ImGui.EndTable();
 							}
 							if (ImGui.TreeNode("Custom Deliveries"))
@@ -771,7 +806,6 @@ namespace FFXIVCharaTracker
 								ImGui.TreePop();
 
 							}
-							ImGui.TreePop();
 							if (ImGui.TreeNode("Other"))
 							{
 								if (ImGui.BeginTable("emotesOther", 2))
@@ -784,7 +818,6 @@ namespace FFXIVCharaTracker
 									ImGui.EndTable();
 								}
 								ImGui.TreePop();
-
 							}
 							ImGui.TreePop();
 						}
@@ -2147,6 +2180,9 @@ namespace FFXIVCharaTracker
 									DrawTableRowText("The Goblet", charaData.IsQuestComplete(66749));
 									DrawTableRowText("Shirogane", charaData.IsQuestComplete(68167));
 									DrawTableRowText("Empyreum", charaData.IsQuestComplete(69708));
+									DrawTableRowText("Gold Saucer", charaData.IsQuestComplete(65970));
+									DrawTableRowText("Challenge Log", charaData.IsQuestComplete(66967));
+									DrawTableRowText("Aesthetician", charaData.IsQuestComplete(66746));
 									DrawTableRowText("Crystalline Conflict", charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640));
 									DrawTableRowText("Frontlines", charaData.IsQuestComplete(67063) || charaData.IsQuestComplete(67064) || charaData.IsQuestComplete(67065));
 									DrawTableRowText("Rival Wings", charaData.IsQuestComplete(68583));
@@ -2649,12 +2685,11 @@ namespace FFXIVCharaTracker
 					}
 					ImGui.EndTabItem();
 				}
-				if (Plugin.Context.Charas.Count() > 1)
+				if (Context.Charas.Count() > 1)
 				{
 					if (ImGui.BeginTabItem("Squad"))
 					{
-						var charas = Plugin.Context.Charas.FromSql($"SELECT * FROM Charas ORDER BY Account ASC, WorldID ASC, CharaID ASC").AsNoTracking();
-						Scale = ImGui.GetIO().FontGlobalScale;
+						var charas = Context.Charas.Include(c => c.Retainers).OrderBy(c => c.Account).ThenBy(c => c.WorldID).ThenBy(c => (long)c.CharaID).AsNoTracking();
 						var lastAccount = -1;
 						var lastWorld = (uint)0;
 						ImGui.Indent();
@@ -2662,49 +2697,157 @@ namespace FFXIVCharaTracker
 						{
 							if (ImGui.BeginTabItem("Character"))
 							{
-								ImGui.Unindent();
-								if (ImGui.BeginTable("squadChara", 10 , ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+								ImGui.Indent();
+								if (ImGui.BeginTabBar("squadCharacter"))
 								{
-									ImGui.TableSetupScrollFreeze(1, 0);
-
-									ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-									ImGui.TableSetupColumn("Chocobo level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableSetupColumn("Grand Company rank", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
-									ImGui.TableSetupColumn("Retainer class", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableSetupColumn("Retainer storing", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-									ImGui.TableSetupColumn("Retainer 1 level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableSetupColumn("Retainer 1 gear", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableSetupColumn("Retainer 2 level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableSetupColumn("Retainer 2 gear", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-									ImGui.TableHeadersRow();
-
-									foreach (var c in charas)
+									if (ImGui.BeginTabItem("General"))
 									{
-										DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-										SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-										var chocoLevel = c.ChocoboLevel;
-										SetCellBackgroundWithText(chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red), chocoLevel.ToString(), Black);
-										var gcRank = c.GCRank;
-										SetCellBackgroundWithText(default, GCRankToString[gcRank], gcRank == Data.MaxGCLevel ? Green : (gcRank > 0 ? Yellow : Red));
-										SetCellBackgroundWithText(default, CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Plugin.ClassJobs.GetRow(c.RetainerClass)!.Name), White);
-										SetCellBackgroundWithText(default, c.RetainersStoringDescription, White);
-										var level = c.LevelRetainer1;
-										SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
-										SetCellBackground(c.GearRetainer1 ? Green : Red);
-										level = c.LevelRetainer2;
-										SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
-										SetCellBackground(c.GearRetainer2 ? Green : Red);
-
-										ImGui.TableNextColumn();
-										if (ImGui.Button($"Delete character###{c.CharaID}"))
+										ImGui.Unindent();
+										ImGui.Unindent();
+										if (ImGui.BeginTable("squadChara", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											Plugin.Context.Charas.Remove(c);
-											Plugin.Context.SaveChanges();
-										}
+											ImGui.TableSetupScrollFreeze(1, 0);
 
+											ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
+											ImGui.TableSetupColumn("Chocobo level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+											ImGui.TableSetupColumn("Race chocobo", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
+											ImGui.TableSetupColumn("Grand Company rank", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
+											ImGui.TableSetupColumn("Island Sanctuary", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
+											ImGui.TableSetupColumn("Retainer storing", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
+											ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+											ImGui.TableHeadersRow();
+
+											foreach (var c in charas)
+											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+												SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+												var chocoLevel = c.ChocoboLevel;
+												SetCellBackgroundWithText(chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red), chocoLevel.ToString(), Black);
+												var raceChocoRank = c.RaceChocoboRank;
+												var raceChocoPedigree = c.RaceChocoboPedigree;
+												SetCellBackgroundWithText(raceChocoRank == Data.MaxRaceChocoboLevel && raceChocoPedigree == 9 ? Green : (raceChocoRank >= 40 ? Blue : (raceChocoRank > 0 ? Yellow : Red)),
+													raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree}" : "Not unlocked/updated!", Black);
+												var gcRank = c.GCRank;
+												SetCellBackgroundWithText(default, GCRankToString[gcRank], gcRank == Data.MaxGCLevel ? Green : (gcRank > 0 ? Yellow : Red));
+												var sanctuaryRank = c.IslandSanctuaryLevel;
+												SetCellBackgroundWithText(default, sanctuaryRank.ToString(), sanctuaryRank == Data.MaxIslandSanctuaryLevel ? Green : (sanctuaryRank > 0 ? Yellow : Red));
+												SetCellBackgroundWithText(default, c.RetainersStoringDescription, White);
+												ImGui.TableNextColumn();
+												if (ImGui.Button($"Delete character###{c.CharaID}"))
+												{
+													Plugin.Context.Charas.Remove(c);
+												}
+											}
+											ImGui.EndTable();
+										}
+										ImGui.EndTabItem();
 									}
-									ImGui.EndTable();
+									if (ImGui.BeginTabItem("Retainers"))
+									{
+										ImGui.Unindent();
+										ImGui.Unindent();
+										var maxRetainerCount = Context.Retainers.GroupBy(r => r.Owner).Select(r => r.Count()).Max();
+										if (ImGui.BeginTable("squadChara", 5 * maxRetainerCount, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+										{
+											ImGui.TableSetupScrollFreeze(1, 0);
+											for (int i = 1; i <= maxRetainerCount; i++)
+											{
+												ImGui.TableSetupColumn($"Retainer {i} name", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+												ImGui.TableSetupColumn($"Retainer {i} class", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+												ImGui.TableSetupColumn($"Retainer {i} level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+												ImGui.TableSetupColumn($"Retainer {i} gear", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+												ImGui.TableSetupColumn($"Retainer {i} items", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+											}
+											ImGui.TableHeadersRow();
+
+											foreach (var c in charas)
+											{
+												DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+												var nonCombatJobs = new List<uint> { 0, 16, 17, 18 };
+
+												foreach (var retainer in c.Retainers)
+												{
+													// Calculate the colour here, it's neater
+													Vector4 colour;
+													string count = "";
+
+													if (nonCombatJobs.Contains(retainer.ClassID))
+													{
+														switch (retainer.ClassID)
+														{
+															case 16:
+																if (c.UncollectedMinerItemsSet.Count == Data.RetainerMinerItemIDs.Length)
+																{
+																	colour = Red;
+																	count = c.UncollectedMinerItemsSet.Count.ToString();
+																}
+																else if (c.UncollectedMinerItemsSet.Count > 0)
+																{
+																	colour = Yellow;
+																	count = c.UncollectedMinerItemsSet.Count.ToString();
+																}
+																else
+																{
+																	colour = Green;
+																}
+																break;
+															case 17:
+																if (c.UncollectedBotanistItemsSet.Count == Data.RetainerBotanistItemIDs.Length)
+																{
+																	colour = Red;
+																	count = c.UncollectedBotanistItemsSet.Count.ToString();
+																}
+																else if (c.UncollectedBotanistItemsSet.Count > 0)
+																{
+																	colour = Yellow;
+																	count = c.UncollectedBotanistItemsSet.Count.ToString();
+																}
+																else
+																{
+																	colour = Green;
+																}
+																break;
+															case 18:
+																if (c.UncollectedFisherItemsSet.Count + c.UncollectedSpearfisherItemsSet.Count == Data.RetainerFisherItemIDs.Length + Data.RetainerSpearfisherItemIDs.Length)
+																{
+																	colour = Red;
+																	count = (c.UncollectedFisherItemsSet.Count + c.UncollectedSpearfisherItemsSet.Count).ToString();
+																}
+																else if (c.UncollectedFisherItemsSet.Count + c.UncollectedSpearfisherItemsSet.Count > 0)
+																{
+																	colour = Yellow;
+																	count = (c.UncollectedFisherItemsSet.Count + c.UncollectedSpearfisherItemsSet.Count).ToString();
+																}
+																else
+																{
+																	colour = Green;
+																}
+																break;
+															default:
+																colour = Red;
+																break;
+														}
+													}
+													else
+													{
+														colour = Green;
+													}
+
+													SetCellBackgroundWithText(default, retainer.Name, White);
+													SetCellBackgroundWithText(default, CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Plugin.ClassJobs.GetRow(retainer.ClassID)!.Name), White);
+													var level = retainer.Level;
+													SetCellBackgroundWithText(level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red), level.ToString(), Black);
+													SetCellBackground(retainer.Gear ? Green : Red);
+													SetCellBackgroundWithText(colour, count, Black);
+												}
+											}
+											ImGui.EndTable();
+										}
+										ImGui.EndTabItem();
+									}
+									ImGui.EndTabBar();
 								}
 								ImGui.EndTabItem();
 							}
@@ -2741,83 +2884,81 @@ namespace FFXIVCharaTracker
 									SetCellBackgroundWithText(default, $"Healers", White);
 									ImGui.TableNextRow();
 									SetCellBackgroundWithText(default, $"DRK", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 32).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 32).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"BLM", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 25).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 25).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"AST", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 33).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 33).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextRow();
 									SetCellBackgroundWithText(default, $"GNB", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 37).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 37).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"BRD", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 23).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 23).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"SCH", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 28).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 28).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextRow();
 									SetCellBackgroundWithText(default, $"PLD", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 19).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 19).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"DNC", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 38).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 38).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"SGE", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 40).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 40).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextRow();
 									SetCellBackgroundWithText(default, $"WAR", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 21).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 21).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"DRG", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 22).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 22).AsNoTracking().Count().ToString(), White);
 									SetCellBackgroundWithText(default, $"WHM", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 24).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 24).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"MCH", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 31).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 31).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"MNK", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 20).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 20).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"NIN", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 30).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 30).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"RDM", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 35).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 35).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"RPR", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 39).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 39).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"SAM", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 34).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 34).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									ImGui.TableNextRow();
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
 									SetCellBackgroundWithText(default, $"SMN", White);
-									SetCellBackgroundWithText(default, Plugin.Context.Charas.Where(c => c.ClassID == 27).AsNoTracking().Count().ToString(), White);
+									SetCellBackgroundWithText(default, Context.Charas.Where(c => c.ClassID == 27).AsNoTracking().Count().ToString(), White);
 									ImGui.TableNextColumn();
 									ImGui.TableNextColumn();
-
-
 
 									ImGui.EndTable();
 								}
@@ -2849,9 +2990,6 @@ namespace FFXIVCharaTracker
 									ImGui.TableSetupColumn("Gathering gear", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 									ImGui.TableSetupColumn("Gatherer quests", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
 									ImGui.TableSetupColumn("Folklore books", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-#if DEBUG || RELEASE_DEV
-									ImGui.TableSetupColumn("Money leves", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-#endif
 									for (int i = 1; i < Plugin.SatisfactionNpcs.RowCount; i++)
 									{
 										ImGui.TableSetupColumn($"Delivery - {Plugin.SatisfactionNpcs.GetRow((uint)i)!.Npc.Value!.Singular}", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
@@ -2921,9 +3059,6 @@ namespace FFXIVCharaTracker
 
 										SetCellBackgroundWithText(c.IncompleteFolkloreBooksSet.Count == Data.FolkloreIDs.Length ? Red : (c.IncompleteFolkloreBooksSet.Count == 0 ? Green : Yellow), c.IncompleteFolkloreBooksSet.Count > 0 && c.IncompleteFolkloreBooksSet.Count < Data.FolkloreIDs.Length ? c.IncompleteFolkloreBooksSet.Count.ToString() : "", Black);
 
-#if DEBUG || RELEASE_DEV
-										SetCellBackground(c.LevelCrp >= 84 && c.GetStoryProgress() > Data.QuestComplete555 ? Green : Red);
-#endif
 
 										for (int i = 1; i < Plugin.SatisfactionNpcs.RowCount; i++)
 										{
@@ -5189,9 +5324,9 @@ namespace FFXIVCharaTracker
 										ImGui.Unindent();
 										ImGui.Unindent();
 
-										if (ImGui.BeginTable("squadoptionalGeneral", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+										if (ImGui.BeginTable("squadoptionalGeneral", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
+											SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Gold Saucer", "Challenge Log", "Aesthetician", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
 
 											foreach (var c in charas)
 											{
@@ -5203,7 +5338,10 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsQuestComplete(66749) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(68167) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(69708) ? Green : Red);
-												SetCellBackground(c.IsQuestComplete(66640) || c.IsQuestComplete(66640) || c.IsQuestComplete(66640) ? Green : Red);
+												SetCellBackground(c.IsQuestComplete(65970) ? Green : Red);
+												SetCellBackground(c.IsQuestComplete(66967) ? Green : Red);
+												SetCellBackground(c.IsQuestComplete(66746) ? Green : Red);
+												SetCellBackground(c.IsQuestComplete(66640) || c.IsQuestComplete(66641) || c.IsQuestComplete(66642) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(67063) || c.IsQuestComplete(67064) || c.IsQuestComplete(67065) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(68583) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(67928) ? Green : Red);
@@ -5981,378 +6119,201 @@ namespace FFXIVCharaTracker
 						ImGui.EndTabItem();
 					}
 				}
-#if DEBUG || RELEASE_DEV
-				if (ImGui.BeginTabItem("Teams"))
+				if (ImGui.BeginTabItem("Inventory"))
 				{
-					var tankClasses = new uint[] { 19, 21, 32, 37 };
-					var dpsClasses = new uint[] { 20, 22, 23, 25, 27, 30, 31, 34, 35, 38, 39 };
-					var healerClasses = new uint[] { 24, 28, 33, 40 };
-
-					if (ImGui.BeginTable("teams", 6))
+					ImGui.Text("Search");
+					ImGui.SameLine();
+					if (ImGui.InputText("###InventorySearch", ref LastSearch, 100))
 					{
-						ImGui.TableSetupColumn("Tank", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-						ImGui.TableSetupColumn("DPS 1", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-						ImGui.TableSetupColumn("DPS 2", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-						ImGui.TableSetupColumn("Healer", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
-						ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 50 * Scale);
-						ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-						ImGui.TableHeadersRow();
+						SearchTimer.Restart();
+					}
+					if (ImGui.BeginTable("inventory", 2, ImGuiTableFlags.ScrollY))
+					{
+						SetUpTableColumns();
 
-						foreach (var team in Plugin.Context.Teams)
 						{
-							var teamAccounts = new List<int> { team.TankA != null ? team.TankA.Account : -1,
-								team.Dps1A != null ? team.Dps1A.Account : -1,
-								team.Dps2A != null ? team.Dps2A.Account : -1,
-								team.HealerA != null ? team.HealerA.Account : -1 };
-							List<int> tankAccounts = teamAccounts;
-							List<int> dps1Accounts = teamAccounts;
-							List<int> dps2Accounts = teamAccounts;
-							List<int> healerAccounts = teamAccounts;
 
-
-							if (team.TankA is not null)
-							{
-								tankAccounts = teamAccounts.Where(a => a != team.TankA.Account).ToList();
-							}
-							if (team.Dps1A is not null)
-							{
-								dps1Accounts = teamAccounts.Where(a => a != team.Dps1A.Account).ToList();
-							}
-							if (team.Dps2A is not null)
-							{
-								dps2Accounts = teamAccounts.Where(a => a != team.Dps2A.Account).ToList();
-							}
-							if (team.HealerA is not null)
-							{
-								healerAccounts = teamAccounts.Where(a => a != team.HealerA.Account).ToList();
-							}
-
-							ImGui.TableNextRow();
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-
-							var tanks = Plugin.Context.Charas.Where(c => tankClasses.Contains(c.ClassID) && !tankAccounts.Contains(c.Account) &&
-								(c.Tank == null && c.Dps1 == null && c.Dps2 == null && c.Healer == null || c.Tank == team)).ToArray();
-							var currentTankName = team.TankA != null ? $"{team.TankA.Forename} {team.TankA.Surname}" : "";
-							var curIndex = Array.IndexOf(tanks, team.TankA);
-							var newIndex = curIndex;
-							var pushedStyle = false;
-							if (curIndex == -1 && team.TankA != null)
-							{
-								ImGui.PushStyleColor(ImGuiCol.Text, Red);
-								pushedStyle = true;
-							}
-							if (ImGui.BeginCombo($"###Team{team.TeamID}Tank", currentTankName))
-							{
-								if (pushedStyle)
-								{
-									ImGui.PushStyleColor(ImGuiCol.Text, White);
-								}
-								for (int n = 0; n < tanks.Length; n++)
-								{
-									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{tanks[n].Forename} {tanks[n].Surname} ({tanks[n].Account + 1}, {Plugin.Worlds.GetRow(tanks[n].WorldID)!.Name})", is_selected))
-									{
-										newIndex = n;
-									}
-
-									// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-									if (is_selected)
-									{
-										ImGui.SetItemDefaultFocus();
-									}
-								}
-								ImGui.EndCombo();
-								if (newIndex != curIndex)
-								{
-									team.TankA = tanks[newIndex];
-									Plugin.Context.SaveChanges();
-								}
-								if (pushedStyle)
-								{
-									ImGui.PopStyleColor();
-								}
-							}
-							if (pushedStyle)
-							{
-								ImGui.PopStyleColor();
-								pushedStyle = false;
-							}
-
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-
-							var dps1s = Plugin.Context.Charas.Where(c => dpsClasses.Contains(c.ClassID) && !dps1Accounts.Contains(c.Account) &&
-								(c.Tank == null && c.Dps1 == null && c.Dps2 == null && c.Healer == null || c.Dps1 == team)).ToArray();
-							var currentDps1Name = team.Dps1A != null ? $"{team.Dps1A.Forename} {team.Dps1A.Surname}" : "";
-							curIndex = Array.IndexOf(dps1s, team.Dps1A);
-							newIndex = curIndex;
-							if (curIndex == -1 && team.Dps1A != null)
-							{
-								ImGui.PushStyleColor(ImGuiCol.Text, Red);
-								pushedStyle = true;
-							}
-							if (ImGui.BeginCombo($"###Team{team.TeamID}DPS1", currentDps1Name))
-							{
-								if (pushedStyle)
-								{
-									ImGui.PushStyleColor(ImGuiCol.Text, White);
-								}
-								for (int n = 0; n < dps1s.Length; n++)
-								{
-									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{dps1s[n].Forename} {dps1s[n].Surname} ({dps1s[n].Account + 1}, {Plugin.Worlds.GetRow(dps1s[n].WorldID)!.Name})", is_selected))
-									{
-										newIndex = n;
-									}
-
-									// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-									if (is_selected)
-									{
-										ImGui.SetItemDefaultFocus();
-									}
-								}
-								ImGui.EndCombo();
-								if (newIndex != curIndex)
-								{
-									team.Dps1A = dps1s[newIndex];
-									Plugin.Context.SaveChanges();
-								}
-								if (pushedStyle)
-								{
-									ImGui.PopStyleColor();
-								}
-							}
-							if (pushedStyle)
-							{
-								ImGui.PopStyleColor();
-								pushedStyle = false;
-							}
-
-
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-
-							var dps2s = Plugin.Context.Charas.Where(c => dpsClasses.Contains(c.ClassID) && !dps2Accounts.Contains(c.Account) &&
-								(c.Tank == null && c.Dps1 == null && c.Dps2 == null && c.Healer == null || c.Dps2 == team)).ToArray();
-							var currentDps2Name = team.Dps2A != null ? $"{team.Dps2A.Forename} {team.Dps2A.Surname}" : "";
-							curIndex = Array.IndexOf(dps2s, team.Dps2A);
-							newIndex = curIndex;
-							if (curIndex == -1 && team.Dps2A != null)
-							{
-								ImGui.PushStyleColor(ImGuiCol.Text, Red);								pushedStyle = true;
-								pushedStyle = true;
-							}
-							if (ImGui.BeginCombo($"###Team{team.TeamID}DPS2", currentDps2Name))
-							{
-								if (pushedStyle)
-								{
-									ImGui.PushStyleColor(ImGuiCol.Text, White);
-								}
-								for (int n = 0; n < dps2s.Length; n++)
-								{
-									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{dps2s[n].Forename} {dps2s[n].Surname} ({dps2s[n].Account + 1}, {Plugin.Worlds.GetRow(dps2s[n].WorldID)!.Name})", is_selected))
-									{
-										newIndex = n;
-									}
-
-									// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-									if (is_selected)
-									{
-										ImGui.SetItemDefaultFocus();
-									}
-								}
-								ImGui.EndCombo();
-								if (newIndex != curIndex)
-								{
-									team.Dps2A = dps2s[newIndex];
-									Plugin.Context.SaveChanges();
-								}
-								if (pushedStyle)
-								{
-									ImGui.PopStyleColor();
-								}
-							}
-							if (pushedStyle)
-							{
-								ImGui.PopStyleColor();
-								pushedStyle = false;
-							}
-
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-
-							var healers = Plugin.Context.Charas.Where(c => healerClasses.Contains(c.ClassID) && !healerAccounts.Contains(c.Account) &&
-								(c.Tank == null && c.Dps1 == null && c.Dps2 == null && c.Healer == null || c.Healer == team)).ToArray();
-							var currentHealerName = team.HealerA != null ? $"{team.HealerA.Forename} {team.HealerA.Surname}" : "";
-							curIndex = Array.IndexOf(healers, team.HealerA);
-							newIndex = curIndex;
-							if (curIndex == -1 && team.HealerA != null)
-							{
-								ImGui.PushStyleColor(ImGuiCol.Text, Red);
-								pushedStyle = true;
-							}
-							if (ImGui.BeginCombo($"###Team{team.TeamID}Healer", currentHealerName))
-							{
-								if (pushedStyle)
-								{
-									ImGui.PushStyleColor(ImGuiCol.Text, White);
-								}
-								for (int n = 0; n < healers.Length; n++)
-								{
-									var is_selected = (curIndex == n);
-									if (ImGui.Selectable($"{healers[n].Forename} {healers[n].Surname} ({healers[n].Account + 1}, {Plugin.Worlds.GetRow(healers[n].WorldID)!.Name})", is_selected))
-									{
-										newIndex = n;
-									}
-
-									// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-									if (is_selected)
-									{
-										ImGui.SetItemDefaultFocus();
-									}
-								}
-								ImGui.EndCombo();
-								if (newIndex != curIndex)
-								{
-									team.HealerA = healers[newIndex];
-									Plugin.Context.SaveChanges();
-								}
-								if (pushedStyle)
-								{
-									ImGui.PopStyleColor();
-								}
-							}
-							if (pushedStyle)
-							{
-								ImGui.PopStyleColor();
-								pushedStyle = false;
-							}
-
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-							if (ImGui.Button($"X###{team.TeamID}"))
-							{
-								Plugin.Context.Teams.Remove(team);
-								Plugin.Context.SaveChanges();
-							}
-
-							ImGui.TableNextColumn();
-							ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
-							var accounts = new List<int>();
-							if (team.TankA != null)
-							{
-								accounts.Add(team.TankA.Account + 1);
-							}
-							if (team.Dps1A != null)
-							{
-								accounts.Add(team.Dps1A.Account + 1);
-							}
-							if (team.Dps2A != null)
-							{
-								accounts.Add(team.Dps2A.Account + 1);
-							}
-							if (team.HealerA != null)
-							{
-								accounts.Add(team.HealerA.Account + 1);
-							}
-							accounts.Sort();
-							ImGui.Text(string.Join(", ", accounts));
 						}
-						ImGui.EndTable();
-					}
 
-					if (ImGui.Button("Add new team"))
-					{
-						var team = new Team();
-						Plugin.Context.Teams.Add(team);
+						if (SearchTimer.ElapsedMilliseconds > 1000)
+						{
+							SearchTimer.Reset();
+							if (LastSearch == "")
+							{
+								LastSearchResults = new();
+							}
+							else
+							{
+								LastSearchResults = Plugin.ItemSheet.Where(it => it.Name.ToString().ToLower().Contains(LastSearch.ToLower())).Select(it => it.RowId).ToList();
+							}
+						}
+
+						var count = 0;
+						if (LastSearchResults.Count == 0)
+						{
+							count = Context.InventorySlots.GroupBy(inv => inv.ItemID).Count();
+						}
+						else
+						{
+							count = Context.InventorySlots.GroupBy(inv => inv.ItemID).Where(inv => LastSearchResults.Contains((uint)(inv.Key & ((1L << 32) - 1)))).Count();
+						}
+
+						Clipper.Begin(count + 10, 21 * Scale);
+						while (Clipper.Step())
+						{
+							var items = new List<Tuple<ulong, long>>().Select(it => new { ItemID = it.Item1, Quantity = it.Item2 }).ToList();
+								if (LastSearchResults.Count == 0)
+							{
+								items = Context.InventorySlots.GroupBy(inv => inv.ItemID).Skip(Clipper.DisplayStart).Take(Clipper.DisplayEnd - Clipper.DisplayStart).Select(inv => new { ItemID = inv.Key, Quantity = inv.Sum(inv => inv.Quantity) }).AsNoTracking().ToList();
+							}
+							else
+							{
+								items = Context.InventorySlots.Where(inv => LastSearchResults.Contains((uint)(inv.ItemID & ((1L << 32) - 1)))).GroupBy(inv => inv.ItemID).Skip(Clipper.DisplayStart).Take(Clipper.DisplayEnd - Clipper.DisplayStart).Select(inv => new { ItemID = inv.Key, Quantity = inv.Sum(inv => inv.Quantity) }).AsNoTracking().ToList();
+							}
+
+							foreach (var item in items)
+							{
+
+								if (item.ItemID == 0 || item.Quantity == 0)
+								{
+									continue;
+								}
+								ImGui.TableNextRow();
+								ImGui.TableNextColumn();
+
+								if (!Plugin.ItemCache.TryGetValue(item.ItemID, out var itemData))
+								{
+									continue;
+								}
+								if (ImGui.TreeNode(itemData!.Item1.Name))
+								{
+									ImGui.TableNextColumn();
+									ImGui.Text(item.Quantity.ToString());
+
+									ImGui.Indent();
+									var itemInventories = Context.InventorySlots.Where(inv => inv.ItemID == item.ItemID && inv.Quantity > 0).Include(inv => inv.Retainer).ThenInclude(r => r!.Owner).Include(inv => inv.Chara).AsNoTracking().ToList().OrderBy(inv => inv.Chara?.CharaID ?? inv.Retainer!.Owner.CharaID).ThenBy(inv => inv.Retainer?.RetainerID ?? 0);
+									foreach (var i in itemInventories)
+									{
+										ImGui.TableNextRow();
+										ImGui.TableNextColumn();
+										var text = "";
+										switch (i.Inventory)
+										{
+											case InventoryType.ArmoryBody:
+											case InventoryType.ArmoryWrist:
+											case InventoryType.ArmoryEar:
+											case InventoryType.ArmoryFeets:
+											case InventoryType.ArmoryHands:
+											case InventoryType.ArmoryHead:
+											case InventoryType.ArmoryLegs:
+											case InventoryType.ArmoryMainHand:
+											case InventoryType.ArmoryNeck:
+											case InventoryType.ArmoryOffHand:
+											case InventoryType.ArmoryRings:
+												text = $"Armoury Chest ({i.Chara!.Forename} {i.Chara.Surname})";
+												break;
+											case InventoryType.Crystals:
+											case InventoryType.Currency:
+											case InventoryType.Inventory1:
+											case InventoryType.Inventory2:
+											case InventoryType.Inventory3:
+											case InventoryType.Inventory4:
+												text = $"Inventory ({i.Chara!.Forename} {i.Chara.Surname})";
+												break;
+											case InventoryType.SaddleBag1:
+											case InventoryType.SaddleBag2:
+											case InventoryType.PremiumSaddleBag1:
+											case InventoryType.PremiumSaddleBag2:
+												text = $"Saddlebag ({i.Chara!.Forename} {i.Chara.Surname})";
+												break;
+											case InventoryType.EquippedItems:
+												text = $"Equipped ({i.Chara!.Forename} {i.Chara.Surname})";
+												break;
+											case InventoryType.RetainerCrystals:
+											case InventoryType.RetainerGil:
+											case InventoryType.RetainerPage1:
+											case InventoryType.RetainerPage2:
+											case InventoryType.RetainerPage3:
+											case InventoryType.RetainerPage4:
+											case InventoryType.RetainerPage5:
+											case InventoryType.RetainerPage6:
+											case InventoryType.RetainerPage7:
+												text = $"Inventory - {i.Retainer!.Name} ({i.Retainer.Owner!.Forename} {i.Retainer.Owner!.Surname})";
+												break;
+											case InventoryType.RetainerEquippedItems:
+												text = $"Equipped - {i.Retainer!.Name} ({i.Retainer.Owner!.Forename} {i.Retainer.Owner!.Surname})";
+												break;
+											case InventoryType.RetainerMarket:
+												text = $"Markets - {i.Retainer!.Name} ({i.Retainer.Owner!.Forename} {i.Retainer.Owner!.Surname})";
+												break;
+										}
+										ImGui.Text(text);
+										ImGui.TableNextColumn();
+										ImGui.Text(i.Quantity.ToString());
+									}
+									ImGui.Unindent();
+									ImGui.TreePop();
+								} 
+								else
+								{
+									ImGui.TableNextColumn();
+									ImGui.Text(item.Quantity.ToString());
+								}
+							}
+						}
+
+						Clipper.End();
+						ImGui.EndTable();
 					}
 					ImGui.EndTabItem();
 				}
-				if (ImGui.BeginTabItem("Leves"))
-				{
-					var count = Plugin.Context.Charas.Where(c => c.LevelCrp >= 84 && !c.IncompleteQuests.Contains("69602")).Count();
-
-					// Per leve values
-					var saigaHide = 4f;
-					var earthCrystal = 8f;
-					var eblanAlumen = 1f;
-					var bismuthOre = 5f;
-					var redPineLog = 10f;
-
-					var totalSaigaHide = saigaHide * 6 * count;
-					var totalEarthCrystal = earthCrystal * 6 * count;
-					var totalEblanAlumen = eblanAlumen * 6 * count;
-					var totalBismuthOre = bismuthOre * 6 * count;
-					var totalRedPineLog = redPineLog * 6 * count;
-
-					if (ImGui.BeginTable("leves", 3))
-					{
-						ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-						ImGui.TableSetupColumn("Daily total", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-						ImGui.TableSetupColumn("Retainers needed", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-						ImGui.TableHeadersRow();
-
-						SetCellBackgroundWithText(default, "Saiga Hide", White);
-						SetCellBackgroundWithText(default, totalSaigaHide.ToString(), White);
-						SetCellBackgroundWithText(default, Math.Ceiling(totalSaigaHide / (Data.ItemsPerCombatRetainer * 5)).ToString(), White);
-
-						SetCellBackgroundWithText(default, "Eblan Alumen", White);
-						SetCellBackgroundWithText(default, totalEblanAlumen.ToString(), White);
-						SetCellBackgroundWithText(default, Math.Ceiling(totalEblanAlumen / (Data.ItemsPerGatheringRetainer * 5)).ToString(), White);
-
-						SetCellBackgroundWithText(default, "Earth Crystal", White);
-						SetCellBackgroundWithText(default, totalEarthCrystal.ToString(), White);
-						SetCellBackgroundWithText(default, Math.Ceiling(totalEarthCrystal / (Data.CrystalsPerGatheringRetainer * 5)).ToString(), White);
-
-						SetCellBackgroundWithText(default, "Bismuth Ore", White);
-						SetCellBackgroundWithText(default, totalBismuthOre.ToString(), White);
-						SetCellBackgroundWithText(default, Math.Ceiling(totalBismuthOre / (Data.ItemsPerGatheringRetainer * 5)).ToString(), White);
-
-						SetCellBackgroundWithText(default, "Red Pine Log", White);
-						SetCellBackgroundWithText(default, totalRedPineLog.ToString(), White);
-						SetCellBackgroundWithText(default, Math.Ceiling(totalRedPineLog / (Data.ItemsPerGatheringRetainer * 5)).ToString(), White);
-
-						ImGui.EndTable();
-					}
-					ImGui.EndTabItem();
-				}
-#endif
 				if (ImGui.BeginTabItem("Extras"))
 				{
 					if (ImGui.Button("Export character list to clipboard"))
 					{
-						var charas = Plugin.Context.Charas.FromSql($"SELECT * FROM Charas ORDER BY Account ASC, WorldID ASC, CharaID ASC").AsNoTracking();
+						var charas = Context.Charas.FromSql($"SELECT * FROM Charas ORDER BY Account ASC, WorldID ASC, CharaID ASC").AsNoTracking();
 						var output = new StringBuilder();
 						foreach (var c in charas)
 						{
 							var classData = Plugin.ClassJobs.GetRow(c.ClassID);
-							output.AppendLine($":{classData.NameEnglish.ToString().Replace(" ", "")}: {c.Forename} {c.Surname} - {Plugin.Worlds.GetRow(c.WorldID)!.Name}");
+							output.AppendLine($":{classData!.NameEnglish.ToString().Replace(" ", "")}: {c.Forename} {c.Surname} - {Plugin.Worlds.GetRow(c.WorldID)!.Name}");
 						}
 
 						ClipboardService.SetText(output.ToString());
 					}
 					if (ImGui.Button("Reset player combat gear status"))
 					{
-						Plugin.Context.ResetPlayerCombatGear();
+						Context.ResetPlayerCombatGear();
+						UIUpdated = true;
 					}
 					if (ImGui.Button("Reset player gather gear status"))
 					{
-						Plugin.Context.ResetPlayerGatherGear();
+						Context.ResetPlayerGatherGear();
+						UIUpdated = true;
 					}
 					if (ImGui.Button("Reset retainer combat gear status"))
 					{
-						Plugin.Context.ResetRetainerCombatGear();
+						Context.ResetRetainerCombatGear();
+						UIUpdated = true;
 					}
 					if (ImGui.Button("Reset retainer combat gear status"))
 					{
-						Plugin.Context.ResetRetainerGatherGear();
+						Context.ResetRetainerGatherGear();
+						UIUpdated = true;
+					}
+					if (ImGui.Button("Reset retainer item status"))
+					{
+						Context.ResetRetainerItems();
+						UIUpdated = true;
 					}
 					ImGui.EndTabItem();
 				}
 				ImGui.EndTabBar();
 			}
+			if (UIUpdated)
+			{
+				Context.SaveChanges();
+			}
 		}
-    }
+	}
 }

@@ -3,6 +3,7 @@ using System;
 using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FFXIVCharaTracker.Migrations
 {
     [DbContext(typeof(CharaContext))]
-    partial class CharaContextModelSnapshot : ModelSnapshot
+    [Migration("20230126224125_InventorySlotRemoveIndexes")]
+    partial class InventorySlotRemoveIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -64,9 +67,6 @@ namespace FFXIVCharaTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IslandSanctuaryLevel")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("LevelAlc")
                         .HasColumnType("INTEGER");
 
@@ -115,33 +115,11 @@ namespace FFXIVCharaTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("RaceChocoboPedigree")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RaceChocoboRank")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("RetainersStoringDescription")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedBotanistItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedFisherItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedMinerItems")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UncollectedSpearfisherItems")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -184,7 +162,7 @@ namespace FFXIVCharaTracker.Migrations
                     b.Property<uint>("ItemCategory")
                         .HasColumnType("INTEGER");
 
-                    b.Property<ulong>("ItemID")
+                    b.Property<uint>("ItemID")
                         .HasColumnType("INTEGER");
 
                     b.Property<uint>("Quantity")
@@ -196,22 +174,22 @@ namespace FFXIVCharaTracker.Migrations
                     b.Property<int>("Slot")
                         .HasColumnType("INTEGER");
 
+                    b.Property<uint>("SortCategory")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("InventorySlotID");
 
                     b.HasIndex("CharaID", "Inventory", "Slot");
 
-                    b.HasIndex("ItemID", "CharaID", "Quantity");
-
-                    b.HasIndex("ItemID", "RetainerID", "Quantity");
-
                     b.HasIndex("RetainerID", "Inventory", "Slot");
 
-                    b.HasIndex("CharaID", "RetainerID", "Inventory", "Slot")
-                        .IsUnique();
+                    b.HasIndex("SortCategory", "ItemID", "CharaID");
 
-                    b.HasIndex("ItemCategory", "ItemID", "CharaID", "Quantity");
+                    b.HasIndex("SortCategory", "ItemID", "RetainerID");
 
-                    b.HasIndex("ItemCategory", "ItemID", "RetainerID", "Quantity");
+                    b.HasIndex("SortCategory", "ItemCategory", "ItemID", "CharaID");
+
+                    b.HasIndex("SortCategory", "ItemCategory", "ItemID", "RetainerID");
 
                     b.ToTable("InventorySlots");
                 });

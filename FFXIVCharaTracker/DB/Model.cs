@@ -13,6 +13,17 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Data.Parsing;
 using static FFXIVClientStructs.FFXIV.Client.Game.QuestManager.QuestListArray;
+using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
+using Dalamud.Logging;
+using System.Diagnostics;
+using System.Threading;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.ComponentModel;
+using XivCommon.Functions;
+using System.IO;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.Game.MJI;
 
 namespace FFXIVCharaTracker.DB
 {
@@ -20,67 +31,60 @@ namespace FFXIVCharaTracker.DB
 	{
 		internal DbSet<Chara> Charas { get; set; }
 		internal DbSet<Team> Teams { get; set; }
+		internal DbSet<Retainer> Retainers { get; set; }
+		internal DbSet<InventorySlot> InventorySlots { get; set; }
 
-		public string DbPath { get; }
+		public unsafe string DbPath { get; } = Framework.Instance()->UserPath.Replace('/', '\\');
+		//public string DbPath { get; } = "";
 
 		public CharaContext()
 		{
-			var folder = Environment.SpecialFolder.MyDocuments;
-			var path = Environment.GetFolderPath(folder);
-			DbPath = System.IO.Path.Join(path, @"\My Games\FINAL FANTASY XIV - A Realm Reborn\");
 			Database.Migrate();
 		}
 
-		private void PreSave()
-		{
-			foreach (var entry in ChangeTracker.Entries())
-			{
-				var entity = entry.Entity;
-				switch (entity)
-				{
-					case Chara:
-						((Chara)entity).SerialiseData();
-						break;
-					case Team:
-						break;
-				}
-			}
-		}
 
-		public override int SaveChanges()
-		{
-			PreSave();
-			return base.SaveChanges();
-		}
-
-		internal void SetDefaultArraysForAllCharas()
+		internal void AddNewDataToCharacterArrays()
 		{
 			foreach (var c in Charas)
 			{
-				c.SetDefaultArrays();
+				if (c.PluginDataVersion == "0.1.0.0")
+				{
+					c.IncompleteQuestsSet.Add(65970);
+					c.IncompleteQuestsSet.Add(66967);
+					c.IncompleteQuestsSet.Add(66746);
+					c.IncompleteQuests = JsonSerializer.Serialize(c.IncompleteQuestsSet);
+					c.UncollectedMinerItemsSet = new HashSet<uint>(Data.RetainerMinerItemIDs);
+					c.UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
+					c.UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
+					c.UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+					c.UncollectedMinerItems = JsonSerializer.Serialize(c.UncollectedMinerItemsSet);
+					c.UncollectedBotanistItems = JsonSerializer.Serialize(c.UncollectedBotanistItemsSet);
+					c.UncollectedFisherItems = JsonSerializer.Serialize(c.UncollectedFisherItemsSet);
+					c.UncollectedSpearfisherItems = JsonSerializer.Serialize(c.UncollectedSpearfisherItemsSet);
+					c.PluginDataVersion = "0.2.0.0";
+				}
 			}
+			Plugin.CurCharaData!.AddNewDataToCharacterArrays();
 		}
 
 		internal void ResetRetainerGatherGear()
 		{
-			foreach (var c in Charas)
+			foreach (var r in Retainers)
 			{
-				if (c.RetainerClass == 16 || c.RetainerClass == 17 || c.RetainerClass == 18)
+				if (r.ClassID == 16 || r.ClassID == 17 || r.ClassID == 18)
 				{
-					c.GearRetainer1 = false;
-					c.GearRetainer2 = false;
+					r.Gear = false;
 				}
 			}
 		}
 
 		internal void ResetRetainerCombatGear()
 		{
-			foreach (var c in Charas)
+			foreach (var r in Retainers)
 			{
-				if (!(c.RetainerClass == 16) && !(c.RetainerClass == 17) && !(c.RetainerClass == 18))
+				if (!(r.ClassID == 16) && !(r.ClassID == 17) && !(r.ClassID == 18))
 				{
-					c.GearRetainer1 = false;
-					c.GearRetainer2 = false;
+					r.Gear = false;
 				}
 			}
 		}
@@ -101,8 +105,36 @@ namespace FFXIVCharaTracker.DB
 			}
 		}
 
+		internal void ResetRetainerItems()
+		{
+			foreach (var c in Charas)
+			{
+				c.UncollectedMinerItemsSet = new HashSet<uint>(Data.RetainerMinerItemIDs);
+				c.UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
+				c.UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
+				c.UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+
+				c.UncollectedMinerItems = JsonSerializer.Serialize(c.UncollectedMinerItemsSet);
+				c.UncollectedBotanistItems = JsonSerializer.Serialize(c.UncollectedBotanistItemsSet);
+				c.UncollectedFisherItems = JsonSerializer.Serialize(c.UncollectedFisherItemsSet);
+				c.UncollectedSpearfisherItems = JsonSerializer.Serialize(c.UncollectedSpearfisherItemsSet);
+
+			}
+			Plugin.CurCharaData.PluginDataVersion = "0.1.0.0";
+			Plugin.CurCharaData.AddNewDataToCharacterArrays();
+		}
+
+		internal static void LogToWarning(string message)
+		{
+			PluginLog.Warning(message);
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
-				=> options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite");
+				=> options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite")
+						  .EnableThreadSafetyChecks(false)
+						  //.EnableSensitiveDataLogging(true)
+					//.LogTo(LogToWarning, LogLevel.Information)
+					;
 	}
 
 	internal class Chara
@@ -142,11 +174,7 @@ namespace FFXIVCharaTracker.DB
 		[NotMapped]
 		public HashSet<uint> UnobtainedEmotesSet { get; set; } = new HashSet<uint>();
 		public string RetainersStoringDescription { get; set; } = "";
-		public uint RetainerClass { get; set; }
-		public int LevelRetainer1 { get; set; }
-		public bool GearRetainer1 { get; set; }
-		public int LevelRetainer2 { get; set; }
-		public bool GearRetainer2 { get; set; }
+		public List<Retainer> Retainers { get; set; } = new List<Retainer>();
 		public int GCRank { get; set; }
 		public string LockedDuties { get; set; }
 		[NotMapped]
@@ -155,6 +183,9 @@ namespace FFXIVCharaTracker.DB
 		[NotMapped]
 		public HashSet<uint> LockedCustomDeliveriesSet { get; set; } = new HashSet<uint>();
 		public int ChocoboLevel { get; set; }
+		public int RaceChocoboRank { get; set; }
+		public int RaceChocoboPedigree { get; set; }
+		public int IslandSanctuaryLevel { get; set; }
 		public string IncompleteQuests { get; set; }
 		[NotMapped]
 		public HashSet<uint> IncompleteQuestsSet { get; set; } = new HashSet<uint>();
@@ -167,6 +198,20 @@ namespace FFXIVCharaTracker.DB
 		public string UnobtainedMounts { get; set; }
 		[NotMapped]
 		public HashSet<uint> UnobtainedMountsSet { get; set; } = new HashSet<uint>();
+		public string UncollectedMinerItems { get; set; }
+		[NotMapped]
+		public HashSet<uint> UncollectedMinerItemsSet { get; set; } = new HashSet<uint>();
+		public string UncollectedBotanistItems { get; set; }
+		[NotMapped]
+		public HashSet<uint> UncollectedBotanistItemsSet { get; set; } = new HashSet<uint>();
+		public string UncollectedFisherItems { get; set; }
+		[NotMapped]
+		public HashSet<uint> UncollectedFisherItemsSet { get; set; } = new HashSet<uint>();
+		public string UncollectedSpearfisherItems { get; set; }
+		[NotMapped]
+		public HashSet<uint> UncollectedSpearfisherItemsSet { get; set; } = new HashSet<uint>();
+		[InverseProperty(nameof(InventorySlot.Chara))]
+		public List<InventorySlot> Inventory { get; set; } = new List<InventorySlot>();
 		public string PluginDataVersion { get; set; } = "";
 
 		[InverseProperty(nameof(Team.TankA))]
@@ -183,7 +228,8 @@ namespace FFXIVCharaTracker.DB
 			string incompleteFolkloreBooks = "[]",	string incompleteSecretRecipeBooks = "[]", string unobtainedHairstyles = "[]",
 			string lockedDuties = "[]", string unobtainedEmotes = "[]", string lockedCustomDeliveries = "[]",
 			string incompleteQuests = "[]", string customDeliveryRanks = "[]", string unobtainedMinions = "[]",
-			string unobtainedMounts = "[]")
+			string unobtainedMounts = "[]", string uncollectedMinerItems = "[]", string uncollectedBotanistItems = "[]",
+			string uncollectedFisherItems = "[]", string uncollectedSpearfisherItems = "[]")
 		{
 			CharaID = charaID;
 			WorldID = worldID;
@@ -199,6 +245,11 @@ namespace FFXIVCharaTracker.DB
 			CustomDeliveryRanks = customDeliveryRanks;
 			UnobtainedMinions = unobtainedMinions;
 			UnobtainedMounts = unobtainedMounts;
+			UncollectedMinerItems = uncollectedMinerItems;
+			UncollectedBotanistItems = uncollectedBotanistItems;
+			UncollectedFisherItems = uncollectedFisherItems;
+			UncollectedSpearfisherItems = uncollectedSpearfisherItems;
+
 
 			IncompleteFolkloreBooksSet = JsonSerializer.Deserialize<HashSet<uint>>(IncompleteFolkloreBooks)!;
 			IncompleteSecretRecipeBooksSet = JsonSerializer.Deserialize<HashSet<uint>>(IncompleteSecretRecipeBooks)!;
@@ -210,20 +261,24 @@ namespace FFXIVCharaTracker.DB
 			CustomDeliveryRanksSet = JsonSerializer.Deserialize<List<uint>>(CustomDeliveryRanks)!;
 			UnobtainedMinionsSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedMinions)!;
 			UnobtainedMountsSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedMounts)!;
+			UncollectedMinerItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedMinerItems)!;
+			UncollectedBotanistItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedBotanistItems)!;
+			UncollectedFisherItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedFisherItems)!;
+			UncollectedSpearfisherItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedSpearfisherItems)!;
 		}
 
-		internal void SerialiseData()
+		public override bool Equals(object? obj)
 		{
-			IncompleteFolkloreBooks = JsonSerializer.Serialize(IncompleteFolkloreBooksSet);
-			IncompleteSecretRecipeBooks = JsonSerializer.Serialize(IncompleteSecretRecipeBooksSet);
-			UnobtainedHairstyles = JsonSerializer.Serialize(UnobtainedHairstylesSet);
-			LockedDuties = JsonSerializer.Serialize(LockedDutiesSet);
-			UnobtainedEmotes = JsonSerializer.Serialize(UnobtainedEmotesSet);
-			LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
-			IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
-			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksSet);
-			UnobtainedMinions = JsonSerializer.Serialize(UnobtainedMinionsSet);
-			UnobtainedMounts = JsonSerializer.Serialize(UnobtainedMountsSet);
+			if (obj is null)
+			{
+				return false;
+			}
+			var other = (Chara)obj;
+			if (other is null)
+			{
+				return false;
+			}
+			return CharaID == other.CharaID;
 		}
 
 		internal void SetDefaultArrays()
@@ -242,6 +297,53 @@ namespace FFXIVCharaTracker.DB
 			}
 			UnobtainedMinionsSet = new HashSet<uint>(Data.MinionIDs);
 			UnobtainedMountsSet = new HashSet<uint>(Data.MountIDs);
+			UncollectedMinerItemsSet = new HashSet<uint>(Data.RetainerMinerItemIDs);
+			UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
+			UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
+			UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+		}
+
+		internal void AddNewDataToCharacterArrays()
+		{
+			if (PluginDataVersion == "0.1.0.0")
+			{
+				IncompleteQuestsSet.Add(65970);
+				IncompleteQuestsSet.Add(66967);
+				IncompleteQuestsSet.Add(66746);
+				IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
+				UncollectedMinerItemsSet = new HashSet<uint>(Data.RetainerMinerItemIDs);
+				UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
+				UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
+				UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+				UncollectedMinerItems = JsonSerializer.Serialize(UncollectedMinerItemsSet);
+				UncollectedBotanistItems = JsonSerializer.Serialize(UncollectedBotanistItemsSet);
+				UncollectedFisherItems = JsonSerializer.Serialize(UncollectedFisherItemsSet);
+				UncollectedSpearfisherItems = JsonSerializer.Serialize(UncollectedSpearfisherItemsSet);
+				PluginDataVersion = "0.2.0.0";
+			}
+		}
+
+		internal unsafe void UpdateIslandSanctuaryData()
+		{
+			var currentRank = MJIManager.Instance()->IslandState.CurrentRank;
+			if (currentRank > 0)
+			{
+				IslandSanctuaryLevel = currentRank;
+			}
+		}
+
+		internal unsafe void UpdateRaceChocoboData()
+		{
+			var manager = RaceChocoboManager.Instance();
+
+			if (manager->Rank > 0)
+			{
+				RaceChocoboRank = manager->Rank;
+			}
+			if (manager->Parameters > 0)
+			{
+				RaceChocoboPedigree = manager->Parameters & (1 << 4) - 1;
+			}
 		}
 
 		internal void UpdateOptionalInstanceUnlocks()
@@ -253,6 +355,7 @@ namespace FFXIVCharaTracker.DB
 					LockedDutiesSet.Remove(dutyId);
 				}
 			}
+			LockedDuties = JsonSerializer.Serialize(LockedDutiesSet);
 		}
 
 		internal unsafe void UpdateFolkloreUnlocks(UIState* UiState)
@@ -264,6 +367,7 @@ namespace FFXIVCharaTracker.DB
 					IncompleteFolkloreBooksSet.Remove(folkloreId);
 				}
 			}
+			IncompleteFolkloreBooks = JsonSerializer.Serialize(IncompleteFolkloreBooksSet);
 		}
 
 		internal unsafe void UpdateSecretRecipeUnlocks(UIState* UiState)
@@ -275,6 +379,7 @@ namespace FFXIVCharaTracker.DB
 					IncompleteSecretRecipeBooksSet.Remove(recipeBookId);
 				}
 			}
+			IncompleteSecretRecipeBooks = JsonSerializer.Serialize(IncompleteSecretRecipeBooksSet);
 		}
 
 		internal unsafe bool UpdateHairstyleUnlocks(UIState* UiState)
@@ -295,6 +400,7 @@ namespace FFXIVCharaTracker.DB
 					waitingOnHairstyles = true;
 				}
 			}
+			UnobtainedHairstyles = JsonSerializer.Serialize(UnobtainedHairstylesSet);
 			return waitingOnHairstyles;
 		}
 
@@ -307,6 +413,7 @@ namespace FFXIVCharaTracker.DB
 					UnobtainedEmotesSet.Remove(emoteId);
 				}
 			}
+			UnobtainedEmotes = JsonSerializer.Serialize(UnobtainedEmotesSet);
 		}
 
 		internal unsafe void UpdateLevels(UIState* UiState)
@@ -394,6 +501,7 @@ namespace FFXIVCharaTracker.DB
 					UnobtainedMinionsSet.Remove(minionId);
 				}
 			}
+			UnobtainedMinions = JsonSerializer.Serialize(UnobtainedMinionsSet);
 		}
 
 		internal unsafe void UpdateMounts(UIState* UiState)
@@ -405,6 +513,7 @@ namespace FFXIVCharaTracker.DB
 					UnobtainedMountsSet.Remove(mountId);
 				}
 			}
+			UnobtainedMounts = JsonSerializer.Serialize(UnobtainedMountsSet);
 		}
 
 		internal unsafe void UpdateCustomDeliveries()
@@ -425,9 +534,11 @@ namespace FFXIVCharaTracker.DB
 						LockedCustomDeliveriesSet.Remove(row.Npc.Row);
 					}
 				}
-				CustomDeliveryRanksSet[(int)i - 1] = CustomDeliveryState.Instance()->Rank[i - 1];
+				var cdInstance = CustomDeliveryState.Instance();
+				CustomDeliveryRanksSet[(int)i - 1] = cdInstance->Rank[i - 1];
 			}
-
+			LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
+			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksSet);
 		}
 
 		internal unsafe void UpdateUnlockQuests(UIState* UiState)
@@ -439,95 +550,31 @@ namespace FFXIVCharaTracker.DB
 					IncompleteQuestsSet.Remove(questId);
 				}
 			}
+			IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
 		}
-		internal void UpdateRetainers()
+
+		internal unsafe void UpdateRetainerArrays()
 		{
-			if (Plugin.Retainers.ActiveRetainer == 0)
-			{
-				return;
-			}
+			UpdateRetainerArray(Gathering.GatheringData, UncollectedBotanistItemsSet);
+			UpdateRetainerArray(Gathering.GatheringData, UncollectedMinerItemsSet);
+			UpdateRetainerArray(Gathering.FishingData, UncollectedFisherItemsSet);
+			UpdateRetainerArray(Gathering.SpearfishingData, UncollectedSpearfisherItemsSet);
 
-			unsafe
-			{
-				var retainerManager = RetainerManager.Instance();
+			UncollectedMinerItems = JsonSerializer.Serialize(UncollectedMinerItemsSet);
+			UncollectedBotanistItems = JsonSerializer.Serialize(UncollectedBotanistItemsSet);
+			UncollectedFisherItems = JsonSerializer.Serialize(UncollectedFisherItemsSet);
+			UncollectedSpearfisherItems = JsonSerializer.Serialize(UncollectedSpearfisherItemsSet);
+		}
 
-				for (int i = 0; i < retainerManager->RetainerCount; i++)
+		internal unsafe void UpdateRetainerArray(byte* array, HashSet<uint> itemIDs)
+		{
+			foreach (var id in itemIDs)
+			{
+				var offset = id / 8;
+				var bit = (byte)id % 8;
+				if (((array[offset] >> bit) & 1) == 1)
 				{
-					var retainer = retainerManager->Retainer[i];
-					if (retainer->RetainerID == Plugin.Retainers.ActiveRetainer)
-					{
-						if (!retainer->Available)
-						{
-							return;
-						}
-						//PluginLog.Warning(inventory->GetInventorySlot(3)->ItemID.ToString());
-						if (i == 0)
-						{
-							LevelRetainer1 = retainer->Level;
-							RetainerClass = retainer->ClassJob;
-
-
-							if (!GearRetainer1)
-							{
-								var invManager = InventoryManager.Instance();
-								var inventory = invManager->GetInventoryContainer(InventoryType.RetainerEquippedItems);
-								var invSize = inventory->Size;
-								// Combat gear
-								var slot = inventory->GetInventorySlot(3);
-								if (slot->ItemID == 0 || slot->Quantity == 0)
-								{
-									return;
-								}
-								var item = Plugin.ItemSheet?.GetRow(slot->ItemID);
-								if (item == null)
-								{
-									return;
-								}
-								if (Plugin.ClassJobs.GetRow(RetainerClass)!.ClassJobCategory.Value!.RowId == 32 &&
-									item.LevelItem.Row == Data.RetainerGatherILvl)
-								{
-									GearRetainer1 = true;
-								}
-								else if (new HashSet<uint> { 30, 31 }.Contains(Plugin.ClassJobs.GetRow(RetainerClass)!.ClassJobCategory.Value!.RowId) &&
-									item.LevelItem.Row == Data.RetainerCombatILvl)
-								{
-									GearRetainer1 = true;
-								}
-							}
-						}
-						else if (i == 1)
-						{
-							LevelRetainer2 = retainer->Level;
-
-							if (!GearRetainer2)
-							{
-								var invManager = InventoryManager.Instance();
-								var inventory = invManager->GetInventoryContainer(InventoryType.RetainerEquippedItems);
-								var invSize = inventory->Size;
-								// Combat gear
-								var slot = inventory->GetInventorySlot(3);
-								if (slot->ItemID == 0 || slot->Quantity == 0)
-								{
-									return;
-								}
-								var item = Plugin.ItemSheet?.GetRow(slot->ItemID);
-								if (item == null)
-								{
-									return;
-								}
-								if (Plugin.ClassJobs.GetRow(RetainerClass)!.ClassJobCategory.Value!.RowId == 32 &&
-									item.LevelItem.Row == Data.RetainerGatherILvl)
-								{
-									GearRetainer2 = true;
-								}
-								else if (new HashSet<uint> { 30, 31 }.Contains(Plugin.ClassJobs.GetRow(RetainerClass)!.ClassJobCategory.Value!.RowId) &&
-									item.LevelItem.Row == Data.RetainerCombatILvl)
-								{
-									GearRetainer2 = true;
-								}
-							}
-						}
-					}
+					itemIDs.Remove(id);
 				}
 			}
 		}
@@ -747,10 +794,56 @@ namespace FFXIVCharaTracker.DB
 			return list;
 		}
 
+		internal List<string> GetMissingMinerItems()
+		{
+			var list = new List<string>();
+
+			foreach (var id in UncollectedMinerItemsSet)
+			{
+				list.Add(Plugin.ItemCache[Plugin.ItemIDToSortID[(uint)Plugin.GatheringItems!.GetRow(id)!.Item]].Item1.Name);
+			}
+
+			return list;
+		}
+
+		internal List<string> GetMissingBotanistItems()
+		{
+			var list = new List<string>();
+
+			foreach (var id in UncollectedBotanistItemsSet)
+			{
+				list.Add(Plugin.ItemCache[Plugin.ItemIDToSortID[(uint)Plugin.GatheringItems!.GetRow(id)!.Item]].Item1.Name);
+			}
+
+			return list;
+		}
+
+		internal List<string> GetMissingFisherItems()
+		{
+			var list = new List<string>();
+
+			foreach (var id in UncollectedFisherItemsSet)
+			{
+				list.Add(Plugin.ItemCache[Plugin.ItemIDToSortID[(uint)Plugin.FishParameters!.GetRow(id)!.Item]].Item1.Name);
+			}
+
+			foreach (var id in UncollectedSpearfisherItemsSet)
+			{
+				list.Add(Plugin.SpearfishingItems.GetRow(id)!.Item.Value!.Name);
+			}
+
+			return list;
+		}
+
+		public override int GetHashCode()
+		{
+			return (int)CharaID;
+		}
 	}
 
 	internal class Team
 	{
+		[Key]
 		public int TeamID { get; set; }
 		[ForeignKey(nameof(Chara.Tank))]
 		public Chara? TankA { get; set; }
@@ -760,5 +853,290 @@ namespace FFXIVCharaTracker.DB
 		public Chara? Dps2A { get; set; }
 		[ForeignKey(nameof(Chara.Healer))]
 		public Chara? HealerA { get; set; }
+	}
+
+	internal class Retainer : IComparable<Retainer>
+	{
+		[Key]
+		public ulong RetainerID { get; set; }
+		public string Name { get; set; } = "";
+		public uint ClassID { get; set; }
+		public int Level { get; set; }
+		public bool Gear { get; set; }
+		public Chara Owner { get; set; }
+		public List<InventorySlot> Inventory { get; set; } = new List<InventorySlot>();
+
+		// This exists because EF can't map the other constructor
+		internal Retainer()
+		{
+			Owner = new Chara(0,0);
+		}
+
+		internal Retainer(Chara owner, ulong retainerID)
+		{
+			Owner = owner;
+			RetainerID = retainerID;
+		}
+
+		internal static unsafe void UpdateRetainer(CharaContext context, Chara chara)
+		{
+			if (Plugin.Retainers.ActiveRetainer == 0)
+			{
+				return;
+			}
+
+			var retainerManager = RetainerManager.Instance();
+
+			for (int i = 0; i < retainerManager->GetRetainerCount(); i++)
+			{
+				var retainer = retainerManager->Retainer[i];
+				var retainerID = retainer->RetainerID;
+				if (retainerID == Plugin.Retainers.ActiveRetainer)
+				{
+					if (!retainer->Available)
+					{
+						return;
+					}
+
+					var retainerData = chara.Retainers.Where(r => r.RetainerID == retainerID).SingleOrDefault();
+
+					if (retainerData == null)
+					{
+						retainerData = new Retainer(chara, retainer->RetainerID);
+						context.Retainers.Add(retainerData);
+					}
+
+					retainerData.Level = retainer->Level;
+					retainerData.ClassID = retainer->ClassJob;
+					retainerData.Name = Marshal.PtrToStringUTF8((IntPtr)retainer->Name)!;
+					InventorySlot.StoreInventories(context, retainerData);
+
+					if (!retainerData.Gear)
+					{
+						var invManager = InventoryManager.Instance();
+						var inventory = invManager->GetInventoryContainer(InventoryType.RetainerEquippedItems);
+						var invSize = inventory->Size;
+						// Combat gear
+						var slot = inventory->GetInventorySlot(3);
+						if (slot->ItemID == 0 || slot->Quantity == 0)
+						{
+							return;
+						}
+						var item = Plugin.ItemSheet?.GetRow(slot->ItemID);
+						if (item == null)
+						{
+							return;
+						}
+						if (Plugin.ClassJobs.GetRow(retainerData.ClassID)!.ClassJobCategory.Value!.RowId == 32 &&
+							item.LevelItem.Row == Data.RetainerGatherILvl)
+						{
+							retainerData.Gear = true;
+						}
+						else if (new HashSet<uint> { 30, 31 }.Contains(Plugin.ClassJobs.GetRow(retainerData.ClassID)!.ClassJobCategory.Value!.RowId) &&
+							item.LevelItem.Row == Data.RetainerCombatILvl)
+						{
+							retainerData.Gear = true;
+						}
+					}
+					return;
+				}
+			}
+		}
+
+		public int CompareTo(Retainer? other)
+		{
+			if (other == null)
+			{
+				return 1;
+			}
+
+			return this.RetainerID.CompareTo(other.RetainerID);
+		}
+	}
+
+	[Microsoft.EntityFrameworkCore.Index(nameof(CharaID), nameof(Inventory), nameof(Slot))]
+	[Microsoft.EntityFrameworkCore.Index(nameof(RetainerID), nameof(Inventory), nameof(Slot))]
+	[Microsoft.EntityFrameworkCore.Index(nameof(CharaID), nameof(RetainerID), nameof(Inventory), nameof(Slot), IsUnique = true)]
+	[Microsoft.EntityFrameworkCore.Index(nameof(ItemID), nameof(CharaID), nameof(Quantity))]
+	[Microsoft.EntityFrameworkCore.Index(nameof(ItemID), nameof(RetainerID), nameof(Quantity))]
+	[Microsoft.EntityFrameworkCore.Index(nameof(ItemCategory), nameof(ItemID), nameof(CharaID), nameof(Quantity))]
+	[Microsoft.EntityFrameworkCore.Index(nameof(ItemCategory), nameof(ItemID), nameof(RetainerID), nameof(Quantity))]
+	internal class InventorySlot
+	{
+		[Key]
+		public ulong InventorySlotID { get; set; }
+		public ulong ItemID { get; set; }
+		public uint ItemCategory { get; set; }
+		public uint Quantity { get; set; }
+		public InventoryType Inventory { get; set; }
+		public int Slot { get; set; }
+		private ulong? RetainerID { get; set; }
+		[ForeignKey(nameof(DB.Retainer.RetainerID))]
+		public Retainer? Retainer { get; set; }
+		private ulong? CharaID { get; set; }
+		[ForeignKey(nameof(DB.Chara.CharaID))]
+		public Chara? Chara { get; set; }
+
+		internal static unsafe void StoreInventories(CharaContext context, Chara chara)
+		{
+			InventoryType[] inventories =
+			{
+				InventoryType.Inventory1,
+				InventoryType.Inventory2,
+				InventoryType.Inventory3,
+				InventoryType.Inventory4,
+				InventoryType.EquippedItems,
+				InventoryType.Currency,
+				InventoryType.Crystals,
+				InventoryType.ArmoryOffHand,
+				InventoryType.ArmoryHead,
+				InventoryType.ArmoryBody,
+				InventoryType.ArmoryHands,
+				InventoryType.ArmoryLegs,
+				InventoryType.ArmoryFeets,
+				InventoryType.ArmoryEar,
+				InventoryType.ArmoryNeck,
+				InventoryType.ArmoryWrist,
+				InventoryType.ArmoryRings,
+				InventoryType.ArmoryMainHand,
+				InventoryType.SaddleBag1,
+				InventoryType.SaddleBag2,
+				InventoryType.PremiumSaddleBag1,
+				InventoryType.PremiumSaddleBag2
+			};
+			StoreInventory(inventories, context, chara: chara);
+		}
+
+		internal static unsafe void StoreInventories(CharaContext context, Retainer retainer)
+		{
+			InventoryType[] inventories =
+			{
+				InventoryType.RetainerPage1,
+				InventoryType.RetainerPage2,
+				InventoryType.RetainerPage3,
+				InventoryType.RetainerPage4,
+				InventoryType.RetainerPage5,
+				InventoryType.RetainerPage6,
+				InventoryType.RetainerPage7,
+				InventoryType.RetainerEquippedItems,
+				InventoryType.RetainerGil,
+				InventoryType.RetainerCrystals,
+				InventoryType.RetainerMarket
+			};
+			StoreInventory(inventories, context, retainer: retainer);
+		}
+
+		internal static unsafe void StoreInventory(InventoryType[] types, CharaContext context, Chara? chara = null, Retainer? retainer = null)
+		{
+			if (chara == null && retainer == null)
+			{
+				return;
+			}
+
+			List<InventorySlot> storedSlots;
+
+			if (chara != null)
+			{
+				storedSlots = context.InventorySlots.Where(sl => sl.Chara == chara).ToList();
+			}
+			else
+			{
+				storedSlots = context.InventorySlots.Where(sl => sl.Retainer == retainer).ToList();
+			}
+
+			var slotIndex = 0; 
+
+			foreach (var type in types)
+			{
+				var container = InventoryManager.Instance()->GetInventoryContainer(type);
+
+				if (container == null)
+				{
+					while (storedSlots[slotIndex].Inventory == type)
+					{
+						slotIndex++;
+					}
+					continue;
+				}
+
+				var invSize = container->Size;
+				var invType = container->Type;
+
+				if (IsInventoryEmpty(container) && (invType == InventoryType.SaddleBag1 ||
+					invType == InventoryType.SaddleBag2 || invType == InventoryType.PremiumSaddleBag1 ||
+					invType == InventoryType.PremiumSaddleBag2))
+				{
+					if (slotIndex < storedSlots.Count && storedSlots[slotIndex].Inventory == invType)
+					{
+						slotIndex += (int)invSize;
+					}
+					continue;
+				}
+
+
+				var invItems = container->Items;
+
+				for (var i = 0; i < invSize; i++)
+				{
+					if (slotIndex == storedSlots.Count || storedSlots[slotIndex].Inventory != invType)
+					{
+						for (var j = i; j < invSize; j++)
+						{
+							var slot = new InventorySlot { Inventory = invType, Slot = j, Chara = chara, Retainer = retainer };
+							context.InventorySlots.Add(slot);
+						}
+						context.SaveChanges();
+						if (chara != null)
+						{
+							storedSlots = context.InventorySlots.Where(sl => sl.Chara == chara).ToList();
+						}
+						else
+						{
+							storedSlots = context.InventorySlots.Where(sl => sl.Retainer == retainer).ToList();
+						}
+					}
+
+					var gameSlot = invItems[i];
+					var dbSlot = storedSlots[slotIndex];
+
+					if (dbSlot.Slot != i)
+					{
+						PluginLog.Warning($"Inventory slot does not match database slot: {dbSlot.Slot}, {i}!");
+					}
+
+
+					if (!Plugin.ItemCache.TryGetValue(Plugin.ItemIDToSortID[gameSlot.ItemID], out var itemData) ||
+						!Plugin.ItemIDToSortID.TryGetValue(gameSlot.ItemID, out var sortID))
+					{
+						slotIndex++;
+						continue;
+					}
+
+					dbSlot.Quantity = gameSlot.Quantity;
+
+					dbSlot.ItemCategory = itemData.Item2.RowId;
+
+					dbSlot.ItemID = sortID;
+
+					slotIndex++;
+				}
+			}
+		}
+
+		internal static unsafe bool IsInventoryEmpty(InventoryContainer* container)
+		{
+			var invItems = container->Items;
+			var invSize = container->Size;
+
+			for (var i = 0; i < invSize; i++)
+			{
+				if (invItems[i].ItemID != 0)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 }

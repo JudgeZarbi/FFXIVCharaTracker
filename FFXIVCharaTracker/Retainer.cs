@@ -157,7 +157,6 @@ namespace FFXIVCharaTracker
 			//This is the best I can come up with due it the retainer ID changing but the inventory takes almost a second to loate(I assume as it loads in from the network). This won't really take bad network conditions into account but until I can come up with a more reliable way it'll have to do
 			if (_lastRetainerSwap != null && _lastRetainerSwap.Value.AddSeconds(waitTime) <= lastUpdate)
 			{
-				PluginLog.Warning($"Active retainer id has changed: {retainerId}");
 				_lastRetainerSwap = null;
 				//Make sure the retainer is fully loaded before firing the event
 				if (retainerId != 0)

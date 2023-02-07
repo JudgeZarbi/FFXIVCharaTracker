@@ -34,13 +34,18 @@ using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using FFXIVClientStructs.Interop;
+using System.Threading.Tasks;
+using Dalamud.Hooking;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using TextCopy;
 
 namespace FFXIVCharaTracker
 {
     internal class Plugin : IDalamudPlugin
     {
         public string Name => "FFXIVCharaTracker";
-		public static string DataVersion => "0.1.0.0";
+        public static string DataVersion => "0.2.0.0";
 
         [PluginService]
         internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
@@ -56,41 +61,53 @@ namespace FFXIVCharaTracker
 
         [PluginService]
         internal static Framework FrameworkInst { get; private set; } = null!;
+        [PluginService]
+        internal static GameGui Gui { get; private set; } = null!;
 		[PluginService]
-		internal static GameGui Gui { get; private set; } = null!;
+		internal static ChatGui Chat { get; private set; } = null!;
 		[PluginService]
-		internal static SigScanner SigScanner { get; private set; } = null!;
-        internal static XivCommonBase Common { get; private set; } = null!;
+        internal static SigScanner SigScanner { get; private set; } = null!;
+		internal static XivCommonBase Common { get; private set; } = null!;
         internal Configuration Configuration { get; }
         internal PluginUI UI { get; }
         private Commands Commands { get; }
         internal static ActiveRetainerManager Retainers { get; set; } = null!;
-        internal DB.Chara? CurCharaData { get; private set; }
+        internal static DB.Chara? CurCharaData { get; private set; }
         internal DB.CharaContext Context { get; private set; }
 
         internal bool CharaLoaded = false;
         internal bool WaitingOnRetainer = false;
         internal bool WaitingOnHairstyles = false;
+        internal Task? DatabaseSave;
 
         internal readonly Stopwatch SwUpdate = new();
         internal readonly Stopwatch SwRetainer = new();
         internal const int UpdateTime = 10 * 60 * 1000;
-		internal const int UpdateRetainersTime = 1000;
+        internal const int UpdateRetainersTime = 1000;
 
-		internal static Lumina.Excel.ExcelSheet<Item> ItemSheet = null!;
+        internal static Lumina.Excel.ExcelSheet<Item> ItemSheet = null!;
         internal Lumina.Excel.ExcelSheet<ClassJobCategory> ClassJobCategories;
         internal static Lumina.Excel.ExcelSheet<ClassJob> ClassJobs = null!;
         internal static Lumina.Excel.ExcelSheet<Emote> Emotes = null!;
         internal static Lumina.Excel.ExcelSheet<SatisfactionNpc> SatisfactionNpcs = null!;
         internal Lumina.Excel.ExcelSheet<ENpcResident> ENpcResidents;
-		internal Lumina.Excel.ExcelSheet<World> Worlds;
-		internal Lumina.Excel.ExcelSheet<ContentFinderCondition> ContentFinderConditions;
+        internal Lumina.Excel.ExcelSheet<World> Worlds;
         internal Lumina.Excel.ExcelSheet<SecretRecipeBook> SecretRecipeBooks;
+		internal static Lumina.Excel.ExcelSheet<GatheringItem> GatheringItems = null!;
+		internal static Lumina.Excel.ExcelSheet<FishParameter> FishParameters = null!;
+		internal static Lumina.Excel.ExcelSheet<SpearfishingItem> SpearfishingItems = null!;
+
+		internal static readonly Dictionary<ulong, (Item, ItemUICategory)> ItemCache = new();
+        internal static readonly Dictionary<uint, ulong> ItemIDToSortID = new();
+
+        internal readonly Queue<System.Action> queuedChanges = new();
 
 		public Plugin()
         {
 			Resolver.GetInstance.SetupSearchSpace(SigScanner.SearchBase);
 			Resolver.GetInstance.Resolve();
+
+            Gathering.Initialise();
 
 			Common = new XivCommonBase();
 			
@@ -111,12 +128,44 @@ namespace FFXIVCharaTracker
 			SatisfactionNpcs = DataManager.Excel.GetSheet<SatisfactionNpc>()!;
 			ENpcResidents = DataManager.Excel.GetSheet<ENpcResident>()!;
 			Worlds = DataManager.Excel.GetSheet<World>()!;
-			ContentFinderConditions = DataManager.Excel.GetSheet<ContentFinderCondition>()!;
-            SecretRecipeBooks = DataManager.Excel.GetSheet<SecretRecipeBook>()!;
+			SecretRecipeBooks = DataManager.Excel.GetSheet<SecretRecipeBook>()!;
+			GatheringItems = DataManager.Excel.GetSheet<GatheringItem>()!;
+			FishParameters = DataManager.Excel.GetSheet<FishParameter>()!;
+			SpearfishingItems = DataManager.Excel.GetSheet<SpearfishingItem>()!;
+
+			_ = Discord.MainAsync();
+
+			_ = Task.Run(PopulateItemCache);
 
 			SwUpdate.Start();
             SwRetainer.Start();
         }
+
+        private void PopulateItemCache()
+        {
+            foreach (var row in ItemSheet)
+            {
+                if (row.Name == "")
+                {
+                    continue;
+                }
+
+                var uiSortData = row.ItemUICategory.Value!;
+
+                ulong sortID = GetSortID(uiSortData, row.RowId);
+
+				ItemIDToSortID[row.RowId] = sortID;
+                ItemCache[sortID] = (row, row.ItemUICategory.Value!);
+			}
+            ItemIDToSortID[0] = 0;
+            var zeroItem = ItemSheet.Where(it => it.RowId == 0).Single();
+            ItemCache[0] = (zeroItem, zeroItem.ItemUICategory.Value!);
+		}
+
+        internal static ulong GetSortID(ItemUICategory uiSortData, uint rowID)
+        {
+            return (ulong)uiSortData.OrderMajor << 40 | (ulong)uiSortData.OrderMinor << 32 | rowID;
+		}
 
         private void OnUpdate(Framework framework)
         {
@@ -132,17 +181,29 @@ namespace FFXIVCharaTracker
                 return;
             }
 
-            if (SwUpdate.ElapsedMilliseconds > UpdateTime)
+
+            if (DatabaseSave != null && !DatabaseSave.IsCompleted)
             {
-                UpdateCharacterData();
-                SwUpdate.Restart();
+                return;
+			}
+
+            while (queuedChanges.Count > 0)
+            {
+                queuedChanges.Dequeue()();
             }
 
-            if (SwRetainer.ElapsedMilliseconds > UpdateRetainersTime)
+			if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
             {
-                CurCharaData.UpdateRetainers();
-                SwRetainer.Restart();
-				Context.SaveChanges();
+				UpdateCharacterData();
+                SwUpdate.Restart();
+			}
+
+			if (SwRetainer.ElapsedMilliseconds > UpdateRetainersTime)
+            {
+				Retainer.UpdateRetainer(Context, CurCharaData);
+//				PluginLog.Warning($"UpdateRetainer: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
+				InventorySlot.StoreInventories(Context, CurCharaData);
+//				PluginLog.Warning($"UpdateInventories: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
 			}
 
 			if (WaitingOnHairstyles)
@@ -153,9 +214,10 @@ namespace FFXIVCharaTracker
 					CurCharaData.UpdateHairstyleUnlocks(UiState);
 				}
 			}
-        }
+			DatabaseSave = Task.Run(Context.SaveChanges);
+		}
 
-        private void OnLogIn(object? sender, EventArgs e)
+		private void OnLogIn(object? sender, EventArgs e)
         {
             GetCharacterData();
         }
@@ -164,7 +226,7 @@ namespace FFXIVCharaTracker
         {
             CurCharaData = null;
             CharaLoaded = false;
-        }
+		}
 
 		internal void AddNewCharacter()
         {
@@ -193,16 +255,14 @@ namespace FFXIVCharaTracker
 
             if (CurrentChara != null)
             {
-                CurCharaData = Context.Charas.SingleOrDefault(o => o.CharaID == ClientState.LocalContentId);
+                CurCharaData = Context.Charas.Include(c => c.Retainers).SingleOrDefault(o => o.CharaID == ClientState.LocalContentId);
 
                 CharaLoaded = true;
 
 				if (CurCharaData != null &&
 					CurCharaData.PluginDataVersion != DataVersion)
 				{
-					CurCharaData.PluginDataVersion = DataVersion;
-
-					Context.SetDefaultArraysForAllCharas();
+					Context.AddNewDataToCharacterArrays();
 				}
 
 				UpdateCharacterData();
@@ -243,12 +303,13 @@ namespace FFXIVCharaTracker
 
 				CurCharaData.UpdateGCRank(UiState);
 				CurCharaData.UpdateChocobo(UiState);
+                CurCharaData.UpdateRaceChocoboData();
 
 				CurCharaData.UpdateCustomDeliveries();
 				CurCharaData.UpdateUnlockQuests(UiState);
-
-                Context.SaveChanges();
-            }
+                CurCharaData.UpdateIslandSanctuaryData();
+                CurCharaData.UpdateRetainerArrays();
+			}
 
         }
 
