@@ -133,11 +133,10 @@ namespace FFXIVCharaTracker
 			FishParameters = DataManager.Excel.GetSheet<FishParameter>()!;
 			SpearfishingItems = DataManager.Excel.GetSheet<SpearfishingItem>()!;
 
-			_ = Discord.MainAsync();
-
 			_ = Task.Run(PopulateItemCache);
 
-			SwUpdate.Start();
+
+            SwUpdate.Start();
             SwRetainer.Start();
         }
 
@@ -228,7 +227,7 @@ namespace FFXIVCharaTracker
             CharaLoaded = false;
 		}
 
-		internal void AddNewCharacter()
+		internal unsafe void AddNewCharacter()
         {
 			var CurrentChara = ClientState.LocalPlayer;
 
@@ -247,6 +246,8 @@ namespace FFXIVCharaTracker
                 UpdateCharacterData();
             }
 
+			var chrDir = Path.Combine(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->UserPath, $"FFXIV_CHR{ClientState.LocalContentId:X16}").Replace('/', '\\');
+            File.Create(Path.Combine(chrDir, "_" + CurCharaData!.Forename));
 		}
 
 		internal unsafe void GetCharacterData()
