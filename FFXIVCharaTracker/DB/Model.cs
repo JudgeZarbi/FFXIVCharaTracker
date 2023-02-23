@@ -65,8 +65,15 @@ namespace FFXIVCharaTracker.DB
 					c.UncollectedSpearfisherItems = JsonSerializer.Serialize(c.UncollectedSpearfisherItemsSet);
 					c.PluginDataVersion = "0.2.0.0";
 				}
-			}
-			Plugin.CurCharaData!.AddNewDataToCharacterArrays();
+                if (c.PluginDataVersion == "0.2.0.0")
+				{
+                    c.IncompleteQuestsSet.Add(66235);
+                    c.IncompleteQuestsSet.Add(68553);
+                    c.PluginDataVersion = "0.2.0.1";
+                }
+
+            }
+            Plugin.CurCharaData!.AddNewDataToCharacterArrays();
 		}
 
 		internal void ResetRetainerGatherGear()

@@ -2439,7 +2439,9 @@ namespace FFXIVCharaTracker
 									DrawTableRowText("The Goblet", charaData.IsQuestComplete(66749));
 									DrawTableRowText("Shirogane", charaData.IsQuestComplete(68167));
 									DrawTableRowText("Empyreum", charaData.IsQuestComplete(69708));
-									DrawTableRowText("Gold Saucer", charaData.IsQuestComplete(65970));
+                                    DrawTableRowText("Dyeing", charaData.IsQuestComplete(66235));
+                                    DrawTableRowText("Glamours", charaData.IsQuestComplete(68553));
+                                    DrawTableRowText("Gold Saucer", charaData.IsQuestComplete(65970));
 									DrawTableRowText("Challenge Log", charaData.IsQuestComplete(66967));
 									DrawTableRowText("Aesthetician", charaData.IsQuestComplete(66746));
 									DrawTableRowText("Crystalline Conflict", charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640));
@@ -5583,9 +5585,9 @@ namespace FFXIVCharaTracker
 										ImGui.Unindent();
 										ImGui.Unindent();
 
-										if (ImGui.BeginTable("squadoptionalGeneral", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+										if (ImGui.BeginTable("squadoptionalGeneral", 16, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
 										{
-											SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Gold Saucer", "Challenge Log", "Aesthetician", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
+											SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum", "Dyeing", "Glamours", "Gold Saucer", "Challenge Log", "Aesthetician", "Crystalline Conflict", "Frontlines", "Rival Wings", "Wondrous Tails", "Faux Hollows");
 
 											foreach (var c in charas)
 											{
@@ -5597,7 +5599,9 @@ namespace FFXIVCharaTracker
 												SetCellBackground(c.IsQuestComplete(66749) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(68167) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(69708) ? Green : Red);
-												SetCellBackground(c.IsQuestComplete(65970) ? Green : Red);
+                                                SetCellBackground(c.IsQuestComplete(66235) ? Green : Red);
+                                                SetCellBackground(c.IsQuestComplete(68553) ? Green : Red);
+                                                SetCellBackground(c.IsQuestComplete(65970) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(66967) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(66746) ? Green : Red);
 												SetCellBackground(c.IsQuestComplete(66640) || c.IsQuestComplete(66641) || c.IsQuestComplete(66642) ? Green : Red);
