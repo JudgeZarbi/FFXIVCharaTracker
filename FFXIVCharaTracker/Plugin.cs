@@ -355,7 +355,6 @@ namespace FFXIVCharaTracker
             ClientState.Login -= OnLogIn;
             ClientState.Logout -= OnLogOut;
             FrameworkInst.Update -= OnUpdate;
-            Discord.Dispose();
         }
     }
 }
