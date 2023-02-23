@@ -4,7 +4,7 @@
     "Name": "FFXIV Character Tracker",
     "Description": "Manage all your alts, or just track what you don't have.",
     "InternalName": "FFXIVCharaTracker",
-    "AssemblyVersion": "0.1.2.0",
+    "AssemblyVersion": "0.3.0.0",
     "RepoUrl": "https://github.com/JudgeZarbi/FFXIVCharaTracker",
     "ApplicableVersion": "any",
     "Tags": [
@@ -16,8 +16,8 @@
     "IsTestingExclusive": "False",
     "LastUpdated": 1673875563,
     "DownloadCount": 0,
-    "DownloadLinkInstall": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.1.2/latest.zip",
-    "DownloadLinkTesting": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.1.2/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.1.2/latest.zip"
+    "DownloadLinkInstall": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.3.0/latest.zip",
+    "DownloadLinkTesting": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.3.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/JudgeZarbi/FFXIVCharaTracker/releases/download/0.3.0/latest.zip"
   },
 ]
