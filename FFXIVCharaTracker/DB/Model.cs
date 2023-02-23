@@ -24,6 +24,7 @@ using XivCommon.Functions;
 using System.IO;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.Game.MJI;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace FFXIVCharaTracker.DB
 {
@@ -33,6 +34,7 @@ namespace FFXIVCharaTracker.DB
 		internal DbSet<Team> Teams { get; set; }
 		internal DbSet<Retainer> Retainers { get; set; }
 		internal DbSet<InventorySlot> InventorySlots { get; set; }
+		internal DbSet<RecipeList> RecipeLists { get; set; }
 
 		public unsafe string DbPath { get; } = Framework.Instance()->UserPath.Replace('/', '\\');
 		//public string DbPath { get; } = "";
@@ -120,14 +122,73 @@ namespace FFXIVCharaTracker.DB
 				c.UncollectedSpearfisherItems = JsonSerializer.Serialize(c.UncollectedSpearfisherItemsSet);
 
 			}
-			Plugin.CurCharaData.PluginDataVersion = "0.1.0.0";
+			Plugin.CurCharaData!.PluginDataVersion = "0.1.0.0";
 			Plugin.CurCharaData.AddNewDataToCharacterArrays();
+		}
+
+		internal List<InventorySlot> GetSlotsByItemID(ulong itemId)
+		{
+			return InventorySlots.Where(inv => inv.ItemID == Plugin.ItemIDToSortID[(uint)itemId] &&
+			inv.Quantity > 0 && !new InventoryType[] { InventoryType.ArmoryBody, InventoryType.ArmoryEar,
+				InventoryType.ArmoryFeets, InventoryType.ArmoryHands, InventoryType.ArmoryHead,
+				InventoryType.ArmoryLegs, InventoryType.ArmoryMainHand, InventoryType.ArmoryNeck,
+				InventoryType.ArmoryOffHand, InventoryType.ArmoryRings, InventoryType.ArmoryWrist,
+				InventoryType.EquippedItems, InventoryType.RetainerEquippedItems}.Contains(inv.Inventory)).Include(inv => inv.Retainer).ThenInclude(r => r!.Owner)
+			.Include(inv => inv.Chara).AsNoTracking().ToList()
+			.OrderBy(inv => inv.Chara?.CharaID ?? inv.Retainer!.Owner.CharaID)
+			.ThenBy(inv => inv.Retainer?.RetainerID ?? 0).ToList();
+		}
+
+		internal int GetQuantityByItemID(ulong itemId)
+		{
+			return (int)GetSlotsByItemID(itemId).Sum(inv => inv.Quantity);
 		}
 
 		internal static void LogToWarning(string message)
 		{
 			PluginLog.Warning(message);
 		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Chara>()
+				.HasMany(c => c.Inventory)
+				.WithOne(inv => inv.Chara)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Chara>()
+				.HasMany(c => c.Retainers)
+				.WithOne(r => r.Owner)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Retainer>()
+				.HasMany(r => r.Inventory)
+				.WithOne(inv => inv.Retainer)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Chara>()
+				.HasOne(c => c.Tank)
+				.WithOne(t => t.TankA)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Chara>()
+				.HasOne(c => c.Dps1)
+				.WithOne(t => t.Dps1A)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Chara>()
+				.HasOne(c => c.Dps2)
+				.WithOne(t => t.Dps2A)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Chara>()
+				.HasOne(c => c.Healer)
+				.WithOne(t => t.HealerA)
+				.OnDelete(DeleteBehavior.SetNull);
+
+
+		}
+
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 				=> options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite")
@@ -950,7 +1011,7 @@ namespace FFXIVCharaTracker.DB
 				return 1;
 			}
 
-			return this.RetainerID.CompareTo(other.RetainerID);
+			return RetainerID.CompareTo(other.RetainerID);
 		}
 	}
 
@@ -1137,6 +1198,40 @@ namespace FFXIVCharaTracker.DB
 			}
 
 			return true;
+		}
+	}
+
+	[Microsoft.EntityFrameworkCore.Index(nameof(SubcategoryName), nameof(Name), nameof(ListData))]
+	internal class RecipeList
+	{
+		[Key]
+		public string Name { get; set; }
+		public string SubcategoryName { get; set; }
+		public string ListData { get; set; }
+		[NotMapped]
+		public IDictionary<uint, uint> ListDataDict { get; private set; }
+
+		public RecipeList(string name, string subcategoryName, IDictionary<uint, uint> listData)
+		{
+			Name = name;
+			SubcategoryName = subcategoryName;
+			ListDataDict = listData;
+
+			ListData = JsonSerializer.Serialize(ListDataDict);
+		}
+
+		public RecipeList(string listData, string name, string subcategoryName)
+		{
+			Name = name;
+			SubcategoryName = subcategoryName;
+			ListData = listData;
+			ListDataDict = JsonSerializer.Deserialize<Dictionary<uint, uint>>(ListData)!;
+		}
+
+		internal void UpdateRecipeList(IDictionary<uint, uint> listData)
+		{
+			ListDataDict = listData;
+			ListData = JsonSerializer.Serialize(ListDataDict);
 		}
 	}
 }

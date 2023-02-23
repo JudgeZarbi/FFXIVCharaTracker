@@ -96,9 +96,16 @@ namespace FFXIVCharaTracker
 		internal static Lumina.Excel.ExcelSheet<GatheringItem> GatheringItems = null!;
 		internal static Lumina.Excel.ExcelSheet<FishParameter> FishParameters = null!;
 		internal static Lumina.Excel.ExcelSheet<SpearfishingItem> SpearfishingItems = null!;
+		internal static Lumina.Excel.ExcelSheet<Recipe> Recipes = null!;
+		internal static Lumina.Excel.ExcelSheet<CompanyCraftSequence> CompanyCraftSequences = null!;
+		internal static Lumina.Excel.ExcelSheet<CompanyCraftProcess> CompanyCraftProcesses = null!;
+		internal static Lumina.Excel.ExcelSheet<CompanyCraftSupplyItem> CompanyCraftSupplyItems = null!;
 
 		internal static readonly Dictionary<ulong, (Item, ItemUICategory)> ItemCache = new();
-        internal static readonly Dictionary<uint, ulong> ItemIDToSortID = new();
+		internal static readonly Dictionary<uint, Recipe> RecipeCache = new();
+		internal static readonly Dictionary<uint, CompanyCraftProcess> WorkshopCache = new();
+		internal static readonly Dictionary<int, Recipe> ItemIDToRecipe = new();
+		internal static readonly Dictionary<uint, ulong> ItemIDToSortID = new();
 
         internal readonly Queue<System.Action> queuedChanges = new();
 
@@ -132,6 +139,10 @@ namespace FFXIVCharaTracker
 			GatheringItems = DataManager.Excel.GetSheet<GatheringItem>()!;
 			FishParameters = DataManager.Excel.GetSheet<FishParameter>()!;
 			SpearfishingItems = DataManager.Excel.GetSheet<SpearfishingItem>()!;
+			Recipes = DataManager.Excel.GetSheet<Recipe>()!;
+			CompanyCraftSequences = DataManager.Excel.GetSheet<CompanyCraftSequence>()!;
+			CompanyCraftProcesses = DataManager.Excel.GetSheet<CompanyCraftProcess>()!;
+			CompanyCraftSupplyItems = DataManager.Excel.GetSheet<CompanyCraftSupplyItem>()!;
 
 			_ = Task.Run(PopulateItemCache);
 
@@ -159,9 +170,31 @@ namespace FFXIVCharaTracker
             ItemIDToSortID[0] = 0;
             var zeroItem = ItemSheet.Where(it => it.RowId == 0).Single();
             ItemCache[0] = (zeroItem, zeroItem.ItemUICategory.Value!);
+
+			foreach (var row in Recipes)
+			{
+				if (row.ItemResult.Value!.RowId == 0)
+				{
+					continue;
+				}
+
+				RecipeCache[row.RowId] = row;
+                ItemIDToRecipe[(int)row.ItemResult.Value!.RowId] = row;
+			}
+
+			foreach (var row in CompanyCraftProcesses)
+			{
+				if (row.UnkData0[0].SupplyItem == 0)
+				{
+					continue;
+				}
+
+				WorkshopCache[row.RowId] = row;
+				//ItemIDToRecipe[(int)row.ItemResult.Value!.RowId] = row;
+			}
 		}
 
-        internal static ulong GetSortID(ItemUICategory uiSortData, uint rowID)
+		internal static ulong GetSortID(ItemUICategory uiSortData, uint rowID)
         {
             return (ulong)uiSortData.OrderMajor << 40 | (ulong)uiSortData.OrderMinor << 32 | rowID;
 		}
@@ -322,6 +355,7 @@ namespace FFXIVCharaTracker
             ClientState.Login -= OnLogIn;
             ClientState.Logout -= OnLogOut;
             FrameworkInst.Update -= OnUpdate;
+            Discord.Dispose();
         }
     }
 }

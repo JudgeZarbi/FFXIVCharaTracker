@@ -3,6 +3,7 @@ using System;
 using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FFXIVCharaTracker.Migrations
 {
     [DbContext(typeof(CharaContext))]
-    partial class CharaContextModelSnapshot : ModelSnapshot
+    [Migration("20230212183058_AddRecipeLists")]
+    partial class AddRecipeLists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -304,13 +307,11 @@ namespace FFXIVCharaTracker.Migrations
                 {
                     b.HasOne("FFXIVCharaTracker.DB.Chara", "Chara")
                         .WithMany("Inventory")
-                        .HasForeignKey("CharaID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CharaID");
 
                     b.HasOne("FFXIVCharaTracker.DB.Retainer", "Retainer")
                         .WithMany("Inventory")
-                        .HasForeignKey("RetainerID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RetainerID");
 
                     b.Navigation("Chara");
 
@@ -332,23 +333,19 @@ namespace FFXIVCharaTracker.Migrations
                 {
                     b.HasOne("FFXIVCharaTracker.DB.Chara", "Dps1A")
                         .WithOne("Dps1")
-                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Dps1")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Dps1");
 
                     b.HasOne("FFXIVCharaTracker.DB.Chara", "Dps2A")
                         .WithOne("Dps2")
-                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Dps2")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Dps2");
 
                     b.HasOne("FFXIVCharaTracker.DB.Chara", "HealerA")
                         .WithOne("Healer")
-                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Healer")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Healer");
 
                     b.HasOne("FFXIVCharaTracker.DB.Chara", "TankA")
                         .WithOne("Tank")
-                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Tank")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("FFXIVCharaTracker.DB.Team", "Tank");
 
                     b.Navigation("Dps1A");
 
