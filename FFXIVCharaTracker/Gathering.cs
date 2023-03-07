@@ -16,7 +16,7 @@ namespace FFXIVCharaTracker
 
 		public static void Initialise()
 		{
-			Gathering.GatheringData = (byte*)Plugin.SigScanner.GetStaticAddressFromSig("4C 8D 05 ?? 5A ?? ?? 0F B6 41 01 42 88 04 02");
+			Gathering.GatheringData = (byte*)Plugin.SigScanner.GetStaticAddressFromSig("4C 8D 05 ?? 33 ?? ?? 0F B6 41 01 42 88 04 02");
 			Gathering.FishingData = (byte*)Plugin.SigScanner.GetStaticAddressFromSig("48 8D 0D ?? ?? ?? ?? 41 0F B6 0C 08 41 B0 01 84 D1 0F 95 C1");
 			Gathering.SpearfishingData = (byte*)Plugin.SigScanner.GetStaticAddressFromSig("48 8D 0D ?? ?? ?? ?? 41 0F B6 0C 08 41 B0 01 84 D1 48 8B");
 		}
