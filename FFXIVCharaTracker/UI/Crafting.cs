@@ -99,7 +99,7 @@ namespace FFXIVCharaTracker
 
                     if (ImGui.BeginCombo($"###RecipeListCombo", lastName))
                     {
-                        for (int n = 0; n < recipeLists.Count; n++)
+                        for (var n = 0; n < recipeLists.Count; n++)
                         {
                             if (lastCategory != recipeLists[n].SubcategoryName)
                             {
@@ -110,7 +110,7 @@ namespace FFXIVCharaTracker
                                 }
                             }
 
-                            var is_selected = (RecipeListIndex == n);
+                            var is_selected = RecipeListIndex == n;
 
                             if (ImGui.Selectable($"    {recipeLists[n].Name}", is_selected))
                             {
@@ -289,7 +289,6 @@ namespace FFXIVCharaTracker
                 }
                 ImGui.EndTabItem();
             }
-
         }
 
         private void CraftingThreadTask()
@@ -346,13 +345,12 @@ namespace FFXIVCharaTracker
                                 ItemName = Plugin.RecipeCache[item.Key].ItemResult.Value!.Name.ToString(),
                                 QuantityNeeded = (int)item.Value,
                                 QuantityHave = context.GetQuantityByItemID(Plugin.ItemIDToSortID[(uint)recipe.ItemResult.Value!.RowId]),
-                                SortOrder = (int)(recipe.CraftType.Value!.RowId << 16 | recipe.RecipeLevelTable.Row),
+                                SortOrder = (int)((recipe.CraftType.Value!.RowId << 16) | recipe.RecipeLevelTable.Row),
                             };
                             var craftQuantity = (int)Math.Ceiling(Math.Max(item.Value - runningComponents[(int)recipe.ItemResult.Row].QuantityHave, 0) / (float)recipe.AmountResult);
                             AddComponentsToDictionary(context, runningComponents, craftQuantity, recipe.UnkData5);
                         }
                     }
-
 
                     var components = runningComponents.Values.OrderBy(comp => comp.SortOrder).ToList();
 
@@ -404,7 +402,7 @@ namespace FFXIVCharaTracker
                         var craftQuantity = Math.Max(Math.Min(quantityData.QuantityNeeded - quantityData.QuantityHave, 0) + (component.AmountIngredient * quantity), 0);
                         craftQuantity = (int)Math.Ceiling(craftQuantity / (float)recipeData.AmountResult);
                         quantityData.QuantityNeeded += quantity * component.AmountIngredient;
-                        quantityData.SortOrder = Math.Min(quantityData.SortOrder, (int)(1 << 24 | recipeData.CraftType.Value!.RowId << 16 | recipeData.RecipeLevelTable.Row));
+                        quantityData.SortOrder = Math.Min(quantityData.SortOrder, (int)((1 << 24) | (recipeData.CraftType.Value!.RowId << 16) | recipeData.RecipeLevelTable.Row));
                         AddComponentsToDictionary(context, components, craftQuantity, recipeData.UnkData5);
                     }
                     else
@@ -416,7 +414,7 @@ namespace FFXIVCharaTracker
                             ItemName = Plugin.ItemCache[Plugin.ItemIDToSortID[(uint)component.ItemIngredient]].Item1.Name.ToString(),
                             QuantityNeeded = component.AmountIngredient * quantity,
                             QuantityHave = context.GetQuantityByItemID(Plugin.ItemIDToSortID[(uint)component.ItemIngredient]),
-                            SortOrder = (int)(1 << 24 | recipeData.CraftType.Value!.RowId << 16 | recipeData.RecipeLevelTable.Row)
+                            SortOrder = (int)((1 << 24) | (recipeData.CraftType.Value!.RowId << 16) | recipeData.RecipeLevelTable.Row)
                         };
                         quantityData = components[component.ItemIngredient];
                         var craftQuantity = Math.Max(quantityData.QuantityNeeded - quantityData.QuantityHave, 0);
@@ -512,6 +510,5 @@ namespace FFXIVCharaTracker
                 }
             }
         }
-
     }
 }

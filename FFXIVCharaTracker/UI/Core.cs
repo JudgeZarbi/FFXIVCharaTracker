@@ -24,9 +24,9 @@ namespace FFXIVCharaTracker
 
         internal PluginUI(Plugin plugin)
         {
-            this.Plugin = plugin;
+            Plugin = plugin;
 
-            Plugin.PluginInterface.UiBuilder.Draw += this.Draw;
+            Plugin.PluginInterface.UiBuilder.Draw += Draw;
 
             unsafe
             {
@@ -38,10 +38,10 @@ namespace FFXIVCharaTracker
 
         public void Dispose()
         {
-            Plugin.PluginInterface.UiBuilder.Draw -= this.Draw;
+            Plugin.PluginInterface.UiBuilder.Draw -= Draw;
             Context.Dispose();
             StopCraftingTask = true;
-            while (CraftingTask.Status != TaskStatus.RanToCompletion && CraftingTask.Status != TaskStatus.Faulted)
+            while (CraftingTask.Status is not TaskStatus.RanToCompletion and not TaskStatus.Faulted)
             {
             }
         }
@@ -87,7 +87,5 @@ namespace FFXIVCharaTracker
             ImGui.TableSetBgColor(ImGuiTableBgTarget.CellBg, ImGui.GetColorU32(colour));
             ImGui.TextColored(textColour ?? Black, text);
         }
-
-
     }
 }

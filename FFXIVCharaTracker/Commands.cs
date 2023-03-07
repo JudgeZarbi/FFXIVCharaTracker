@@ -29,6 +29,8 @@ using Dalamud.Hooking;
 using System.Windows.Forms;
 using System.Drawing;
 using TextCopy;
+using FFXIVClientStructs.FFXIV.Common.Math;
+using System.Globalization;
 
 namespace FFXIVCharaTracker
 {
@@ -44,9 +46,9 @@ namespace FFXIVCharaTracker
             {
                 HelpMessage = "Show Character Tracker window",
             });
-		}
+        }
 
-		public void Dispose()
+        public void Dispose()
         {
             Plugin.CommandManager.RemoveHandler("/pchara");
 		}
@@ -58,6 +60,5 @@ namespace FFXIVCharaTracker
 			Plugin.UpdateCharacterData();
         }
 
-	}
-
+    }
 }

@@ -39,6 +39,7 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using TextCopy;
+using FFXIVClientStructs.FFXIV.Common.Math;
 
 namespace FFXIVCharaTracker
 {
@@ -101,7 +102,7 @@ namespace FFXIVCharaTracker
 		internal static Lumina.Excel.ExcelSheet<CompanyCraftProcess> CompanyCraftProcesses = null!;
 		internal static Lumina.Excel.ExcelSheet<CompanyCraftSupplyItem> CompanyCraftSupplyItems = null!;
 
-		internal static readonly Dictionary<ulong, (Item, ItemUICategory)> ItemCache = new();
+        internal static readonly Dictionary<ulong, (Item, ItemUICategory)> ItemCache = new();
 		internal static readonly Dictionary<uint, Recipe> RecipeCache = new();
 		internal static readonly Dictionary<uint, CompanyCraftProcess> WorkshopCache = new();
 		internal static readonly Dictionary<int, Recipe> ItemIDToRecipe = new();
@@ -109,7 +110,8 @@ namespace FFXIVCharaTracker
 
         internal readonly Queue<System.Action> queuedChanges = new();
 
-		public Plugin()
+
+        public Plugin()
         {
 			Resolver.GetInstance.SetupSearchSpace(SigScanner.SearchBase);
 			Resolver.GetInstance.Resolve();
@@ -118,7 +120,7 @@ namespace FFXIVCharaTracker
 
 			Common = new XivCommonBase();
 			
-            this.Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
 
 			Context = new DB.CharaContext();
@@ -151,6 +153,7 @@ namespace FFXIVCharaTracker
             SwRetainer.Start();
         }
 
+
         private void PopulateItemCache()
         {
             foreach (var row in ItemSheet)
@@ -162,7 +165,7 @@ namespace FFXIVCharaTracker
 
                 var uiSortData = row.ItemUICategory.Value!;
 
-                ulong sortID = GetSortID(uiSortData, row.RowId);
+                var sortID = GetSortID(uiSortData, row.RowId);
 
 				ItemIDToSortID[row.RowId] = sortID;
                 ItemCache[sortID] = (row, row.ItemUICategory.Value!);
@@ -196,10 +199,10 @@ namespace FFXIVCharaTracker
 
 		internal static ulong GetSortID(ItemUICategory uiSortData, uint rowID)
         {
-            return (ulong)uiSortData.OrderMajor << 40 | (ulong)uiSortData.OrderMinor << 32 | rowID;
+            return ((ulong)uiSortData.OrderMajor << 40) | ((ulong)uiSortData.OrderMinor << 32) | rowID;
 		}
 
-        private void OnUpdate(Framework framework)
+        private unsafe void OnUpdate(Framework framework)
         {
             if (!CharaLoaded)
             {
@@ -213,7 +216,6 @@ namespace FFXIVCharaTracker
                 return;
             }
 
-
             if (DatabaseSave != null && !DatabaseSave.IsCompleted)
             {
                 return;
@@ -224,7 +226,8 @@ namespace FFXIVCharaTracker
                 queuedChanges.Dequeue()();
             }
 
-			if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
+
+            if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
             {
 				UpdateCharacterData();
                 SwUpdate.Restart();
@@ -344,13 +347,12 @@ namespace FFXIVCharaTracker
                 CurCharaData.UpdateIslandSanctuaryData();
                 CurCharaData.UpdateRetainerArrays();
 			}
-
         }
 
 		public void Dispose()
         {
-            this.Commands.Dispose();
-            this.UI.Dispose();
+            Commands.Dispose();
+            UI.Dispose();
             Context.Dispose();
             ClientState.Login -= OnLogIn;
             ClientState.Logout -= OnLogOut;
