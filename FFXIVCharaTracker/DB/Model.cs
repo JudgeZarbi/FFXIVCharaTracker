@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +24,9 @@ using System.IO;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.Game.MJI;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace FFXIVCharaTracker.DB
 {
@@ -37,41 +39,15 @@ namespace FFXIVCharaTracker.DB
 		internal DbSet<RecipeList> RecipeLists { get; set; }
 
 		public unsafe string DbPath { get; } = Framework.Instance()->UserPath.Replace('/', '\\');
-		//public string DbPath { get; } = "";
+        //public string DbPath { get; } = "";
 
-		public CharaContext()
-		{
-			Database.Migrate();
-		}
+        public CharaContext() => Database.Migrate();
 
-
-		internal void AddNewDataToCharacterArrays()
+        internal void AddNewDataToCharacterArrays()
 		{
 			foreach (var c in Charas)
 			{
-				if (c.PluginDataVersion == "0.1.0.0")
-				{
-					c.IncompleteQuestsSet.Add(65970);
-					c.IncompleteQuestsSet.Add(66967);
-					c.IncompleteQuestsSet.Add(66746);
-					c.IncompleteQuests = JsonSerializer.Serialize(c.IncompleteQuestsSet);
-					c.UncollectedMinerItemsSet = new HashSet<uint>(Data.RetainerMinerItemIDs);
-					c.UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
-					c.UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
-					c.UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
-					c.UncollectedMinerItems = JsonSerializer.Serialize(c.UncollectedMinerItemsSet);
-					c.UncollectedBotanistItems = JsonSerializer.Serialize(c.UncollectedBotanistItemsSet);
-					c.UncollectedFisherItems = JsonSerializer.Serialize(c.UncollectedFisherItemsSet);
-					c.UncollectedSpearfisherItems = JsonSerializer.Serialize(c.UncollectedSpearfisherItemsSet);
-					c.PluginDataVersion = "0.2.0.0";
-				}
-                if (c.PluginDataVersion == "0.2.0.0")
-				{
-                    c.IncompleteQuestsSet.Add(66235);
-                    c.IncompleteQuestsSet.Add(68553);
-                    c.PluginDataVersion = "0.2.0.1";
-                }
-
+                c.AddNewDataToCharacterArrays();
             }
             Plugin.CurCharaData!.AddNewDataToCharacterArrays();
 		}
@@ -80,7 +56,7 @@ namespace FFXIVCharaTracker.DB
 		{
 			foreach (var r in Retainers)
 			{
-				if (r.ClassID == 16 || r.ClassID == 17 || r.ClassID == 18)
+				if (r.ClassID is 16 or 17 or 18)
 				{
 					r.Gear = false;
 				}
@@ -91,7 +67,7 @@ namespace FFXIVCharaTracker.DB
 		{
 			foreach (var r in Retainers)
 			{
-				if (!(r.ClassID == 16) && !(r.ClassID == 17) && !(r.ClassID == 18))
+				if (r.ClassID is not 16 and not 17 and not 18)
 				{
 					r.Gear = false;
 				}
@@ -193,17 +169,17 @@ namespace FFXIVCharaTracker.DB
 				.WithOne(t => t.HealerA)
 				.OnDelete(DeleteBehavior.SetNull);
 
-
 		}
 
-
-		protected override void OnConfiguring(DbContextOptionsBuilder options)
-				=> options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite")
-						  .EnableThreadSafetyChecks(false)
-						  //.EnableSensitiveDataLogging(true)
-					//.LogTo(LogToWarning, LogLevel.Information)
-					;
-	}
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlite($@"Data Source={DbPath}\charaData.sqlite")
+                                  .EnableThreadSafetyChecks(false)
+                            //.EnableSensitiveDataLogging(true)
+                            //.LogTo(LogToWarning, LogLevel.Information)
+                            ;
+        }
+    }
 
 	internal class Chara
 	{
@@ -231,53 +207,53 @@ namespace FFXIVCharaTracker.DB
 		public bool GatherGear { get; set; }
 		public string IncompleteFolkloreBooks { get; set; }
 		[NotMapped]
-		public HashSet<uint> IncompleteFolkloreBooksSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> IncompleteFolkloreBooksSet { get; set; } = new HashSet<uint>();
 		public string IncompleteSecretRecipeBooks { get; set; }
 		[NotMapped]
-		public HashSet<uint> IncompleteSecretRecipeBooksSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> IncompleteSecretRecipeBooksSet { get; set; } = new HashSet<uint>();
 		public string UnobtainedHairstyles { get; set; }
 		[NotMapped]
-		public HashSet<uint> UnobtainedHairstylesSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UnobtainedHairstylesSet { get; set; } = new HashSet<uint>();
 		public string UnobtainedEmotes { get; set; }
 		[NotMapped]
-		public HashSet<uint> UnobtainedEmotesSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UnobtainedEmotesSet { get; set; } = new HashSet<uint>();
 		public string RetainersStoringDescription { get; set; } = "";
 		public List<Retainer> Retainers { get; set; } = new List<Retainer>();
 		public int GCRank { get; set; }
 		public string LockedDuties { get; set; }
 		[NotMapped]
-		public HashSet<uint> LockedDutiesSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> LockedDutiesSet { get; set; } = new HashSet<uint>();
 		public string LockedCustomDeliveries { get; set; }
 		[NotMapped]
-		public HashSet<uint> LockedCustomDeliveriesSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> LockedCustomDeliveriesSet { get; set; } = new HashSet<uint>();
 		public int ChocoboLevel { get; set; }
 		public int RaceChocoboRank { get; set; }
 		public int RaceChocoboPedigree { get; set; }
 		public int IslandSanctuaryLevel { get; set; }
 		public string IncompleteQuests { get; set; }
 		[NotMapped]
-		public HashSet<uint> IncompleteQuestsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> IncompleteQuestsSet { get; set; } = new HashSet<uint>();
 		public string CustomDeliveryRanks { get; set; }
 		[NotMapped]
-		public List<uint> CustomDeliveryRanksSet { get; set; } = new List<uint>();
+		public IList<uint> CustomDeliveryRanksSet { get; set; } = new List<uint>();
 		public string UnobtainedMinions { get; set; }
 		[NotMapped]
-		public HashSet<uint> UnobtainedMinionsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UnobtainedMinionsSet { get; set; } = new HashSet<uint>();
 		public string UnobtainedMounts { get; set; }
 		[NotMapped]
-		public HashSet<uint> UnobtainedMountsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UnobtainedMountsSet { get; set; } = new HashSet<uint>();
 		public string UncollectedMinerItems { get; set; }
 		[NotMapped]
-		public HashSet<uint> UncollectedMinerItemsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UncollectedMinerItemsSet { get; set; } = new HashSet<uint>();
 		public string UncollectedBotanistItems { get; set; }
 		[NotMapped]
-		public HashSet<uint> UncollectedBotanistItemsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UncollectedBotanistItemsSet { get; set; } = new HashSet<uint>();
 		public string UncollectedFisherItems { get; set; }
 		[NotMapped]
-		public HashSet<uint> UncollectedFisherItemsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UncollectedFisherItemsSet { get; set; } = new HashSet<uint>();
 		public string UncollectedSpearfisherItems { get; set; }
 		[NotMapped]
-		public HashSet<uint> UncollectedSpearfisherItemsSet { get; set; } = new HashSet<uint>();
+		public ICollection<uint> UncollectedSpearfisherItemsSet { get; set; } = new HashSet<uint>();
 		[InverseProperty(nameof(InventorySlot.Chara))]
 		public List<InventorySlot> Inventory { get; set; } = new List<InventorySlot>();
 		public string PluginDataVersion { get; set; } = "";
@@ -290,7 +266,6 @@ namespace FFXIVCharaTracker.DB
 		public Team? Dps2 { get; set; }
 		[InverseProperty(nameof(Team.HealerA))]
 		public Team? Healer { get; set; }
-
 
 		internal Chara(ulong charaID, uint worldID, string forename = "[]", string surname = "[]",
 			string incompleteFolkloreBooks = "[]",	string incompleteSecretRecipeBooks = "[]", string unobtainedHairstyles = "[]",
@@ -318,22 +293,34 @@ namespace FFXIVCharaTracker.DB
 			UncollectedFisherItems = uncollectedFisherItems;
 			UncollectedSpearfisherItems = uncollectedSpearfisherItems;
 
-
-			IncompleteFolkloreBooksSet = JsonSerializer.Deserialize<HashSet<uint>>(IncompleteFolkloreBooks)!;
-			IncompleteSecretRecipeBooksSet = JsonSerializer.Deserialize<HashSet<uint>>(IncompleteSecretRecipeBooks)!;
-			UnobtainedHairstylesSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedHairstyles)!;
-			LockedDutiesSet = JsonSerializer.Deserialize<HashSet<uint>>(LockedDuties)!;
-			UnobtainedEmotesSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedEmotes)!;
-			LockedCustomDeliveriesSet = JsonSerializer.Deserialize<HashSet<uint>>(LockedCustomDeliveries)!;
-			IncompleteQuestsSet = JsonSerializer.Deserialize<HashSet<uint>>(IncompleteQuests)!;
-			CustomDeliveryRanksSet = JsonSerializer.Deserialize<List<uint>>(CustomDeliveryRanks)!;
-			UnobtainedMinionsSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedMinions)!;
-			UnobtainedMountsSet = JsonSerializer.Deserialize<HashSet<uint>>(UnobtainedMounts)!;
-			UncollectedMinerItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedMinerItems)!;
-			UncollectedBotanistItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedBotanistItems)!;
-			UncollectedFisherItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedFisherItems)!;
-			UncollectedSpearfisherItemsSet = JsonSerializer.Deserialize<HashSet<uint>>(UncollectedSpearfisherItems)!;
+			IncompleteFolkloreBooksSet = TryDeserialize<HashSet<uint>>(IncompleteFolkloreBooks, Data.FolkloreIDs);
+            IncompleteSecretRecipeBooksSet = TryDeserialize<HashSet<uint>>(IncompleteSecretRecipeBooks, Data.RecipeBookIDs);
+            UnobtainedHairstylesSet = TryDeserialize<HashSet<uint>>(UnobtainedHairstyles, Data.HairstyleIDs);
+            LockedDutiesSet = TryDeserialize<HashSet<uint>>(LockedDuties, Data.OptionalContentIDs);
+            UnobtainedEmotesSet = TryDeserialize<HashSet<uint>>(UnobtainedEmotes, Data.EmoteIDs);
+            LockedCustomDeliveriesSet = TryDeserialize<HashSet<uint>>(LockedCustomDeliveries, Data.CustomDeliveryNpcIDs);
+            IncompleteQuestsSet = TryDeserialize<HashSet<uint>>(IncompleteQuests, Data.QuestIDs);
+            CustomDeliveryRanksSet = TryDeserialize<List<uint>>(CustomDeliveryRanks, Array.Empty<uint>());
+            UnobtainedMountsSet = TryDeserialize<HashSet<uint>>(UnobtainedMounts, Data.MountIDs);
+            UnobtainedMinionsSet = TryDeserialize<HashSet<uint>>(UnobtainedMinions, Data.MinionIDs);
+            UncollectedMinerItemsSet = TryDeserialize<HashSet<uint>>(UncollectedMinerItems, Data.RetainerMinerItemIDs);
+            UncollectedBotanistItemsSet = TryDeserialize<HashSet<uint>>(UncollectedBotanistItems, Data.RetainerBotanistItemIDs);
+            UncollectedFisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedFisherItems, Data.RetainerFisherItemIDs);
+            UncollectedSpearfisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedSpearfisherItems, Data.RetainerSpearfisherItemIDs);
 		}
+
+        private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
+        {
+            try
+            {
+                return JsonSerializer.Deserialize<TCollection>(data)!;
+            }
+            catch (Exception e)
+            {
+                PluginLog.Error(e, "Failed to load JSON data!");
+                return (TCollection)Activator.CreateInstance(typeof(TCollection), new object[] { baseData })!;
+            }
+        }
 
 		public override bool Equals(object? obj)
 		{
@@ -359,7 +346,7 @@ namespace FFXIVCharaTracker.DB
 			LockedCustomDeliveriesSet = new HashSet<uint>(Data.CustomDeliveryNpcIDs);
 			IncompleteQuestsSet = new HashSet<uint>(Data.QuestIDs);
 			CustomDeliveryRanksSet = new List<uint>();
-			for (int i = 0; i < Data.CustomDeliveryNpcIDs.Length; i++)
+			for (var i = 0; i < Data.CustomDeliveryNpcIDs.Length; i++)
 			{
 				CustomDeliveryRanksSet.Add(0);
 			}
@@ -389,9 +376,15 @@ namespace FFXIVCharaTracker.DB
 				UncollectedSpearfisherItems = JsonSerializer.Serialize(UncollectedSpearfisherItemsSet);
 				PluginDataVersion = "0.2.0.0";
 			}
-		}
+            if (PluginDataVersion == "0.2.0.0")
+            {
+                IncompleteQuestsSet.Add(66235);
+                IncompleteQuestsSet.Add(68553);
+                PluginDataVersion = "0.2.0.1";
+            }
+        }
 
-		internal unsafe void UpdateIslandSanctuaryData()
+        internal unsafe void UpdateIslandSanctuaryData()
 		{
 			var currentRank = MJIManager.Instance()->IslandState.CurrentRank;
 			if (currentRank > 0)
@@ -410,7 +403,7 @@ namespace FFXIVCharaTracker.DB
 			}
 			if (manager->Parameters > 0)
 			{
-				RaceChocoboPedigree = manager->Parameters & (1 << 4) - 1;
+				RaceChocoboPedigree = manager->Parameters & ((1 << 4) - 1);
 			}
 		}
 
@@ -549,7 +542,7 @@ namespace FFXIVCharaTracker.DB
 						continue;
 					}
 				}
-				else if (item.LevelEquip >= 25)
+				else if (item.LevelEquip >= 20)
 				{
 					var classJobCategory = item.ClassJobCategory.Value;
 					if (classJobCategory != null)
@@ -634,7 +627,7 @@ namespace FFXIVCharaTracker.DB
 			UncollectedSpearfisherItems = JsonSerializer.Serialize(UncollectedSpearfisherItemsSet);
 		}
 
-		internal unsafe void UpdateRetainerArray(byte* array, HashSet<uint> itemIDs)
+		internal unsafe void UpdateRetainerArray(byte* array, ICollection<uint> itemIDs)
 		{
 			foreach (var id in itemIDs)
 			{
@@ -934,13 +927,10 @@ namespace FFXIVCharaTracker.DB
 		public Chara Owner { get; set; }
 		public List<InventorySlot> Inventory { get; set; } = new List<InventorySlot>();
 
-		// This exists because EF can't map the other constructor
-		internal Retainer()
-		{
-			Owner = new Chara(0,0);
-		}
+        // This exists because EF can't map the other constructor
+        internal Retainer() => Owner = new Chara(0, 0);
 
-		internal Retainer(Chara owner, ulong retainerID)
+        internal Retainer(Chara owner, ulong retainerID)
 		{
 			Owner = owner;
 			RetainerID = retainerID;
@@ -955,7 +945,7 @@ namespace FFXIVCharaTracker.DB
 
 			var retainerManager = RetainerManager.Instance();
 
-			for (int i = 0; i < retainerManager->GetRetainerCount(); i++)
+			for (var i = 0; i < retainerManager->GetRetainerCount(); i++)
 			{
 				var retainer = retainerManager->Retainer[i];
 				var retainerID = retainer->RetainerID;
@@ -1120,7 +1110,7 @@ namespace FFXIVCharaTracker.DB
 
 				if (container == null)
 				{
-					while (storedSlots[slotIndex].Inventory == type)
+					while (slotIndex < storedSlots.Count && storedSlots[slotIndex].Inventory == type)
 					{
 						slotIndex++;
 					}
@@ -1140,7 +1130,6 @@ namespace FFXIVCharaTracker.DB
 					}
 					continue;
 				}
-
 
 				var invItems = container->Items;
 
@@ -1172,7 +1161,6 @@ namespace FFXIVCharaTracker.DB
 						PluginLog.Warning($"Inventory slot does not match database slot: {dbSlot.Slot}, {i}!");
 					}
 
-
 					if (!Plugin.ItemCache.TryGetValue(Plugin.ItemIDToSortID[gameSlot.ItemID], out var itemData) ||
 						!Plugin.ItemIDToSortID.TryGetValue(gameSlot.ItemID, out var sortID))
 					{
@@ -1188,7 +1176,7 @@ namespace FFXIVCharaTracker.DB
 
 					slotIndex++;
 				}
-			}
+            }
 		}
 
 		internal static unsafe bool IsInventoryEmpty(InventoryContainer* container)
