@@ -49,7 +49,7 @@ namespace FFXIVCharaTracker
                         count = Context.InventorySlots.GroupBy(inv => inv.ItemID).Where(inv => LastInventorySearchResults.Contains((uint)(inv.Key & ((1L << 32) - 1)))).Count();
                     }
 
-                    Clipper.Begin(count + 10, 21 * Scale);
+                    Clipper.Begin(count + 500, 21 * Scale);
                     while (Clipper.Step())
                     {
                         var items = new List<Tuple<ulong, long>>().Select(it => new { ItemID = it.Item1, Quantity = it.Item2 }).ToList();
@@ -158,7 +158,6 @@ namespace FFXIVCharaTracker
                 }
                 ImGui.EndTabItem();
             }
-
         }
     }
 }
