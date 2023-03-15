@@ -380,6 +380,7 @@ namespace FFXIVCharaTracker.DB
             {
                 IncompleteQuestsSet.Add(66235);
                 IncompleteQuestsSet.Add(68553);
+                IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
                 PluginDataVersion = "0.2.0.1";
             }
         }
@@ -403,7 +404,7 @@ namespace FFXIVCharaTracker.DB
 			}
 			if (manager->Parameters > 0)
 			{
-				RaceChocoboPedigree = manager->Parameters & ((1 << 4) - 1);
+				RaceChocoboPedigree = (manager->Parameters & 0x1e) >> 1;
 			}
 		}
 
