@@ -49,6 +49,11 @@ namespace FFXIVCharaTracker
 
                     DrawTableRowText("Home World", true, White, Plugin.Worlds.GetRow(charaData.WorldID)!.Name);
 
+                    if (ImGui.Button("Reset character data"))
+                    {
+                        Plugin.queuedChanges.Enqueue(() => charaData.SetDefaultArrays());
+                    }
+
                     var chocoLevel = charaData.ChocoboLevel;
                     DrawTableRowText("Chocobo level", true, chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red),
                         chocoLevel.ToString());
