@@ -59,7 +59,7 @@ namespace FFXIVCharaTracker
                         var raceChocoRank = c.RaceChocoboRank;
                         var raceChocoPedigree = c.RaceChocoboPedigree;
                         SetCellBackgroundWithText(raceChocoRank == Data.MaxRaceChocoboLevel && raceChocoPedigree == 9 ? Green : (raceChocoRank >= 40 ? Blue : (raceChocoRank > 0 ? Yellow : Red)),
-                            raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree}" : "Not unlocked/updated!", Black);
+                            raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree})" : "Not unlocked/updated!", Black);
                         var gcRank = c.GCRank;
                         SetCellBackgroundWithText(default, GCRankToString[gcRank], gcRank == Data.MaxGCLevel ? Green : (gcRank > 0 ? Yellow : Red));
                         var sanctuaryRank = c.IslandSanctuaryLevel;

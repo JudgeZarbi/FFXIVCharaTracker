@@ -61,7 +61,7 @@ namespace FFXIVCharaTracker
                     var raceChocoRank = charaData.RaceChocoboRank;
                     var raceChocoPedigree = charaData.RaceChocoboPedigree;
                     DrawTableRowText("Race chocobo", true, raceChocoRank == Data.MaxRaceChocoboLevel && raceChocoPedigree == 9 ? Green : (raceChocoRank >= 40 ? Blue : (raceChocoRank > 0 ? Yellow : Red)),
-                        raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree}" : "Not unlocked/updated!");
+                        raceChocoPedigree > 0 ? $"Rank {raceChocoRank} (Pedigree {raceChocoPedigree})" : "Not unlocked/updated!");
 
                     var gcRank = charaData.GCRank;
                     DrawTableRowText("Grand Company rank", true, gcRank == Data.MaxGCLevel ? Green : (gcRank > 0 ? Yellow : Red),
