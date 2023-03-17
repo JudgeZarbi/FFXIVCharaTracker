@@ -10,9 +10,9 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel.GeneratedSheets;
-using System.Data.Entity;
 using System.Diagnostics;
 using XivCommon;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace FFXIVCharaTracker
@@ -266,7 +266,7 @@ namespace FFXIVCharaTracker
 
             if (CurrentChara != null)
             {
-                CurCharaData = Context.Charas.Include(c => c.Retainers).SingleOrDefault(o => o.CharaID == ClientState.LocalContentId);
+                CurCharaData = Context.Charas.Where(c => c.CharaID == ClientState.LocalContentId).Include(c => c.Retainers).SingleOrDefault();
 
                 CharaLoaded = true;
 
