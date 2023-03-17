@@ -1,11 +1,7 @@
-﻿using FFXIVCharaTracker;
-using FFXIVCharaTracker.DB;
+﻿using FFXIVCharaTracker.DB;
 using ImGuiNET;
 using System.Diagnostics;
-using System.Globalization;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FFXIVCharaTracker
 {

@@ -1,45 +1,19 @@
-﻿using Dalamud.Game.Command;
+﻿using Dalamud.Data;
+using Dalamud.Game;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.Command;
+using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using Dalamud.Game.Gui;
-using Dalamud.Game.ClientState;
-using Dalamud.Data;
-using Dalamud.Game;
-using Dalamud;
-using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
-using Dalamud.Game.Text;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Logging;
-using System;
-using System.Text;
-using System.Text.RegularExpressions;
-using XivCommon;
-using Microsoft.EntityFrameworkCore;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.GeneratedSheets;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using FFXIVClientStructs;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Component.Excel;
-using System.Collections;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using FFXIVCharaTracker.DB;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Sqlite;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.Interop;
-using System.Threading.Tasks;
-using Dalamud.Hooking;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using TextCopy;
-using FFXIVClientStructs.FFXIV.Common.Math;
+using Lumina.Excel.GeneratedSheets;
+using System.Data.Entity;
+using System.Diagnostics;
+using XivCommon;
+
 
 namespace FFXIVCharaTracker
 {
@@ -68,7 +42,7 @@ namespace FFXIVCharaTracker
 		internal static ChatGui Chat { get; private set; } = null!;
 		[PluginService]
         internal static SigScanner SigScanner { get; private set; } = null!;
-		internal static XivCommonBase Common { get; private set; } = null!;
+        internal static XivCommonBase Common { get; private set; } = null!;
         internal Configuration Configuration { get; }
         internal PluginUI UI { get; }
         private Commands Commands { get; }
@@ -357,6 +331,7 @@ namespace FFXIVCharaTracker
             ClientState.Login -= OnLogIn;
             ClientState.Logout -= OnLogOut;
             FrameworkInst.Update -= OnUpdate;
+            Common.Dispose();
         }
     }
 }

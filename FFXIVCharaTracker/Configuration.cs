@@ -1,8 +1,5 @@
 ﻿using Dalamud.Configuration;
 using Dalamud.Plugin;
-using FFXIVCharaTracker.DB;
-using System;
-using System.Data.Entity.Migrations;
 
 namespace FFXIVCharaTracker
 {
@@ -22,17 +19,6 @@ namespace FFXIVCharaTracker
         {
             this.pluginInterface = pluginInterface;
         }
-
-        public void MigrateDB()
-        {
-            switch (DbVersion)
-            {
-				case 0:
-                    //var migrator = new DbMigrator
-                    //Migrations.InitialCreate
-                    break;
-			}
-		}
 
         public void Save()
         {

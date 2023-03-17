@@ -1,32 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.MJI;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Dalamud.Game.ClientState.Resolvers;
-using Lumina.Excel.GeneratedSheets;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Data.Parsing;
-using static FFXIVClientStructs.FFXIV.Client.Game.QuestManager.QuestListArray;
-using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
-using Dalamud.Logging;
-using System.Diagnostics;
-using System.Threading;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.ComponentModel;
-using XivCommon.Functions;
-using System.IO;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.Game.MJI;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Runtime.CompilerServices;
-using System.Collections;
-using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace FFXIVCharaTracker.DB
 {

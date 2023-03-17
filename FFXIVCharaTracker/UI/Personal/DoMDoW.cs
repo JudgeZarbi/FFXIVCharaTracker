@@ -1,12 +1,5 @@
 ﻿using FFXIVCharaTracker.DB;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FFXIVCharaTracker
 {

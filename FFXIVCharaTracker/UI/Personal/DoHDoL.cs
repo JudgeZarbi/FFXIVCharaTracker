@@ -1,11 +1,5 @@
-﻿using Dalamud.Logging;
-using FFXIVCharaTracker.DB;
+﻿using FFXIVCharaTracker.DB;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FFXIVCharaTracker
 {
@@ -106,8 +100,6 @@ namespace FFXIVCharaTracker
                     text = charaData.IncompleteSecretRecipeBooksSet.Count == Data.RecipeBookIDs.Length ? "None!" :
                         (charaData.IncompleteSecretRecipeBooksSet.Count == 0 ? "Complete!" :
                         "Missing:\n" + String.Join("\n", charaData.IncompleteSecretRecipeBooksSet.Select(i => Plugin.SecretRecipeBooks.GetRow(i)!.Name)));
-
-                    PluginLog.Warning($"{charaData.IncompleteSecretRecipeBooksSet.Count}, {Data.RecipeBookIDs.Length}");
 
                     DrawTableRowText("Secret recipe books", true, colour, text);
 

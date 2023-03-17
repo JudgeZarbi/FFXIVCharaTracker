@@ -1,12 +1,4 @@
-﻿using Dalamud.Game;
-using FFXIVClientStructs.Interop.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FFXIVCharaTracker
+﻿namespace FFXIVCharaTracker
 {
 	internal unsafe class Gathering
 	{

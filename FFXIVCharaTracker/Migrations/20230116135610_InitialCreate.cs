@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+﻿#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FFXIVCharaTracker.Migrations
 {
@@ -56,10 +55,7 @@ namespace FFXIVCharaTracker.Migrations
                     UnobtainedMounts = table.Column<string>(type: "TEXT", nullable: false),
                     PluginDataVersion = table.Column<string>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Charas", x => x.CharaID);
-                });
+                constraints: table => table.PrimaryKey("PK_Charas", x => x.CharaID));
 
             migrationBuilder.CreateTable(
                 name: "Teams",
