@@ -118,7 +118,7 @@ namespace FFXIVCharaTracker
                         for (int i = 1; i < Plugin.SatisfactionNpcs.RowCount; i++)
                         {
                             var locked = c.LockedCustomDeliveriesSet.Contains(Plugin.SatisfactionNpcs.GetRow((uint)i)!.Npc.Value!.RowId);
-                            SetCellBackgroundWithText(locked ? Red : (c.CustomDeliveryRanksSet[i - 1] == Data.MaxCustomDeliveryRank) ? Green : Yellow, locked ? "Locked" : $"Rank {c.CustomDeliveryRanksSet[i - 1]}", Black);
+                            SetCellBackgroundWithText(locked ? Red : (c.CustomDeliveryRanksList[i - 1] == Data.MaxCustomDeliveryRank) ? Green : Yellow, locked ? "Locked" : $"Rank {c.CustomDeliveryRanksList[i - 1]}", Black);
                         }
                     }
                     ImGui.EndTable();

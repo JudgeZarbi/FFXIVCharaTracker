@@ -229,7 +229,7 @@ namespace FFXIVCharaTracker.DB
 		public ICollection<uint> IncompleteQuestsSet { get; set; } = new HashSet<uint>();
 		public string CustomDeliveryRanks { get; set; }
 		[NotMapped]
-		public IList<uint> CustomDeliveryRanksSet { get; set; } = new List<uint>();
+		public IList<uint> CustomDeliveryRanksList { get; set; } = new List<uint>();
         public string BeastTribeRanks { get; set; }
         [NotMapped]
         public IList<uint> BeastTribeRanksList { get; set; } = new List<uint>();
@@ -298,7 +298,7 @@ namespace FFXIVCharaTracker.DB
             UnobtainedEmotesSet = TryDeserialize<HashSet<uint>>(UnobtainedEmotes, Data.EmoteIDs);
             LockedCustomDeliveriesSet = TryDeserialize<HashSet<uint>>(LockedCustomDeliveries, Data.CustomDeliveryNpcIDs);
             IncompleteQuestsSet = TryDeserialize<HashSet<uint>>(IncompleteQuests, Data.QuestIDs);
-            CustomDeliveryRanksSet = TryDeserialize<List<uint>>(CustomDeliveryRanks, Array.Empty<uint>());
+            CustomDeliveryRanksList = TryDeserialize<List<uint>>(CustomDeliveryRanks, Array.Empty<uint>());
             UnobtainedMountsSet = TryDeserialize<HashSet<uint>>(UnobtainedMounts, Data.MountIDs);
             UnobtainedMinionsSet = TryDeserialize<HashSet<uint>>(UnobtainedMinions, Data.MinionIDs);
             UncollectedMinerItemsSet = TryDeserialize<HashSet<uint>>(UncollectedMinerItems, Data.RetainerMinerItemIDs);
@@ -428,10 +428,10 @@ namespace FFXIVCharaTracker.DB
 			UnobtainedEmotesSet = new HashSet<uint>(Data.EmoteIDs);
 			LockedCustomDeliveriesSet = new HashSet<uint>(Data.CustomDeliveryNpcIDs);
 			IncompleteQuestsSet = new HashSet<uint>(Data.QuestIDs);
-			CustomDeliveryRanksSet = new List<uint>();
+			CustomDeliveryRanksList = new List<uint>();
 			for (var i = 0; i < Data.CustomDeliveryNpcIDs.Length; i++)
 			{
-				CustomDeliveryRanksSet.Add(0);
+				CustomDeliveryRanksList.Add(0);
 			}
 			UnobtainedMinionsSet = new HashSet<uint>(Data.MinionIDs);
 			UnobtainedMountsSet = new HashSet<uint>(Data.MountIDs);
@@ -694,10 +694,10 @@ namespace FFXIVCharaTracker.DB
 					}
 				}
 				var cdInstance = CustomDeliveryState.Instance();
-				CustomDeliveryRanksSet[(int)i - 1] = cdInstance->Rank[i - 1];
+				CustomDeliveryRanksList[(int)i - 1] = cdInstance->Rank[i - 1];
 			}
 			LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
-			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksSet);
+			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksList);
 		}
 
         internal unsafe void UpdateBeastTribes()

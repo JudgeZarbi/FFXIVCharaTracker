@@ -143,8 +143,8 @@ namespace FFXIVCharaTracker
                         {
                             var locked = charaData.LockedCustomDeliveriesSet.Contains(Plugin.SatisfactionNpcs.GetRow((uint)i)!.Npc.Value!.RowId);
                             DrawTableRowText(Plugin.SatisfactionNpcs.GetRow((uint)i)!.Npc.Value!.Singular, true,
-                                locked ? Red : (charaData.CustomDeliveryRanksSet[i - 1] == Data.MaxCustomDeliveryRank) ? Green : Yellow,
-                                locked ? "Locked" : $"Rank {charaData.CustomDeliveryRanksSet[i - 1]}");
+                                locked ? Red : (charaData.CustomDeliveryRanksList[i - 1] == Data.MaxCustomDeliveryRank) ? Green : Yellow,
+                                locked ? "Locked" : $"Rank {charaData.CustomDeliveryRanksList[i - 1]}");
                         }
                         ImGui.EndTable();
                     }
