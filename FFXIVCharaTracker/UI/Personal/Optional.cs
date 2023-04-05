@@ -12,31 +12,107 @@ namespace FFXIVCharaTracker
             {
                 if (ImGui.TreeNode("General"))
                 {
-                    if (ImGui.BeginTable("optionalGeneral", 2))
+                    if (ImGui.TreeNode("Housing"))
                     {
-                        SetUpTableColumns();
+                        if (ImGui.BeginTable("optionalGeneralHousing", 2))
+                        {
+                            SetUpTableColumns();
 
-                        DrawTableRowText("Mist", charaData.IsQuestComplete(66750));
-                        DrawTableRowText("Lavender Beds", charaData.IsQuestComplete(66748));
-                        DrawTableRowText("The Goblet", charaData.IsQuestComplete(66749));
-                        DrawTableRowText("Shirogane", charaData.IsQuestComplete(68167));
-                        DrawTableRowText("Empyreum", charaData.IsQuestComplete(69708));
-                        DrawTableRowText("Dyeing", charaData.IsQuestComplete(66235));
-                        DrawTableRowText("Glamours", charaData.IsQuestComplete(68553));
-                        DrawTableRowText("Gold Saucer", charaData.IsQuestComplete(65970));
-                        DrawTableRowText("Challenge Log", charaData.IsQuestComplete(66967));
-                        DrawTableRowText("Aesthetician", charaData.IsQuestComplete(66746));
-                        DrawTableRowText("Crystalline Conflict", charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66640));
-                        DrawTableRowText("Frontlines", charaData.IsQuestComplete(67063) || charaData.IsQuestComplete(67064) || charaData.IsQuestComplete(67065));
-                        DrawTableRowText("Rival Wings", charaData.IsQuestComplete(68583));
-                        DrawTableRowText("Wondrous Tails", charaData.IsQuestComplete(67928));
-                        DrawTableRowText("Faux Hollows", charaData.IsQuestComplete(69501));
+                            DrawTableRowText("Mist", charaData.IsQuestComplete(66750));
+                            DrawTableRowText("Lavender Beds", charaData.IsQuestComplete(66748));
+                            DrawTableRowText("The Goblet", charaData.IsQuestComplete(66749));
+                            DrawTableRowText("Shirogane", charaData.IsQuestComplete(68167));
+                            DrawTableRowText("Empyreum", charaData.IsQuestComplete(69708));
 
-                        ImGui.EndTable();
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
                     }
-                    ImGui.TreePop();
-                }
-                if (ImGui.TreeNode("Tribes"))
+                    if (ImGui.TreeNode("Materia"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralMateria", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Spiritbond", charaData.IsQuestComplete(66174));
+                            DrawTableRowText("Materia Melding", charaData.IsQuestComplete(66175));
+                            DrawTableRowText("Advanced Materia Melding", charaData.IsQuestComplete(66176));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Appearance"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralAppearance", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Dyeing", charaData.IsQuestComplete(66235));
+                            DrawTableRowText("Glamours", charaData.IsQuestComplete(68553));
+                            DrawTableRowText("Egi Glamours", charaData.IsQuestComplete(67896));
+                            DrawTableRowText("Aesthetician", charaData.IsQuestComplete(66746));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Zones"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralZones", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Gold Saucer", charaData.IsQuestComplete(65970));
+                            DrawTableRowText("White Wolf Gate", charaData.IsQuestComplete(66338));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("PvP"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralPvP", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Crystalline Conflict", charaData.IsQuestComplete(66640) || charaData.IsQuestComplete(66641) || charaData.IsQuestComplete(66642));
+                            DrawTableRowText("Frontlines", charaData.IsQuestComplete(67063) || charaData.IsQuestComplete(67064) || charaData.IsQuestComplete(67065));
+                            DrawTableRowText("Rival Wings", charaData.IsQuestComplete(68583));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Hunt"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralHunt", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("ARR Hunts", charaData.IsQuestComplete(67099) || charaData.IsQuestComplete(67100) || charaData.IsQuestComplete(67101));
+                            DrawTableRowText("HW 1-star", charaData.IsQuestComplete(67655));
+                            DrawTableRowText("HW 2-star", charaData.IsQuestComplete(67656));
+                            DrawTableRowText("HW 3-star", charaData.IsQuestComplete(67657));
+                            DrawTableRowText("HW Elite", charaData.IsQuestComplete(67658));
+                            DrawTableRowText("SB 1-star", charaData.IsQuestComplete(68472));
+                            DrawTableRowText("SB 2-star", charaData.IsQuestComplete(68473));
+                            DrawTableRowText("SB 3-star", charaData.IsQuestComplete(68474));
+                            DrawTableRowText("SB Elite", charaData.IsQuestComplete(68475));
+                            DrawTableRowText("ShB 1-star", charaData.IsQuestComplete(69133));
+                            DrawTableRowText("ShB 2-star", charaData.IsQuestComplete(69134));
+                            DrawTableRowText("ShB 3-star", charaData.IsQuestComplete(69135));
+                            DrawTableRowText("ShB Elite", charaData.IsQuestComplete(69136));
+                            DrawTableRowText("EW 1-star", charaData.IsQuestComplete(69712));
+                            DrawTableRowText("EW 2-star", charaData.IsQuestComplete(69713));
+                            DrawTableRowText("EW 3-star", charaData.IsQuestComplete(69714));
+                            DrawTableRowText("EW Elite", charaData.IsQuestComplete(69715));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Tribes"))
                     {
                         if (ImGui.BeginTable("optionalGeneralTribes", 2))
                         {
@@ -64,7 +140,78 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.TreePop();
                     }
+                    if (ImGui.TreeNode("Collectables"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralCollectables", 2))
+                        {
+                            SetUpTableColumns();
 
+                            DrawTableRowText("Collectables", charaData.IsQuestComplete(67631));
+                            DrawTableRowText("Heavensward", charaData.IsQuestComplete(67634));
+                            DrawTableRowText("Stormblood", charaData.IsQuestComplete(68477));
+                            DrawTableRowText("Shadowbringers", charaData.IsQuestComplete(69139));
+                            DrawTableRowText("Endwalker", charaData.IsQuestComplete(69711));
+                            DrawTableRowText("Reduction", charaData.IsQuestComplete(67633));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Sightseeing Log"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralSightseeing", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("A Realm Reborn", charaData.IsQuestComplete(65698));
+                            DrawTableRowText("Heavensward", charaData.IsQuestComplete(67643));
+                            DrawTableRowText("Stormblood", charaData.IsQuestComplete(68456));
+                            DrawTableRowText("Shadowbringers", charaData.IsQuestComplete(69140));
+                            DrawTableRowText("Endwalker", charaData.IsQuestComplete(69710));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Stone, Sea, Sky"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralSightseeing", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Heavensward", charaData.IsQuestComplete(67654));
+                            DrawTableRowText("Stormblood", charaData.IsQuestComplete(68476));
+                            DrawTableRowText("Shadowbringers", charaData.IsQuestComplete(69137));
+                            DrawTableRowText("Endwalker", charaData.IsQuestComplete(69709));
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    if (ImGui.TreeNode("Other"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralOther", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Ventures", charaData.IsQuestComplete(66968) || charaData.IsQuestComplete(66969) || charaData.IsQuestComplete(66970));
+                            DrawTableRowText("Desynthesis", charaData.IsQuestComplete(65688));
+                            DrawTableRowText("Combat Chocobo", charaData.IsQuestComplete(66698));
+                            DrawTableRowText("Chocobo Raising", charaData.IsQuestComplete(67096));
+                            DrawTableRowText("Treasure Maps", charaData.IsQuestComplete(66747));
+                            DrawTableRowText("Master Recipes", charaData.IsQuestComplete(66959));
+                            DrawTableRowText("Challenge Log", charaData.IsQuestComplete(66967));
+                            DrawTableRowText("Wondrous Tails", charaData.IsQuestComplete(67928));
+                            DrawTableRowText("Faux Hollows", charaData.IsQuestComplete(69501));
+                            var hildyProgress = charaData.GetHildibrandProgress();
+                            DrawTableRowText("Hildibrand", true, colour: hildyProgress is "Complete" ? Green : hildyProgress is "Not started" ? Red : Yellow, value: hildyProgress);
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+                    ImGui.TreePop();
+                }
                 if (ImGui.TreeNode("A Realm Reborn"))
                 {
                     if (ImGui.TreeNode("Dungeons"))
