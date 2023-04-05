@@ -451,6 +451,20 @@ namespace FFXIVCharaTracker.DB
 			UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
 			UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
 			UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+
+            UncollectedMinerItems = JsonSerializer.Serialize(UncollectedMinerItemsSet);
+            UncollectedBotanistItems = JsonSerializer.Serialize(UncollectedBotanistItemsSet);
+            UncollectedFisherItems = JsonSerializer.Serialize(UncollectedFisherItemsSet);
+            UncollectedSpearfisherItems = JsonSerializer.Serialize(UncollectedSpearfisherItemsSet);
+            LockedDuties = JsonSerializer.Serialize(LockedDutiesSet);
+            IncompleteFolkloreBooks = JsonSerializer.Serialize(IncompleteFolkloreBooksSet);
+            IncompleteSecretRecipeBooks = JsonSerializer.Serialize(IncompleteSecretRecipeBooksSet);
+            UnobtainedHairstyles = JsonSerializer.Serialize(UnobtainedHairstylesSet);
+            UnobtainedEmotes = JsonSerializer.Serialize(UnobtainedEmotesSet);
+            UnobtainedMinions = JsonSerializer.Serialize(UnobtainedMinionsSet);
+            LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
+            CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksList);
+            IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
         }
 
         internal void AddNewDataToCharacterArrays()
