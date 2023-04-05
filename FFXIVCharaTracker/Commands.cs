@@ -25,7 +25,7 @@ namespace FFXIVCharaTracker
         {
 			//this.Plugin.GetCharacterData();
 			Plugin.UI.Show ^= true;
-			Plugin.UpdateCharacterData();
+			Plugin.CurCharaData?.UpdateCharacterData();
         }
 
     }

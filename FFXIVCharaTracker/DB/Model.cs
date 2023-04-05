@@ -30,7 +30,7 @@ namespace FFXIVCharaTracker.DB
 			{
                 c.AddNewDataToCharacterArrays();
             }
-            Plugin.CurCharaData!.AddNewDataToCharacterArrays();
+            Plugin.CurCharaData?.AddNewDataToCharacterArrays();
 		}
 
 		internal void ResetRetainerGatherGear()
@@ -87,7 +87,7 @@ namespace FFXIVCharaTracker.DB
 
 			}
 			Plugin.CurCharaData!.PluginDataVersion = "0.1.0.0";
-			Plugin.CurCharaData.AddNewDataToCharacterArrays();
+			Plugin.CurCharaData?.AddNewDataToCharacterArrays();
 		}
 
 		internal List<InventorySlot> GetSlotsByItemID(ulong itemId)
@@ -316,6 +316,69 @@ namespace FFXIVCharaTracker.DB
 			}
 			return CharaID == other.CharaID;
 		}
+
+        internal static unsafe Chara? AddNewCharacter()
+        {
+            var currentChara = Plugin.ClientState.LocalPlayer;
+
+            if (currentChara != null)
+            {
+                var chara = new Chara(Plugin.ClientState.LocalContentId, currentChara.HomeWorld.Id,
+                    currentChara.Name.ToString().Split(' ')[0], currentChara.Name.ToString().Split(' ')[1])
+                {
+                    PluginDataVersion = Plugin.DataVersion
+                };
+
+                chara.SetDefaultArrays();
+
+                chara.UpdateCharacterData();
+
+                var chrDir = Path.Combine(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->UserPath,
+                    $"FFXIV_CHR{Plugin.ClientState.LocalContentId:X16}").Replace('/', '\\');
+                File.Create(Path.Combine(chrDir, "_" + chara.Forename));
+
+                return chara;
+            }
+            return null;
+        }
+
+        internal void UpdateCharacterData()
+        {
+            var CurrentChara = Plugin.ClientState.LocalPlayer;
+
+            unsafe
+            {
+                var UiState = UIState.Instance();
+
+                // Gear check
+                if (!CurGear || !GatherGear)
+                {
+                    var invManager = InventoryManager.Instance();
+                    var inventory = invManager->GetInventoryContainer(InventoryType.EquippedItems);
+                    UpdateGearState(inventory);
+                    inventory = invManager->GetInventoryContainer(InventoryType.ArmoryBody);
+                    UpdateGearState(inventory);
+                }
+
+                UpdateOptionalInstanceUnlocks();
+                UpdateFolkloreUnlocks(UiState);
+                UpdateSecretRecipeUnlocks(UiState);
+                UpdateHairstyleUnlocks(UiState);
+                UpdateEmoteUnlocks(UiState);
+                UpdateLevels(UiState);
+                UpdateMinions(UiState);
+                UpdateMounts(UiState);
+
+                UpdateGCRank(UiState);
+                UpdateChocobo(UiState);
+                UpdateRaceChocoboData();
+
+                UpdateCustomDeliveries();
+                UpdateUnlockQuests(UiState);
+                UpdateIslandSanctuaryData();
+                UpdateRetainerArrays();
+            }
+        }
 
 		internal void SetDefaultArrays()
 		{

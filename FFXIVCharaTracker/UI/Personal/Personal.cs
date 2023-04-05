@@ -15,7 +15,11 @@ namespace FFXIVCharaTracker
                     ImGui.Text("This character is not registered in the database.");
                     if (ImGui.Button("Register character"))
                     {
-                        Plugin.AddNewCharacter();
+                        Plugin.CurCharaData = DB.Chara.AddNewCharacter();
+                        if (Plugin.CurCharaData != null)
+                        {
+                            Plugin.Context.Add(Plugin.CurCharaData);
+                        }
                     }
                 }
                 else

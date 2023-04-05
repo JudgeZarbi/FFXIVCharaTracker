@@ -47,7 +47,7 @@ namespace FFXIVCharaTracker
         internal PluginUI UI { get; }
         private Commands Commands { get; }
         internal static ActiveRetainerManager Retainers { get; set; } = null!;
-        internal static DB.Chara? CurCharaData { get; private set; }
+        internal static DB.Chara? CurCharaData { get; set; }
         internal DB.CharaContext Context { get; private set; }
 
         internal bool CharaLoaded = false;
@@ -203,7 +203,7 @@ namespace FFXIVCharaTracker
 
             if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
             {
-				UpdateCharacterData();
+                CurCharaData!.UpdateCharacterData();
                 SwUpdate.Restart();
 			}
 
@@ -237,29 +237,6 @@ namespace FFXIVCharaTracker
             CharaLoaded = false;
 		}
 
-		internal unsafe void AddNewCharacter()
-        {
-			var CurrentChara = ClientState.LocalPlayer;
-
-            if (CurrentChara != null)
-            {
-				CurCharaData = new Chara(ClientState.LocalContentId, CurrentChara.HomeWorld.Id,
-					CurrentChara.Name.ToString().Split(' ')[0], CurrentChara.Name.ToString().Split(' ')[1])
-				{
-					PluginDataVersion = DataVersion
-				};
-
-				CurCharaData.SetDefaultArrays();
-
-                Context.Add(CurCharaData);
-
-                UpdateCharacterData();
-            }
-
-			var chrDir = Path.Combine(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->UserPath, $"FFXIV_CHR{ClientState.LocalContentId:X16}").Replace('/', '\\');
-            File.Create(Path.Combine(chrDir, "_" + CurCharaData!.Forename));
-		}
-
 		internal unsafe void GetCharacterData()
         {
             var CurrentChara = ClientState.LocalPlayer;
@@ -276,52 +253,11 @@ namespace FFXIVCharaTracker
 					Context.AddNewDataToCharacterArrays();
 				}
 
-				UpdateCharacterData();
+				CurCharaData?.UpdateCharacterData();
             }
-        }
-
-        internal void UpdateCharacterData()
-        {
-            if (CurCharaData == null)
-            {
-                return;
-            }
-
-			var CurrentChara = ClientState.LocalPlayer;
-
-            unsafe
-            {
-				var UiState = UIState.Instance();
-
-                // Gear check
-                if (!CurCharaData!.CurGear || !CurCharaData.GatherGear)
-                {
-                    var invManager = InventoryManager.Instance();
-                    var inventory = invManager->GetInventoryContainer(InventoryType.EquippedItems);
-					CurCharaData.UpdateGearState(inventory);
-                    inventory = invManager->GetInventoryContainer(InventoryType.ArmoryBody);
-					CurCharaData.UpdateGearState(inventory);
                 }
 
-				CurCharaData.UpdateOptionalInstanceUnlocks();
-				CurCharaData.UpdateFolkloreUnlocks(UiState);
-				CurCharaData.UpdateSecretRecipeUnlocks(UiState);
-				CurCharaData.UpdateHairstyleUnlocks(UiState);
-				CurCharaData.UpdateEmoteUnlocks(UiState);
-				CurCharaData.UpdateLevels(UiState);
-				CurCharaData.UpdateMinions(UiState);
-                CurCharaData.UpdateMounts(UiState);
 
-				CurCharaData.UpdateGCRank(UiState);
-				CurCharaData.UpdateChocobo(UiState);
-                CurCharaData.UpdateRaceChocoboData();
-
-				CurCharaData.UpdateCustomDeliveries();
-				CurCharaData.UpdateUnlockQuests(UiState);
-                CurCharaData.UpdateIslandSanctuaryData();
-                CurCharaData.UpdateRetainerArrays();
-			}
-        }
 
 		public void Dispose()
         {
