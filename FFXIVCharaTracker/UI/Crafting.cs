@@ -4,7 +4,7 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Concurrent;
-using System.Numerics;
+using FFXIVClientStructs.FFXIV.Common.Math;
 
 namespace FFXIVCharaTracker
 {

@@ -1,5 +1,5 @@
 ﻿using ImGuiNET;
-using System.Numerics;
+using FFXIVClientStructs.FFXIV.Common.Math;
 
 namespace FFXIVCharaTracker
 {

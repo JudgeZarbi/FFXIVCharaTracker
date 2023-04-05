@@ -589,20 +589,20 @@ namespace FFXIVCharaTracker.DB
 
 		internal unsafe void UpdateLevels(UIState* UiState)
 		{
-			var PlayerState = UiState->PlayerState;
-			ClassLevel = PlayerState.ClassJobLevelArray[Plugin.ClassJobs.GetRow(ClassID)!.ExpArrayIndex];
+			var playerState = UiState->PlayerState;
+			ClassLevel = playerState.ClassJobLevelArray[Plugin.ClassJobs.GetRow(ClassID)!.ExpArrayIndex];
 
-			LevelCrp = PlayerState.ClassJobLevelArray[7];
-			LevelBsm = PlayerState.ClassJobLevelArray[8];
-			LevelArm = PlayerState.ClassJobLevelArray[9];
-			LevelGsm = PlayerState.ClassJobLevelArray[10];
-			LevelLtw = PlayerState.ClassJobLevelArray[11];
-			LevelWvr = PlayerState.ClassJobLevelArray[12];
-			LevelAlc = PlayerState.ClassJobLevelArray[13];
-			LevelCul = PlayerState.ClassJobLevelArray[14];
-			LevelMin = PlayerState.ClassJobLevelArray[15];
-			LevelBtn = PlayerState.ClassJobLevelArray[16];
-			LevelFsh = PlayerState.ClassJobLevelArray[17];
+			LevelCrp = playerState.ClassJobLevelArray[7];
+			LevelBsm = playerState.ClassJobLevelArray[8];
+			LevelArm = playerState.ClassJobLevelArray[9];
+			LevelGsm = playerState.ClassJobLevelArray[10];
+			LevelLtw = playerState.ClassJobLevelArray[11];
+			LevelWvr = playerState.ClassJobLevelArray[12];
+			LevelAlc = playerState.ClassJobLevelArray[13];
+			LevelCul = playerState.ClassJobLevelArray[14];
+			LevelMin = playerState.ClassJobLevelArray[15];
+			LevelBtn = playerState.ClassJobLevelArray[16];
+			LevelFsh = playerState.ClassJobLevelArray[17];
 
 		}
 

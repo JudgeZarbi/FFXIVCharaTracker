@@ -1,7 +1,7 @@
 ﻿using FFXIVCharaTracker.DB;
 using ImGuiNET;
 using System.Diagnostics;
-using System.Numerics;
+using FFXIVClientStructs.FFXIV.Common.Math;
 using System.Globalization;
 
 namespace FFXIVCharaTracker
