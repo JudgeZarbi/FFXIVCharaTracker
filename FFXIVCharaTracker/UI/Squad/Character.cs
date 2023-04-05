@@ -37,7 +37,7 @@ namespace FFXIVCharaTracker
                     ImGui.TableSetupColumn("Race", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
                     ImGui.TableSetupColumn("Guardian deity", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
                     ImGui.TableSetupColumn("Chocobo level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-                    ImGui.TableSetupColumn("Race chocobo", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
+                    ImGui.TableSetupColumn("Race chocobo", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
                     ImGui.TableSetupColumn("Grand Company rank", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
                     ImGui.TableSetupColumn("Island Sanctuary", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
                     ImGui.TableSetupColumn("Retainer storing", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
