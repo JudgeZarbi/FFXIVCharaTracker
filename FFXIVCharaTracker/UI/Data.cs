@@ -91,5 +91,44 @@ namespace FFXIVCharaTracker
                 { Data.QuestComplete62, "6.2" },
                 { Data.QuestComplete63, "6.3" },
             };
+
+        public static readonly Dictionary<uint, string> GuardianDeities = new()
+        {
+            { 0, "" },
+            { 1, "Halone, the Fury" },
+            { 2, "Menphina, the Lover" },
+            { 3, "Thaliak, the Scholar" },
+            { 4, "Nymeia, the Spinner" },
+            { 5, "Llymlaen, the Navigator" },
+            { 6, "Oschon, the Wanderer" },
+            { 7, "Byregot, the Builder" },
+            { 8, "Rhalgr, the Destroyer" },
+            { 9, "Azeyma, the Warden" },
+            { 10, "Nald'thal, the Traders" },
+            { 11, "Nophica, the Matron" },
+            { 12, "Althyk, the Keeper" }
+        };
+
+        public static readonly Dictionary<uint, string> SubRaces = new()
+        {
+            { 0, "" },
+            { 1, "Hyur - Midlander" },
+            { 2, "Hyur - Highlander" },
+            { 3, "Elezen - Wildwood" },
+            { 4, "Elezen - Duskwight" },
+            { 5, "Lalafell - Plainsfolk" },
+            { 6, "Lalafell - Dunesfolk" },
+            { 7, "Miqo'te - Seeker of the Sun" },
+            { 8, "Miqo'te - Keeper of the Moon" },
+            { 9, "Roegadyn - Sea Wolf" },
+            { 10, "Roegadyn - Hellsguard" },
+            { 11, "Au ra - Raen" },
+            { 12, "Au ra - Xaela" },
+            { 13, "Hrothgar - Helions" },
+            { 14, "Hrothgar - The Lost" },
+            { 15, "Viera - Rava" },
+            { 16, "Viera - Veena" }
+        };
+
     }
 }
