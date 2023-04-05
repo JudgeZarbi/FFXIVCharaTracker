@@ -1,6 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace FFXIVCharaTracker
 {
@@ -79,7 +80,7 @@ namespace FFXIVCharaTracker
                             if (ImGui.TreeNode(itemData!.Item1.Name))
                             {
                                 ImGui.TableNextColumn();
-                                ImGui.Text(item.Quantity.ToString());
+                                ImGui.Text(item.Quantity.ToString("n0", CultureInfo.CurrentCulture));
 
                                 ImGui.Indent();
                                 var itemInventories = Context.InventorySlots.Where(inv => inv.ItemID == item.ItemID && inv.Quantity > 0).Include(inv => inv.Retainer).ThenInclude(r => r!.Owner).Include(inv => inv.Chara).AsNoTracking().ToList().OrderBy(inv => inv.Chara?.CharaID ?? inv.Retainer!.Owner.CharaID).ThenBy(inv => inv.Retainer?.RetainerID ?? 0);
@@ -140,7 +141,7 @@ namespace FFXIVCharaTracker
                                     }
                                     ImGui.Text(text);
                                     ImGui.TableNextColumn();
-                                    ImGui.Text(i.Quantity.ToString());
+                                    ImGui.Text(i.Quantity.ToString("n0", CultureInfo.CurrentCulture));
                                 }
                                 ImGui.Unindent();
                                 ImGui.TreePop();
@@ -148,7 +149,7 @@ namespace FFXIVCharaTracker
                             else
                             {
                                 ImGui.TableNextColumn();
-                                ImGui.Text(item.Quantity.ToString());
+                                ImGui.Text(item.Quantity.ToString("n0", CultureInfo.CurrentCulture));
                             }
                         }
                     }
