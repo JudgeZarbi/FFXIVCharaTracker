@@ -26,6 +26,10 @@ namespace FFXIVCharaTracker.Migrations
                     b.Property<int>("Account")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BeastTribeRanks")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<byte>("BirthDay")
                         .HasColumnType("INTEGER");
 

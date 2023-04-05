@@ -403,6 +403,7 @@ namespace FFXIVCharaTracker.DB
                 UpdateRaceChocoboData();
 
                 UpdateCustomDeliveries();
+                UpdateBeastTribes();
                 UpdateUnlockQuests(UiState);
                 UpdateIslandSanctuaryData();
                 UpdateRetainerArrays();

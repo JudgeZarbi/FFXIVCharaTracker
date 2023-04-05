@@ -36,6 +36,35 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
+                if (ImGui.TreeNode("Tribes"))
+                    {
+                        if (ImGui.BeginTable("optionalGeneralTribes", 2))
+                        {
+                            SetUpTableColumns();
+
+                            DrawTableRowText("Amalj'aa", true, colour: GetBeastTribeColour(charaData, 0), value: $"Rank {charaData.BeastTribeRanksList[0]}");
+                            DrawTableRowText("Sylphs", true, colour: GetBeastTribeColour(charaData, 1), value: $"Rank {charaData.BeastTribeRanksList[1]}");
+                            DrawTableRowText("Kobolds", true, colour: GetBeastTribeColour(charaData, 2), value: $"Rank {charaData.BeastTribeRanksList[2]}");
+                            DrawTableRowText("Sahagin", true, colour: GetBeastTribeColour(charaData, 3), value: $"Rank {charaData.BeastTribeRanksList[3]}");
+                            DrawTableRowText("Ixal", true, colour: GetBeastTribeColour(charaData, 4), value: $"Rank {charaData.BeastTribeRanksList[4]}");
+                            DrawTableRowText("Vanu Vanu", true, colour: GetBeastTribeColour(charaData, 5), value: $"Rank {charaData.BeastTribeRanksList[5]}");
+                            DrawTableRowText("Vath", true, colour: GetBeastTribeColour(charaData, 6), value: $"Rank {charaData.BeastTribeRanksList[6]}");
+                            DrawTableRowText("Moogles", true, colour: GetBeastTribeColour(charaData, 7), value: $"Rank {charaData.BeastTribeRanksList[7]}");
+                            DrawTableRowText("Kojin", true, colour: GetBeastTribeColour(charaData, 8), value: $"Rank {charaData.BeastTribeRanksList[8]}");
+                            DrawTableRowText("Ananta", true, colour: GetBeastTribeColour(charaData, 9), value: $"Rank {charaData.BeastTribeRanksList[9]}");
+                            DrawTableRowText("Namazu", true, colour: GetBeastTribeColour(charaData, 10), value: $"Rank {charaData.BeastTribeRanksList[10]}");
+                            DrawTableRowText("Pixies", true, colour: GetBeastTribeColour(charaData, 11), value: $"Rank {charaData.BeastTribeRanksList[11]}");
+                            DrawTableRowText("Qitari", true, colour: GetBeastTribeColour(charaData, 12), value: $"Rank {charaData.BeastTribeRanksList[12]}");
+                            DrawTableRowText("Dwarves", true, colour: GetBeastTribeColour(charaData, 13), value: $"Rank {charaData.BeastTribeRanksList[13]}");
+                            DrawTableRowText("Arkasodara", true, colour: GetBeastTribeColour(charaData, 14), value: $"Rank {charaData.BeastTribeRanksList[14]}");
+                            DrawTableRowText("Omicrons", true, colour: GetBeastTribeColour(charaData, 15), value: $"Rank {charaData.BeastTribeRanksList[15]}");
+                            DrawTableRowText("Loporrits", true, colour: GetBeastTribeColour(charaData, 16), value: $"Rank {charaData.BeastTribeRanksList[16]}");
+
+                            ImGui.EndTable();
+                        }
+                        ImGui.TreePop();
+                    }
+
                 if (ImGui.TreeNode("A Realm Reborn"))
                 {
                     if (ImGui.TreeNode("Dungeons"))

@@ -82,5 +82,13 @@ namespace FFXIVCharaTracker
             }
             ImGui.TableHeadersRow();
         }
+
+        internal unsafe Vector4 GetBeastTribeColour(Chara chara, byte tribeId)
+        {
+            var maxRank = tribeId <= 4 ? 4 : tribeId >= 6 ? 8 : 7;
+            return chara.BeastTribeRanksList[tribeId] == maxRank ? Green :
+                chara.BeastTribeRanksList[tribeId] > 0 ? Yellow : Red;
+        }
+
     }
 }
