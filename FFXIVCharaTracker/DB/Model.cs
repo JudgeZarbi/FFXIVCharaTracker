@@ -381,6 +381,7 @@ namespace FFXIVCharaTracker.DB
                 UpdateHairstyleUnlocks(UiState);
                 UpdateEmoteUnlocks(UiState);
                 UpdateLevels(UiState);
+                UpdateDesynthesisLevels(UiState);
                 UpdateMinions(UiState);
                 UpdateMounts(UiState);
 
