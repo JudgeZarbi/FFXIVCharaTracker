@@ -314,6 +314,14 @@ namespace FFXIVCharaTracker.DB
                 }
                 BeastTribeRanks = JsonSerializer.Serialize(BeastTribeRanksList);
             }
+            if (CustomDeliveryRanksList.Count < Plugin.SatisfactionNpcs.RowCount - 1)
+            {
+                for (var i = CustomDeliveryRanksList.Count; i < Plugin.SatisfactionNpcs.RowCount - 1; i++)
+                {
+                    CustomDeliveryRanksList.Add(0);
+        }
+                CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksList);
+            }
         }
 
         private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
