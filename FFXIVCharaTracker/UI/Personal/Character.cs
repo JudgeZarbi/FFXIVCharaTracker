@@ -47,6 +47,12 @@ namespace FFXIVCharaTracker
 
                     DrawTableRowText("Name", true, White, $"{charaData.Forename} {charaData.Surname}");
 
+                    DrawTableRowText("Birthday", true, White, $"{charaData.BirthDay}/{charaData.BirthMonth} {GetRealDateFromGameDate(charaData.BirthDay, charaData.BirthMonth)}");
+
+                    DrawTableRowText("Race", true, White, $"{Data.SubRaces[charaData.Race]} {(charaData.Race == 0 ? "" : charaData.Sex == 1 ? "♀" : "♂")}");
+
+                    DrawTableRowText("Guardian deity", true, White, $"{Data.GuardianDeities[charaData.GuardianDeity]}");
+
                     DrawTableRowText("Home World", true, White, Plugin.Worlds.GetRow(charaData.WorldID)!.Name);
 
                     if (ImGui.Button("Reset character data"))

@@ -3,6 +3,7 @@ using System;
 using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FFXIVCharaTracker.Migrations
 {
     [DbContext(typeof(CharaContext))]
-    partial class CharaContextModelSnapshot : ModelSnapshot
+    [Migration("20230404013131_AddBirthdayAndDeity")]
+    partial class AddBirthdayAndDeity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -124,9 +127,6 @@ namespace FFXIVCharaTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<byte>("Race")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("RaceChocoboPedigree")
                         .HasColumnType("INTEGER");
 
@@ -136,9 +136,6 @@ namespace FFXIVCharaTracker.Migrations
                     b.Property<string>("RetainersStoringDescription")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<byte>("Sex")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Surname")
                         .IsRequired()

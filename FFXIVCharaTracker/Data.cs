@@ -1,7 +1,7 @@
 ﻿namespace FFXIVCharaTracker
 {
-	internal static class Data
-	{
+    internal static class Data
+    {
         public const uint CraftedCombatILvl = 610;
         public const uint CraftedGatherILvl = 620;
         public const uint RetainerCombatILvl = 580;
@@ -62,7 +62,45 @@
         public const int FshIndex = 17;
 
 
-		public static readonly uint[] EmoteIDs = { 85, 101, 102, 103, 104, 205, 206, 207, 208, 202,
+        public static readonly Dictionary<uint, string> GuardianDeities = new()
+        {
+            { 0, "" },
+            { 1, "Halone, the Fury" },
+            { 2, "Menphina, the Lover" },
+            { 3, "Thaliak, the Scholar" },
+            { 4, "Nymeia, the Spinner" },
+            { 5, "Llymlaen, the Navigator" },
+            { 6, "Oschon, the Wanderer" },
+            { 7, "Byregot, the Builder" },
+            { 8, "Rhalgr, the Destroyer" },
+            { 9, "Azeyma, the Warden" },
+            { 10, "Nald'thal, the Traders" },
+            { 11, "Nophica, the Matron" },
+            { 12, "Althyk, the Keeper" }
+        };
+
+        public static readonly Dictionary<uint, string> SubRaces = new()
+        {
+            { 0, "" },
+            { 1, "Hyur - Midlander" },
+            { 2, "Hyur - Highlander" },
+            { 3, "Elezen - Wildwood" },
+            { 4, "Elezen - Duskwight" },
+            { 5, "Lalafell - Plainsfolk" },
+            { 6, "Lalafell - Dunesfolk" },
+            { 7, "Miqo'te - Seeker of the Sun" },
+            { 8, "Miqo'te - Keeper of the Moon" },
+            { 9, "Roegadyn - Sea Wolf" },
+            { 10, "Roegadyn - Hellsguard" },
+            { 11, "Au ra - Raen" },
+            { 12, "Au ra - Xaela" },
+            { 13, "Hrothgar - Helions" },
+            { 14, "Hrothgar - The Lost" },
+            { 15, "Viera - Rava" },
+            { 16, "Viera - Veena" }
+        };
+
+        public static readonly uint[] EmoteIDs = { 85, 101, 102, 103, 104, 205, 206, 207, 208, 202,
             203, 204, 109, 110, 113, 192, 193, 195, 196, 197, 229, 230, 114, 173, 174, 180, 181, 182,
             176, 178, 210, 211, 212, 217, 213, 214, 215, 216, 209, 120, 118, 119, 125, 123, 124, 130,
             134, 131, 135, 132, 136, 127, 128, 129, 143, 142, 145, 146, 148, 149, 151, 153, 155, 156,
@@ -124,10 +162,10 @@
             1033543, 1035211, 1042241, 1044547 };
         
         public static readonly uint[] QuestIDs = { 68614, 68478, 68148, 68149, 69477, 69487, 69562, 69620, 69624, 67092,
-			68583, 67928, 69501, 69208, 66750, 66749, 66748, 68167, 69708, 66640, 66641, 66642, 67063, 67064, 67065,
-			67979, 68153, 68132, 68137, 68147, 67969, 67974, 68142, 68093, 68159, 68433, 66082, 66064, 66043, 66045,
-			66060, 66729, 66899, 66996, 65625, 65964, 67205, 67699, 67777, 67783, 67886, 67895, 68089, 68508, 68565,
-			68612, 68685, 68721, 69190, 69218, 69306, 69318, 69552, 69602, 70000, 70071, 70136, 70214, 65970, 66967,
+            68583, 67928, 69501, 69208, 66750, 66749, 66748, 68167, 69708, 66640, 66641, 66642, 67063, 67064, 67065,
+            67979, 68153, 68132, 68137, 68147, 67969, 67974, 68142, 68093, 68159, 68433, 66082, 66064, 66043, 66045,
+            66060, 66729, 66899, 66996, 65625, 65964, 67205, 67699, 67777, 67783, 67886, 67895, 68089, 68508, 68565,
+            68612, 68685, 68721, 69190, 69218, 69306, 69318, 69552, 69602, 70000, 70071, 70136, 70214, 65970, 66967,
             66746, 68553, 66235};
 
         public static readonly uint[] MinionIDs = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,

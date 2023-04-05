@@ -162,16 +162,21 @@ namespace FFXIVCharaTracker.DB
         }
     }
 
-	internal class Chara
-	{
-		[Key]
-		public ulong CharaID { get; set; }
-		public uint WorldID { get; set; }
-		public int Account { get; set; }
-		public uint ClassID { get; set; }
-		public string Forename { get; set; }
-		public string Surname { get; set; }
-		public short ClassLevel { get; set; }
+    internal class Chara
+    {
+        [Key]
+        public ulong CharaID { get; set; }
+        public uint WorldID { get; set; }
+        public int Account { get; set; }
+        public uint ClassID { get; set; }
+        public string Forename { get; set; }
+        public string Surname { get; set; }
+        public byte BirthDay { get; set; }
+        public byte BirthMonth { get; set; }
+        public byte GuardianDeity { get; set; }
+        public byte Race { get; set; }
+        public byte Sex { get; set; }
+        public short ClassLevel { get; set; }
 		public bool LowGear { get; set; }
 		public bool CurGear { get; set; }
 		public int LevelCrp { get; set; }
@@ -182,7 +187,7 @@ namespace FFXIVCharaTracker.DB
 		public int LevelWvr { get; set; }
 		public int LevelAlc { get; set; }
 		public int LevelCul { get; set; }
-		public int LevelMin { get; set; }
+        public int LevelMin { get; set; }
 		public int LevelBtn { get; set; }
 		public int LevelFsh { get; set; }
 		public bool GatherGear { get; set; }
@@ -288,7 +293,7 @@ namespace FFXIVCharaTracker.DB
             UncollectedBotanistItemsSet = TryDeserialize<HashSet<uint>>(UncollectedBotanistItems, Data.RetainerBotanistItemIDs);
             UncollectedFisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedFisherItems, Data.RetainerFisherItemIDs);
             UncollectedSpearfisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedSpearfisherItems, Data.RetainerSpearfisherItemIDs);
-		}
+                }
 
         private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
         {
@@ -332,6 +337,8 @@ namespace FFXIVCharaTracker.DB
                 chara.SetDefaultArrays();
 
                 chara.UpdateCharacterData();
+
+                chara.UpdateCharacterPersonals(UIState.Instance());
 
                 var chrDir = Path.Combine(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->UserPath,
                     $"FFXIV_CHR{Plugin.ClientState.LocalContentId:X16}").Replace('/', '\\');
@@ -380,7 +387,16 @@ namespace FFXIVCharaTracker.DB
             }
         }
 
-		internal void SetDefaultArrays()
+        internal unsafe void UpdateCharacterPersonals(UIState* UiState)
+        {
+            BirthDay = UiState->PlayerState.BirthDay;
+            BirthMonth = UiState->PlayerState.BirthMonth;
+            Race = UiState->PlayerState.Tribe;
+            Sex = UiState->PlayerState.Sex;
+            GuardianDeity = UiState->PlayerState.GuardianDeity;
+        }
+
+        internal void SetDefaultArrays()
 		{
 			LockedDutiesSet = new HashSet<uint>(Data.OptionalContentIDs);
 			IncompleteFolkloreBooksSet = new HashSet<uint>(Data.FolkloreIDs);
@@ -400,9 +416,9 @@ namespace FFXIVCharaTracker.DB
 			UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
 			UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
 			UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
-		}
+        }
 
-		internal void AddNewDataToCharacterArrays()
+        internal void AddNewDataToCharacterArrays()
 		{
 			if (PluginDataVersion == "0.1.0.0")
 			{
@@ -539,9 +555,9 @@ namespace FFXIVCharaTracker.DB
 			LevelBtn = PlayerState.ClassJobLevelArray[16];
 			LevelFsh = PlayerState.ClassJobLevelArray[17];
 
-		}
+        }
 
-		internal unsafe void UpdateGCRank(UIState* UiState)
+        internal unsafe void UpdateGCRank(UIState* UiState)
 		{
 			GCRank = UiState->PlayerState.GetGrandCompanyRank();
 		}
@@ -647,7 +663,7 @@ namespace FFXIVCharaTracker.DB
 			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksSet);
 		}
 
-		internal unsafe void UpdateUnlockQuests(UIState* UiState)
+        internal unsafe void UpdateUnlockQuests(UIState* UiState)
 		{
 			foreach (var questId in IncompleteQuestsSet)
 			{

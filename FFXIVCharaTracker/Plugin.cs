@@ -120,7 +120,7 @@ namespace FFXIVCharaTracker
 			CompanyCraftProcesses = DataManager.Excel.GetSheet<CompanyCraftProcess>()!;
 			CompanyCraftSupplyItems = DataManager.Excel.GetSheet<CompanyCraftSupplyItem>()!;
 
-			_ = Task.Run(PopulateItemCache);
+            _ = Task.Run(PopulateItemCache);
 
 
             SwUpdate.Start();
@@ -201,7 +201,7 @@ namespace FFXIVCharaTracker
             }
 
 
-            if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
+			if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
             {
                 CurCharaData!.UpdateCharacterData();
                 SwUpdate.Restart();
@@ -209,7 +209,7 @@ namespace FFXIVCharaTracker
 
 			if (SwRetainer.ElapsedMilliseconds > UpdateRetainersTime)
             {
-				Retainer.UpdateRetainer(Context, CurCharaData);
+                Retainer.UpdateRetainer(Context, CurCharaData);
 //				PluginLog.Warning($"UpdateRetainer: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
 				InventorySlot.StoreInventories(Context, CurCharaData);
 //				PluginLog.Warning($"UpdateInventories: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
@@ -247,17 +247,18 @@ namespace FFXIVCharaTracker
 
                 CharaLoaded = true;
 
-				if (CurCharaData != null &&
-					CurCharaData.PluginDataVersion != DataVersion)
+				if (CurCharaData != null)
 				{
-					Context.AddNewDataToCharacterArrays();
-				}
-
-				CurCharaData?.UpdateCharacterData();
-            }
+                    if (CurCharaData.PluginDataVersion != DataVersion)
+                    {
+                        Context.AddNewDataToCharacterArrays();
+                    }
+                    CurCharaData.UpdateCharacterPersonals(UIState.Instance());
+                    CurCharaData.UpdateCharacterData();
                 }
 
-
+            }
+        }
 
 		public void Dispose()
         {

@@ -2,6 +2,7 @@
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
+using System.Globalization;
 
 namespace FFXIVCharaTracker
 {
@@ -82,6 +83,63 @@ namespace FFXIVCharaTracker
             ImGui.TableNextColumn();
             ImGui.TableSetBgColor(ImGuiTableBgTarget.CellBg, ImGui.GetColorU32(colour));
             ImGui.TextColored(textColour ?? Black, text);
+        }
+
+        private string GetRealDateFromGameDate(int birthDay, int birthMonth)
+        {
+            if (birthDay == 0 || birthMonth == 0)
+            {
+                return "";
+            }
+            var daysInMonth = DateTime.DaysInMonth(2020, birthMonth);
+
+            if (daysInMonth == 29)
+            {
+                if (birthDay >= 24)
+                {
+                    birthDay--;
+                }
+                if (birthDay >= 16)
+                {
+                    birthDay--;
+                }
+                if (birthDay >= 8)
+                {
+                    birthDay--;
+                }
+            }
+            else if (daysInMonth == 30)
+            {
+                if (birthDay >= 30)
+                {
+                    birthDay--;
+                }
+                if (birthDay >= 8)
+                {
+                    birthDay--;
+                }
+            }
+            else if (daysInMonth == 31)
+            {
+                if (birthDay >= 29)
+                {
+                    birthDay--;
+                }
+            }
+
+            return $"({birthDay}{GetOrdinalSuffix(birthDay)} {CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(birthMonth)})";
+        }
+
+        private static string GetOrdinalSuffix(int num)
+        {
+            string number = num.ToString();
+            if (number.EndsWith("11")) return "th";
+            if (number.EndsWith("12")) return "th";
+            if (number.EndsWith("13")) return "th";
+            if (number.EndsWith("1")) return "st";
+            if (number.EndsWith("2")) return "nd";
+            if (number.EndsWith("3")) return "rd";
+            return "th";
         }
     }
 }

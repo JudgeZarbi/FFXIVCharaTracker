@@ -28,11 +28,14 @@ namespace FFXIVCharaTracker
             {
                 ImGui.Unindent();
                 ImGui.Unindent();
-                if (ImGui.BeginTable("squadChara", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                if (ImGui.BeginTable("squadChara", 10, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                 {
                     ImGui.TableSetupScrollFreeze(1, 0);
 
                     ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
+                    ImGui.TableSetupColumn("Birthday", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+                    ImGui.TableSetupColumn("Race", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
+                    ImGui.TableSetupColumn("Guardian deity", ImGuiTableColumnFlags.WidthFixed, 150 * Scale);
                     ImGui.TableSetupColumn("Chocobo level", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
                     ImGui.TableSetupColumn("Race chocobo", ImGuiTableColumnFlags.WidthFixed, 200 * Scale);
                     ImGui.TableSetupColumn("Grand Company rank", ImGuiTableColumnFlags.WidthFixed, 125 * Scale);
@@ -49,6 +52,9 @@ namespace FFXIVCharaTracker
                         DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
                         SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                        SetCellBackgroundWithText(default, $"{c.BirthDay}/{c.BirthMonth} {GetRealDateFromGameDate(c.BirthDay, c.BirthMonth)}", White);
+                        SetCellBackgroundWithText(default, $"{Data.SubRaces[c.Race]} {(c.Race == 0 ? "" : c.Sex == 1 ? "♀" : "♂")}", White);
+                        SetCellBackgroundWithText(default, $"{Data.GuardianDeities[c.GuardianDeity]}", White);
                         var chocoLevel = c.ChocoboLevel;
                         SetCellBackgroundWithText(chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red), chocoLevel.ToString(), Black);
                         var raceChocoRank = c.RaceChocoboRank;
