@@ -122,10 +122,8 @@ namespace FFXIVCharaTracker
 
             _ = Task.Run(PopulateItemCache);
 
-
             SwUpdate.Start();
         }
-
 
         private void PopulateItemCache()
         {
@@ -166,7 +164,6 @@ namespace FFXIVCharaTracker
 				}
 
 				WorkshopCache[row.RowId] = row;
-				//ItemIDToRecipe[(int)row.ItemResult.Value!.RowId] = row;
 			}
 		}
 

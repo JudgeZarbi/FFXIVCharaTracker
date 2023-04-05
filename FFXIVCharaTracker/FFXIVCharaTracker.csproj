@@ -13,7 +13,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0-windows7.0</TargetFramework>
     <Platforms>x64</Platforms>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>false</UseWindowsForms>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
