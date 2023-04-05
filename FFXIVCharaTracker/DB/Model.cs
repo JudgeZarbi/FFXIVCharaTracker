@@ -492,6 +492,64 @@ namespace FFXIVCharaTracker.DB
                 IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
                 PluginDataVersion = "0.2.0.1";
             }
+            if (PluginDataVersion == "0.2.0.1")
+            {
+                IncompleteQuestsSet.Add(66174);
+                IncompleteQuestsSet.Add(66175);
+                IncompleteQuestsSet.Add(66176);
+                IncompleteQuestsSet.Add(65688);
+                IncompleteQuestsSet.Add(66740);
+                IncompleteQuestsSet.Add(66038);
+                IncompleteQuestsSet.Add(67908);
+                IncompleteQuestsSet.Add(68704);
+                IncompleteQuestsSet.Add(70255);
+                IncompleteQuestsSet.Add(67099);
+                IncompleteQuestsSet.Add(67100);
+                IncompleteQuestsSet.Add(67101);
+                IncompleteQuestsSet.Add(67655);
+                IncompleteQuestsSet.Add(67656);
+                IncompleteQuestsSet.Add(67657);
+                IncompleteQuestsSet.Add(67658);
+                IncompleteQuestsSet.Add(68472);
+                IncompleteQuestsSet.Add(68473);
+                IncompleteQuestsSet.Add(68474);
+                IncompleteQuestsSet.Add(68475);
+                IncompleteQuestsSet.Add(69133);
+                IncompleteQuestsSet.Add(69134);
+                IncompleteQuestsSet.Add(69135);
+                IncompleteQuestsSet.Add(69136);
+                IncompleteQuestsSet.Add(69712);
+                IncompleteQuestsSet.Add(69713);
+                IncompleteQuestsSet.Add(69714);
+                IncompleteQuestsSet.Add(69715);
+                IncompleteQuestsSet.Add(66338);
+                IncompleteQuestsSet.Add(66999);
+                IncompleteQuestsSet.Add(67896);
+                IncompleteQuestsSet.Add(67631);
+                IncompleteQuestsSet.Add(67633);
+                IncompleteQuestsSet.Add(67634);
+                IncompleteQuestsSet.Add(68477);
+                IncompleteQuestsSet.Add(69139);
+                IncompleteQuestsSet.Add(69711);
+                IncompleteQuestsSet.Add(66968);
+                IncompleteQuestsSet.Add(66969);
+                IncompleteQuestsSet.Add(66970);
+                IncompleteQuestsSet.Add(65698);
+                IncompleteQuestsSet.Add(68456);
+                IncompleteQuestsSet.Add(67643);
+                IncompleteQuestsSet.Add(69140);
+                IncompleteQuestsSet.Add(69710);
+                IncompleteQuestsSet.Add(66698);
+                IncompleteQuestsSet.Add(67096);
+                IncompleteQuestsSet.Add(66747);
+                IncompleteQuestsSet.Add(66959);
+                IncompleteQuestsSet.Add(67654);
+                IncompleteQuestsSet.Add(68476);
+                IncompleteQuestsSet.Add(69137);
+                IncompleteQuestsSet.Add(69709);
+                IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
+                PluginDataVersion = "0.3.0.0";
+            }
         }
 
         internal unsafe void UpdateIslandSanctuaryData()
@@ -927,6 +985,34 @@ namespace FFXIVCharaTracker.DB
 			}
 			return 0;
 		}
+
+        internal String GetHildibrandProgress()
+        {
+            if (IsQuestComplete(70255))
+            {
+                return "Complete";
+            }
+            else if (IsQuestComplete(68704))
+            {
+                return "Endwalker";
+            }
+            else if (IsQuestComplete(67908))
+            {
+                return "Stormblood";
+            }
+            else if (IsQuestComplete(66038))
+            {
+                return "Heavensward";
+            }
+            else if (IsQuestComplete(66740))
+            {
+                return "A Realm Reborn";
+            }
+            else
+            {
+                return "Not started";
+            }
+        }
 
 		internal List<string> GetMissingCrafterQuests()
 		{
