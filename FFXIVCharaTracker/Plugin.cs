@@ -75,6 +75,7 @@ namespace FFXIVCharaTracker
 		internal static Lumina.Excel.ExcelSheet<CompanyCraftSequence> CompanyCraftSequences = null!;
 		internal static Lumina.Excel.ExcelSheet<CompanyCraftProcess> CompanyCraftProcesses = null!;
 		internal static Lumina.Excel.ExcelSheet<CompanyCraftSupplyItem> CompanyCraftSupplyItems = null!;
+        internal static Lumina.Excel.ExcelSheet<BeastTribe> BeastTribes = null!;
 
         internal static readonly Dictionary<ulong, (Item, ItemUICategory)> ItemCache = new();
 		internal static readonly Dictionary<uint, Recipe> RecipeCache = new();
@@ -119,6 +120,7 @@ namespace FFXIVCharaTracker
 			CompanyCraftSequences = DataManager.Excel.GetSheet<CompanyCraftSequence>()!;
 			CompanyCraftProcesses = DataManager.Excel.GetSheet<CompanyCraftProcess>()!;
 			CompanyCraftSupplyItems = DataManager.Excel.GetSheet<CompanyCraftSupplyItem>()!;
+            BeastTribes = DataManager.Excel.GetSheet<BeastTribe>()!;
 
             _ = Task.Run(PopulateItemCache);
 

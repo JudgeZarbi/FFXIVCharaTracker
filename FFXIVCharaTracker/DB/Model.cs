@@ -230,6 +230,9 @@ namespace FFXIVCharaTracker.DB
 		public string CustomDeliveryRanks { get; set; }
 		[NotMapped]
 		public IList<uint> CustomDeliveryRanksSet { get; set; } = new List<uint>();
+        public string BeastTribeRanks { get; set; }
+        [NotMapped]
+        public IList<uint> BeastTribeRanksList { get; set; } = new List<uint>();
 		public string UnobtainedMinions { get; set; }
 		[NotMapped]
 		public ICollection<uint> UnobtainedMinionsSet { get; set; } = new HashSet<uint>();
@@ -266,7 +269,7 @@ namespace FFXIVCharaTracker.DB
 			string lockedDuties = "[]", string unobtainedEmotes = "[]", string lockedCustomDeliveries = "[]",
 			string incompleteQuests = "[]", string customDeliveryRanks = "[]", string unobtainedMinions = "[]",
 			string unobtainedMounts = "[]", string uncollectedMinerItems = "[]", string uncollectedBotanistItems = "[]",
-			string uncollectedFisherItems = "[]", string uncollectedSpearfisherItems = "[]")
+			string uncollectedFisherItems = "[]", string uncollectedSpearfisherItems = "[]", string beastTribeRanks = "[]")
 		{
 			CharaID = charaID;
 			WorldID = worldID;
@@ -286,6 +289,7 @@ namespace FFXIVCharaTracker.DB
 			UncollectedBotanistItems = uncollectedBotanistItems;
 			UncollectedFisherItems = uncollectedFisherItems;
 			UncollectedSpearfisherItems = uncollectedSpearfisherItems;
+            BeastTribeRanks = beastTribeRanks;
 
 			IncompleteFolkloreBooksSet = TryDeserialize<HashSet<uint>>(IncompleteFolkloreBooks, Data.FolkloreIDs);
             IncompleteSecretRecipeBooksSet = TryDeserialize<HashSet<uint>>(IncompleteSecretRecipeBooks, Data.RecipeBookIDs);
@@ -301,6 +305,15 @@ namespace FFXIVCharaTracker.DB
             UncollectedBotanistItemsSet = TryDeserialize<HashSet<uint>>(UncollectedBotanistItems, Data.RetainerBotanistItemIDs);
             UncollectedFisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedFisherItems, Data.RetainerFisherItemIDs);
             UncollectedSpearfisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedSpearfisherItems, Data.RetainerSpearfisherItemIDs);
+            BeastTribeRanksList = TryDeserialize<List<uint>>(BeastTribeRanks, Array.Empty<uint>());
+            if (BeastTribeRanksList.Count < Plugin.BeastTribes.RowCount - 1)
+            {
+                for (var i = BeastTribeRanksList.Count; i < Plugin.BeastTribes.RowCount - 1; i++)
+                {
+                    BeastTribeRanksList.Add(0);
+                }
+                BeastTribeRanks = JsonSerializer.Serialize(BeastTribeRanksList);
+            }
         }
 
         private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
@@ -685,6 +698,15 @@ namespace FFXIVCharaTracker.DB
 			LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
 			CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksSet);
 		}
+
+        internal unsafe void UpdateBeastTribes()
+        {
+            for (byte i = 1; i < Plugin.BeastTribes.RowCount; i++)
+            {
+                BeastTribeRanksList[(int)i - 1] = UIState.Instance()->PlayerState.GetBeastTribeRank(i);
+            }
+            BeastTribeRanks = JsonSerializer.Serialize(BeastTribeRanksList);
+        }
 
         internal unsafe void UpdateUnlockQuests(UIState* UiState)
 		{
