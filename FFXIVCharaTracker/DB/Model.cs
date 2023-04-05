@@ -318,6 +318,10 @@ namespace FFXIVCharaTracker.DB
 
         private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
         {
+            if (data == "")
+            {
+                data = "[]";
+            }
             try
             {
                 return JsonSerializer.Deserialize<TCollection>(data)!;
