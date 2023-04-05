@@ -1,7 +1,7 @@
 ﻿using FFXIVCharaTracker.DB;
 using ImGuiNET;
-using System.Data.Entity;
-using System.Numerics;
+using FFXIVClientStructs.FFXIV.Common.Math;
+using Microsoft.EntityFrameworkCore;
 
 namespace FFXIVCharaTracker
 {
@@ -9,11 +9,11 @@ namespace FFXIVCharaTracker
     {
         internal void DrawSquadTab()
         {
-            if (Context.Charas.Count() > 1)
+            if (Context.Charas.AsNoTracking().Count() > 1)
             {
                 if (ImGui.BeginTabItem("Squad"))
                 {
-                    var charas = Context.Charas.Include(c => c.Retainers).OrderBy(c => c.Account).ThenBy(c => c.WorldID).ThenBy(c => (long)c.CharaID).AsNoTracking().ToList();
+                    var charas = Context.Charas.AsNoTracking().Include(c => c.Retainers).OrderBy(c => c.Account).ThenBy(c => c.WorldID).ThenBy(c => (long)c.CharaID).ToList();
                     ImGui.Indent();
                     if (ImGui.BeginTabBar("squadSubtypes"))
                     {
