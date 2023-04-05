@@ -761,10 +761,6 @@ namespace FFXIVCharaTracker.DB
 
 		internal unsafe void UpdateCustomDeliveries()
 		{
-			if (LockedCustomDeliveriesSet.Count == 0)
-			{
-				return;
-			}
 			for (uint i = 1; i < Plugin.SatisfactionNpcs.RowCount; i++)
 			{
 				var row = Plugin.SatisfactionNpcs.GetRow(i)!;
