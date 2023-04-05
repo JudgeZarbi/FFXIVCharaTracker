@@ -56,9 +56,7 @@ namespace FFXIVCharaTracker
         internal Task? DatabaseSave;
 
         internal readonly Stopwatch SwUpdate = new();
-        internal readonly Stopwatch SwRetainer = new();
-        internal const int UpdateTime = 10 * 60 * 1000;
-        internal const int UpdateRetainersTime = 1000;
+        internal const int UpdateTime = 1000;
 
         internal static Lumina.Excel.ExcelSheet<Item> ItemSheet = null!;
         internal Lumina.Excel.ExcelSheet<ClassJobCategory> ClassJobCategories;
@@ -126,7 +124,6 @@ namespace FFXIVCharaTracker
 
 
             SwUpdate.Start();
-            SwRetainer.Start();
         }
 
 
@@ -203,18 +200,14 @@ namespace FFXIVCharaTracker
             }
 
 
-			if (SwUpdate.ElapsedMilliseconds > UpdateRetainersTime)
+			if (SwUpdate.ElapsedMilliseconds > UpdateTime)
             {
                 CurCharaData!.UpdateCharacterData();
-                SwUpdate.Restart();
-			}
-
-			if (SwRetainer.ElapsedMilliseconds > UpdateRetainersTime)
-            {
                 Retainer.UpdateRetainer(Context, CurCharaData);
 //				PluginLog.Warning($"UpdateRetainer: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
 				InventorySlot.StoreInventories(Context, CurCharaData);
 //				PluginLog.Warning($"UpdateInventories: {timer.ElapsedTicks * (1f / Stopwatch.Frequency) * 1000} ms");
+                SwUpdate.Restart();
 			}
 
 			if (WaitingOnHairstyles)
