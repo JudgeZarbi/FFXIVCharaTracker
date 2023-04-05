@@ -53,8 +53,8 @@ namespace FFXIVCharaTracker
 
                         SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                         SetCellBackgroundWithText(default, $"{c.BirthDay}/{c.BirthMonth} {GetRealDateFromGameDate(c.BirthDay, c.BirthMonth)}", White);
-                        SetCellBackgroundWithText(default, $"{Data.SubRaces[c.Race]} {(c.Race == 0 ? "" : c.Sex == 1 ? "♀" : "♂")}", White);
-                        SetCellBackgroundWithText(default, $"{Data.GuardianDeities[c.GuardianDeity]}", White);
+                        SetCellBackgroundWithText(default, $"{SubRaces[c.Race]} {(c.Race == 0 ? "" : c.Sex == 1 ? "♀" : "♂")}", White);
+                        SetCellBackgroundWithText(default, $"{GuardianDeities[c.GuardianDeity]}", White);
                         var chocoLevel = c.ChocoboLevel;
                         SetCellBackgroundWithText(chocoLevel == Data.MaxChocoboLevel ? Green : (chocoLevel > 0 ? Yellow : Red), chocoLevel.ToString(), Black);
                         var raceChocoRank = c.RaceChocoboRank;

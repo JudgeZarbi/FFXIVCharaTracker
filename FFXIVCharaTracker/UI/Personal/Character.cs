@@ -49,9 +49,9 @@ namespace FFXIVCharaTracker
 
                     DrawTableRowText("Birthday", true, White, $"{charaData.BirthDay}/{charaData.BirthMonth} {GetRealDateFromGameDate(charaData.BirthDay, charaData.BirthMonth)}");
 
-                    DrawTableRowText("Race", true, White, $"{Data.SubRaces[charaData.Race]} {(charaData.Race == 0 ? "" : charaData.Sex == 1 ? "♀" : "♂")}");
+                    DrawTableRowText("Race", true, White, $"{SubRaces[charaData.Race]} {(charaData.Race == 0 ? "" : charaData.Sex == 1 ? "♀" : "♂")}");
 
-                    DrawTableRowText("Guardian deity", true, White, $"{Data.GuardianDeities[charaData.GuardianDeity]}");
+                    DrawTableRowText("Guardian deity", true, White, $"{GuardianDeities[charaData.GuardianDeity]}");
 
                     DrawTableRowText("Home World", true, White, Plugin.Worlds.GetRow(charaData.WorldID)!.Name);
 
