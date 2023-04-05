@@ -14,48 +14,56 @@ namespace FFXIVCharaTracker
                     SetUpTableColumns();
 
                     var level = charaData.LevelCrp;
+                    var desynthLevel = charaData.DesynthesisLevelCrp;
                     DrawTableRowText("CRP", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelBsm;
+                    desynthLevel = charaData.DesynthesisLevelBsm;
                     DrawTableRowText("BSM", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelArm;
+                    desynthLevel = charaData.DesynthesisLevelArm;
                     DrawTableRowText("ARM", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelGsm;
+                    desynthLevel = charaData.DesynthesisLevelGsm;
                     DrawTableRowText("GSM", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelLtw;
+                    desynthLevel = charaData.DesynthesisLevelLtw;
                     DrawTableRowText("LTW", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelWvr;
+                    desynthLevel = charaData.DesynthesisLevelWvr;
                     DrawTableRowText("WVR", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelAlc;
+                    desynthLevel = charaData.DesynthesisLevelAlc;
                     DrawTableRowText("ALC", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelCul;
+                    desynthLevel = charaData.DesynthesisLevelCul;
                     DrawTableRowText("CUL", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level} (Desynth: {(desynthLevel == Data.MaxDesynthLevel ? "MAX" : desynthLevel)})");
 
                     level = charaData.LevelMin;
                     DrawTableRowText("MIN", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level}");
 
                     level = charaData.LevelBtn;
                     DrawTableRowText("BTN", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level}");
 
                     level = charaData.LevelFsh;
                     DrawTableRowText("FSH", true, level == Data.MaxLevel ? Green : (level > 0 ? Yellow : Red),
-                        level.ToString());
+                        $"{level}");
 
                     var colour = White;
                     var text = "";

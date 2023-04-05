@@ -7,6 +7,7 @@
         public const uint RetainerCombatILvl = 580;
         public const uint RetainerGatherILvl = 620;
         public const uint MaxLevel = 90;
+        public const uint MaxDesynthLevel = 620;
         public const uint MaxStoryLevel = QuestComplete63;
         public const uint MaxGCLevel = 11;
         public const uint MaxCustomDeliveryRank = 5;

@@ -187,6 +187,14 @@ namespace FFXIVCharaTracker.DB
 		public int LevelWvr { get; set; }
 		public int LevelAlc { get; set; }
 		public int LevelCul { get; set; }
+        public float DesynthesisLevelCrp { get; set; }
+        public float DesynthesisLevelBsm { get; set; }
+        public float DesynthesisLevelArm { get; set; }
+        public float DesynthesisLevelGsm { get; set; }
+        public float DesynthesisLevelLtw { get; set; }
+        public float DesynthesisLevelWvr { get; set; }
+        public float DesynthesisLevelAlc { get; set; }
+        public float DesynthesisLevelCul { get; set; }
         public int LevelMin { get; set; }
 		public int LevelBtn { get; set; }
 		public int LevelFsh { get; set; }
@@ -293,7 +301,7 @@ namespace FFXIVCharaTracker.DB
             UncollectedBotanistItemsSet = TryDeserialize<HashSet<uint>>(UncollectedBotanistItems, Data.RetainerBotanistItemIDs);
             UncollectedFisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedFisherItems, Data.RetainerFisherItemIDs);
             UncollectedSpearfisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedSpearfisherItems, Data.RetainerSpearfisherItemIDs);
-                }
+        }
 
         private static TCollection TryDeserialize<TCollection>(string data, uint[] baseData) where TCollection : ICollection<uint>, new()
         {
@@ -555,6 +563,20 @@ namespace FFXIVCharaTracker.DB
 			LevelBtn = PlayerState.ClassJobLevelArray[16];
 			LevelFsh = PlayerState.ClassJobLevelArray[17];
 
+		}
+
+        internal unsafe void UpdateDesynthesisLevels(UIState* UiState)
+        {
+            var playerState = UiState->PlayerState;
+
+            DesynthesisLevelCrp = playerState.GetDesynthesisLevel(7);
+            DesynthesisLevelBsm = playerState.GetDesynthesisLevel(8);
+            DesynthesisLevelArm = playerState.GetDesynthesisLevel(9);
+            DesynthesisLevelGsm = playerState.GetDesynthesisLevel(10);
+            DesynthesisLevelLtw = playerState.GetDesynthesisLevel(11);
+            DesynthesisLevelWvr = playerState.GetDesynthesisLevel(12);
+            DesynthesisLevelAlc = playerState.GetDesynthesisLevel(13);
+            DesynthesisLevelCul = playerState.GetDesynthesisLevel(14);
         }
 
         internal unsafe void UpdateGCRank(UIState* UiState)
