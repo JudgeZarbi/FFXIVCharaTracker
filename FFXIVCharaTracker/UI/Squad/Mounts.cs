@@ -21,9 +21,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsAchievement", 40, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsAchievement", squadMountsAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Ahriman", "Behemoth", "Gilded Magitek Armor", "Warlion", "Warbear", "Storm Warsteed", "Serpent Warsteed", "Flame Warsteed", "Parade Chocobo", "Logistics System", "War Panther", "Gloria-class Airship", "Astrope", "Aerodynamics System", "Goten", "Ginga", "Raigo", "Battle Lion", "Battle Bear", "Battle Panther", "Centurio Tiger", "Magitek Avenger", "Magitek Death Claw", "Safeguard System", "Juedi", "Magitek Avenger A1", "Demi-Ozma", "War Tiger", "Triceratops", "Amaro", "Battle Tiger", "Morbol", "Construct VII", "Hybodus", "Pteranodon", "Cerberus", "Al-iklil", "Victor", "Silkie");
+                            SetUpSquadTableHeaders(0, squadMountsAchievementStrings);
 
                             foreach (var c in charas)
                             {
@@ -79,9 +79,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsTribe", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsTribe", squadMountsTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Cavalry Drake", "Laurel Goobbue", "Cavalry Elbst", "Bomb Palanquin", "Direwolf", "Sanuwa", "Kongamato", "Cloud Mallow", "Striped Ray", "Marid", "True Griffin", "Mikoshi", "Portly Porxie", "Great Vessel Of Ronka", "Rolling Tankard", "Hippo Cart", "Miw Miisv");
+                            SetUpSquadTableHeaders(0, squadMountsTribeStrings);
 
                             foreach (var c in charas)
                             {
@@ -115,9 +115,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsBozja", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsBozja", squadMountsBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Construct 14", "Gabriel Î‘", "Gabriel Mark III", "Deinonychus");
+                            SetUpSquadTableHeaders(0, squadMountsBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -138,9 +138,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsCrafted", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsCrafted", squadMountsCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Flying Chair", "Magicked Bed");
+                            SetUpSquadTableHeaders(0, squadMountsCraftedStrings);
 
                             foreach (var c in charas)
                             {
@@ -159,9 +159,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsDeep", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsDeep", squadMountsDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Disembodied Head", "Black Pegasus", "Dodo", "Sil'dihn Throne");
+                            SetUpSquadTableHeaders(0, squadMountsDeepStrings);
 
                             foreach (var c in charas)
                             {
@@ -182,9 +182,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsDungeon", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsDungeon", squadMountsDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Magitek Predator");
+                            SetUpSquadTableHeaders(0, squadMountsDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -202,9 +202,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsEureka", squadMountsEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Tyrannosaur", "Eldthurs", "Eurekan Petrel");
+                            SetUpSquadTableHeaders(0, squadMountsEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -224,9 +224,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsFate", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsFate", squadMountsFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Ixion", "Ironfrog Mover", "Level Checker", "Wivre");
+                            SetUpSquadTableHeaders(0, squadMountsFateStrings);
 
                             foreach (var c in charas)
                             {
@@ -247,9 +247,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsMog", 49, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsMog", squadMountsMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Coeurl", "Fat Chocobo", "Draught Chocobo", "Sleipnir", "Ceremony Chocobo", "Griffin", "Amber Draught Chocobo", "Twintania", "Witch's Broom", "White Devil", "Red Baron", "Original Fat Chocobo", "Bennu", "Fat Moogle", "Eggshilaration System", "Syldra", "Managarm", "Mystic Panda", "Starlight Bear", "Aquamarine Carbuncle", "Citrine Carbuncle", "Nezha Chariot", "Broken Heart", "Broken Heart", "Red Hare", "Indigo Whale", "SDS Fenrir", "Fatter Cat", "Fat Black Chocobo", "Magicked Carpet", "Grani", "Circus Ahriman", "Sunspun Cumulus", "Spriggan Stonecarrier", "Kingly Peacock", "Rubellite Carbuncle", "Chocobo Carriage", "Snowman", "Lunar Whale", "Polar Bear", "Cruise Chaser", "Arion", "Papa Paissa", "Megashiba", "Mechanical Lotus", "Magicked Umbrella", "Magicked Parasol", "Set Of Ceruleum Balloons");
+                            SetUpSquadTableHeaders(0, squadMountsMogStrings);
 
                             foreach (var c in charas)
                             {
@@ -314,9 +314,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsPvp", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsPvp", squadMountsPvpStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Magitek Sky Armor");
+                            SetUpSquadTableHeaders(0, squadMountsPvpStrings);
 
                             foreach (var c in charas)
                             {
@@ -334,9 +334,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsRaid", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsRaid", squadMountsRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Gobwalker", "Arrhidaeus", "Alte Roite", "Air Force", "Model O", "Skyslipper", "Ramuh", "Eden", "Demi-Phoinix", "Sunforged");
+                            SetUpSquadTableHeaders(0, squadMountsRaidStrings);
 
                             foreach (var c in charas)
                             {
@@ -363,9 +363,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsSkybuilder", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsSkybuilder", squadMountsSkybuilderStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Pegasus", "Ufiti", "Dhalmel", "Albino Karakul", "Megalotragus", "Big Shell", "Antelope Doe", "Antelope Stag");
+                            SetUpSquadTableHeaders(0, squadMountsSkybuilderStrings);
 
                             foreach (var c in charas)
                             {
@@ -390,9 +390,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsTreasure", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsTreasure", squadMountsTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Alkonost", "Phaethon", "Pinky");
+                            SetUpSquadTableHeaders(0, squadMountsTreasureStrings);
 
                             foreach (var c in charas)
                             {
@@ -412,9 +412,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsTrial", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsTrial", squadMountsTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Nightmare", "Aithon", "Xanthos", "Gullfaxi", "Enbarr", "Markab", "Boreas", "White Lanner", "Rose Lanner", "Round Lanner", "Warring Lanner", "Dark Lanner", "Sophic Lanner", "Demonic Lanner", "Blissful Kamuy", "Reveling Kamuy", "Legendary Kamuy", "Auspicious Kamuy", "Lunar Kamuy", "Rathalos", "Euphonious Kamuy", "Hallowed Kamuy", "Fae Gwiber", "Innocent Gwiber", "Shadow Gwiber", "Ruby Gwiber", "Gwiber Of Light", "Emerald Gwiber", "Diamond Gwiber", "Lynx Of Eternal Darkness", "Lynx Of Divine Light", "Bluefeather Lynx", "Lynx Of Imperious Wind", "Lynx Of Righteous Fire");
+                            SetUpSquadTableHeaders(0, squadMountsTrialStrings);
 
                             foreach (var c in charas)
                             {
@@ -465,9 +465,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsVoyage", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsVoyage", squadMountsVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Zu");
+                            SetUpSquadTableHeaders(0, squadMountsVoyageStrings);
 
                             foreach (var c in charas)
                             {
@@ -485,9 +485,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadmountsTails", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMountsTails", squadMountsTailsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Ixion", "Incitatus", "Construct VI-S", "Calydontis", "Troll", "Wondrous Lanner");
+                            SetUpSquadTableHeaders(0, squadMountsTailsStrings);
 
                             foreach (var c in charas)
                             {
@@ -516,9 +516,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadmountsGil", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMountsGil", squadMountsGilStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Gilded Mikoshi", "Resplendent Vessel Of Ronka", "Magitek Avenger G1", "Chrysomallos");
+                                    SetUpSquadTableHeaders(0, squadMountsGilStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -540,9 +540,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadmountsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMountsSaucer", squadMountsSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Adamantoise", "Fenrir", "Archon Throne", "Korpokkur Kolossus", "Typhon", "Sabotender Emperador", "Pod 602", "Blackjack");
+                                    SetUpSquadTableHeaders(0, squadMountsSaucerStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -568,9 +568,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadmountsHunts", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMountsHunts", squadMountsHuntsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Wyvern", "Forgiven Reticence", "Vinegaroon");
+                                    SetUpSquadTableHeaders(0, squadMountsHuntsStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -591,9 +591,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadmountsSanctuary", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMountsSanctuary", squadMountsSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Garlond GL-II", "Island Mandragora", "Island Onion Prince", "Island Eggplant Knight", "Island Alligator");
+                                    SetUpSquadTableHeaders(0, squadMountsSanctuaryStrings);
 
                                     foreach (var c in charas)
                                     {

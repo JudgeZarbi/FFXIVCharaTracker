@@ -20,9 +20,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesSidequest", 10, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesSidequest", SquadEmoteSidequestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Throw", "Step Dance", "Harvest Dance", "Ball Dance", "Manderville Dance", "Most Gentlemanly", "Spectacles", "Manderville Mambo", "Lali-ho");
+                            SetUpSquadTableHeaders(0, SquadEmoteSidequestStrings);
 
                             foreach (var c in charas)
                             {
@@ -49,9 +49,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesTribe", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesTribe", SquadEmoteTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Sundrop Dance", "Moogle Dance", "Moonlift Dance", "Ritual Prayer", "Charmed", "Yol Dance", "Gratuity", "Lali Hop");
+                            SetUpSquadTableHeaders(0, SquadEmoteTribeStrings);
 
                             foreach (var c in charas)
                             {
@@ -78,9 +78,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesSaucer", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesSaucer", SquadEmoteSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Thavnairian Dance", "Gold Dance", "Aback", "Big Grin", "Bee's Knees", "Sheathe Weapon", "Draw Weapon");
+                            SetUpSquadTableHeaders(0, SquadEmoteSaucerStrings);
 
                             foreach (var c in charas)
                             {
@@ -105,9 +105,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesSquadron", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesSquadron", SquadEmoteSquadronStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Squats", "Push-ups", "Sit-ups", "Breath Control");
+                            SetUpSquadTableHeaders(0, SquadEmoteSquadronStrings);
 
                             foreach (var c in charas)
                             {
@@ -129,9 +129,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesGC", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesGC", SquadEmoteGCStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Attention", "At Ease", "Reflect");
+                            SetUpSquadTableHeaders(0, SquadEmoteGCStrings);
 
                             foreach (var c in charas)
                             {
@@ -152,9 +152,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesHunts", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesHunts", SquadEmoteHuntStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Winded", "Tremble");
+                            SetUpSquadTableHeaders(0, SquadEmoteHuntStrings);
 
                             foreach (var c in charas)
                             {
@@ -175,9 +175,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesPvP", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesPvP", SquadEmotePvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Elucidate", "Reprimand");
+                            SetUpSquadTableHeaders(0, SquadEmotePvPStrings);
 
                             foreach (var c in charas)
                             {
@@ -198,9 +198,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesDeep", SquadEmoteDeepDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Sweat", "Wow");
+                            SetUpSquadTableHeaders(0, SquadEmoteDeepDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -221,9 +221,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesEureka", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesEureka", SquadEmoteEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Shiver", "Scheme", "Fist Pump");
+                            SetUpSquadTableHeaders(0, SquadEmoteEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -244,9 +244,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesBozja", SquadEmoteBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Guard", "Malevolence", "Wring Hands");
+                            SetUpSquadTableHeaders(0, SquadEmoteBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -267,9 +267,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesTreasure", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesTreasure", SquadEmoteTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Confirm", "Paint it Black", "Paint it Red", "Paint it Yellow", "Paint it Blue");
+                            SetUpSquadTableHeaders(0, SquadEmoteTreasureStrings);
 
                             foreach (var c in charas)
                             {
@@ -292,9 +292,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesResto", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesResto", SquadEmoteRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Lean", "Insist", "Break Fast", "Read", "High Five", "Eat Rice Ball", "Eat Apple", "Sweep Up");
+                            SetUpSquadTableHeaders(0, SquadEmoteRestoStrings);
 
                             foreach (var c in charas)
                             {
@@ -320,9 +320,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesMog", 41, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadEmotesMog", SquadEmoteMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Bomb Dance", "Huzzah", "Eureka", "Black Ranger Pose A", "Black Ranger Pose B", "Yellow Ranger Pose A", "Yellow Ranger Pose B", "Red Ranger Pose A", "Red Ranger Pose B", "Eastern Greeting", "Dote", "Songbird", "Play Dead", "Eastern Stretch", "Eastern Dance", "Pretty Please", "Power Up", "Cheer On", "Cheer Wave", "Cheer Jump", "Megaflare", "Splash", "Crimson Lotus", "Box Step", "Side Step", "Senor Sabotender", "Get Fantasy", "Popoto Step", "Toast", "Heel Toe", "Goobbue Do", "Consider", "Flame Dance", "Wasshoi", "Flower Shower", "Pantomime", "Vexed", "Drink Tea", "Deride");
+                            SetUpSquadTableHeaders(0, SquadEmoteMogStrings);
 
                             foreach (var c in charas)
                             {
@@ -378,9 +378,9 @@ namespace FFXIVCharaTracker
                             ImGui.Unindent();
                             ImGui.Unindent();
 
-                            if (ImGui.BeginTable("squadEmotesOther", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                            if (ImGui.BeginTable("squadEmotesOther", SquadEmoteOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                             {
-                                SetUpSquadTableHeaders(0, "Headache", "Embrace");
+                                SetUpSquadTableHeaders(0, SquadEmoteOtherStrings);
 
                                 foreach (var c in charas)
                                 {

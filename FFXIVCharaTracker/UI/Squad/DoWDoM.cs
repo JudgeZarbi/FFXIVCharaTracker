@@ -13,9 +13,9 @@ namespace FFXIVCharaTracker
             {
                 ImGui.Unindent();
 
-                if (ImGui.BeginTable("squadDoWDoM", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                if (ImGui.BeginTable("squadDoWDoM", SquadDoWDoMStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                 {
-                    SetUpSquadTableHeaders(100, "Class", "Level", "Story completion", "Low level gear", "Current level gear");
+                    SetUpSquadTableHeaders(100, SquadDoWDoMStrings);
 
                     var lastAccount = -1;
                     var lastWorld = 0u;

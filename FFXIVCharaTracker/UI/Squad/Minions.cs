@@ -21,9 +21,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsAchievement", 30, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsAchievement", squadMinionsAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Black Chocobo Chick", "Beady Eye", "Wind-up Cursor", "Wind-up Leader", "Minion of Light", "Wind-up Odin", "Wind-up Warrior of Light ", "Wind-up Goblin", "Wind-up Gilgamesh", "Wind-up Nanamo", "Wind-up Firion", "Komainu", "Mammet #003L", "Mammet #003G", "Mammet #003U", "Princely Hatchling", "Fledgling Apkallu", "Wind-up Louisoix", "Shalloweye", "Clockwork Twintania", "Penguin Prince", "Hellpup", "Faepup", "The Major-General", "Malone", "Laladile", "Much-coveted Mora", "Dolphin Calf", "Gull");
+                            SetUpSquadTableHeaders(0, squadMinionsAchievementStrings);
 
                             foreach (var c in charas)
                             {
@@ -69,9 +69,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsTribe", 29, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsTribe", squadMinionsTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Wind-up Sylph", "Wind-up Violet", "Wind-up Amalj'aa", "Wind-up Founder", "Wind-up Kobold", "Wind-up Kobolder", "Wind-up Sahagin", "Wind-up Sea Devil", "Wind-up Dezul Qualan", "Wind-up Ixal", "Wind-up Gundu Warrior", "Wind-up Zundu Warrior", "Wind-up Vath", "Wind-up Gnath", "Wind-up Dragonet", "Wind-up Ohl Deeh", "Wind-up Kojin", "Wind-up Redback", "Zephyrous Zabuton", "Wind-up Ananta", "Wind-up Qalyana", "Attendee #777", "Wind-up Pixie", "The Behelmeted Serpent of Ronka", "The Behatted Serpent of Ronka", "Lalinator 5.H0", "Wind-up Arkasodara", "Lumini");
+                            SetUpSquadTableHeaders(0, squadMinionsTribeStrings);
 
                             foreach (var c in charas)
                             {
@@ -116,9 +116,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsBozja", 24, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsBozja", squadMinionsBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Mameshiba", "Koala Joey", "Salt & Pepper Seal", "Axolotl Eft", "Wind-up Ravana", "Wind-up Shinryu", "Tengu Doll", "White Whittret", "Aurelia Polyp", "Byakko Cub", "Private Moai", "Monkey King", "Mudpie (Southern Front Lockbox, Zadnor Lockbox, Saint Mocianne's Arboretum", "Scarlet Peacock", "Abroader Otter", "Seitei", "Wind-up Weapon", "Chameleon", "Sharksucker-class Insubmersible", "Magitek Helldiver F1", "DÃ¡insleif F1", "Save the Princess (Delubrum Reginae", "Wind-up Gunnhildr");
+                            SetUpSquadTableHeaders(0, squadMinionsBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -158,9 +158,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsCrafted", 35, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsCrafted", squadMinionsCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Magic Broom", "Clockwork Barrow", "Model Magitek Bit", "Private Moai", "Wind-up Dullahan", "Steam-powered Gobwalker G-VII", "Bantam Train", "Gravel Golem", "Model Vanguard", "Wind-up Aldgoat", "Wind-up Qiqirn", "Plush Cushion", "Nana Bear", "Wind-up Illuminatus", "Wind-up Chimera", "Wind-up Sadu", "Wind-up Magnai", "Adventurer's Basket", "Wind-up Ifrit", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Wind-up Shinryu", "Byakko Cub", "Scarlet Peacock", "Seitei", "Atrophied Atomos", "Wanderer's Campfire");
+                            SetUpSquadTableHeaders(0, squadMinionsCraftedStrings);
 
                             foreach (var c in charas)
                             {
@@ -211,9 +211,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsDeep", 44, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsDeep", squadMinionsDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Miniature Minecart", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Gestahl", "Owlet", "Ugly Duckling", "Paissa Brat", "Korpokkur Kid", "Hunting Hawk", "Wind-up Ifrit", "Morpho", "Wind-up Garuda", "Wind-up Titan", "Wind-up Leviathan", "Dwarf Rabbit", "Wind-up Ramuh", "Wind-up Shiva", "Wind-up Sasquatch", "Hecteye", "Shaggy Shoat", "Wind-up Edda", "Baby Brachiosaur", "Castaway Chocobo Chick", "Tiny Tatsunoko", "Bombfish", "Bom Boko", "Odder Otter", "Ghido", "Road Sparrow", "Wind-up Bismarck", "Wind-up Susano", "Wind-up Lakshmi", "Wind-up Ravana", "Frilled Dragon");
+                            SetUpSquadTableHeaders(0, squadMinionsDeepStrings);
 
                             foreach (var c in charas)
                             {
@@ -273,9 +273,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsDungeon", 59, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsDungeon", squadMinionsDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Morbol Seedling", "Bite-sized Pudding", "Demon Brick", "Slime Puddle", "Baby Opo-opo", "Naughty Nanka", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Korpokkur Kid", "Calca", "Brina", "Morpho", "Calamari", "Shaggy Shoat", "Bullpup", "Bombfish", "Ivon Coeurlfist Doll", "Ghido", "Road Sparrow", "Dress-up Yugiri", "Mock-up Grynewaht", "Magitek Avenger F1", "Salt & Pepper Seal", "White Whittret", "Monkey King", "Mudpie", "Wind-up Weapon", "Armadillo Bowler", "Clionid Larva", "Tiny Echevore", "Forgiven Hate", "Black Hayate", "Chameleon", "Shoebill", "Little Leannan", "Ancient One", "Ephemeral Necromancer", "Drippy", "Magitek Predator F1", "Prince Lunatender", "Tiny Troll", "Wind-up Magus Sisters", "Wind-up Anima", "Hippo Calf", "Caduceus", "Starbird", "Optimus Omicron", "Teacup Kapikulu", "Wind-up Scarmiglione", "Sponge Silkie", "Sewer Skink", "Wind-up Cagnazzo");
+                            SetUpSquadTableHeaders(0, squadMinionsDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -350,9 +350,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsEureka", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsEureka", squadMinionsEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Calca", "Wind-up Fafnir", "The Prince Of Anemos", "Wind-up Mithra", "Copycat Bulb", "Wind-up Tarutaru", "Dhalmel Calf", "Wind-up Elvaan", "Conditional Virtue", "Yukinko Snowflake");
+                            SetUpSquadTableHeaders(0, squadMinionsEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -379,9 +379,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsFate", 16, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsFate", squadMinionsFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Baby Bun", "Infant Imp", "Pudgy Puk", "Smallshell", "Gold Rush Minecart", "Fox Kit", "Wind-up Ixion", "Micro Gigantender", "Butterfly Effect", "Ironfrog Ambler", "Tinker's Bell", "Little Leafman", "Amaro Hatchling", "Wee Ea", "Wind-up Daivadipa");
+                            SetUpSquadTableHeaders(0, squadMinionsFateStrings);
 
                             foreach (var c in charas)
                             {
@@ -413,9 +413,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsGather", 8, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsGather", squadMinionsGatherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Tiny Tortoise", "Gigantpole", "Kidragora", "Coblyn Larva", "Magic Bucket", "Castaway Chocobo Chick", "Tiny Tatsunoko");
+                            SetUpSquadTableHeaders(0, squadMinionsGatherStrings);
 
                             foreach (var c in charas)
                             {
@@ -439,9 +439,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsMog", 47, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsMog", squadMinionsMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Baby Behemoth", "Tender Lamb", "Wind-up Edvya", "Wind-up Shantotto", "Wind-up Moogle", "Wind-up Minfilia", "Wind-up Thancred", "Wind-up Y'shtola", "Wind-up Yda", "Wind-up Papalymo", "Wind-up Urianger", "Hoary The Snowman", "Wind-up Kain", "Wind-up Alisaie", "Wind-up Tataru", "Wind-up Iceheart", "Pumpkin Butler", "Wind-up Yugiri", "Panda Cub", "Doman Magpie", "Dress-up Y'shtola", "Wind-up Krile", "Continental Eye", "Wind-up Rikku", "Wind-up Lulu", "Angel Of Mercy", "Wind-up Yuna", "Wind-up Bartz", "Wind-up Lyse", "Wind-up Gosetsu", "Motley Egg", "Wind-up Cirina", "Little Yin", "Little Yang", "Wind-up Tifa", "Wind-up Cloud", "Wind-up Aerith", "Wind-up Fran", "Brave New Y'shtola", "Wind-up Ardbert", "Wind-up Edge", "Wind-up Rydia", "Wind-up Rosa", "Wind-up Rudy", "Squirrel Emperor", "Wind-up Porom");
+                            SetUpSquadTableHeaders(0, squadMinionsMogStrings);
 
                             foreach (var c in charas)
                             {
@@ -504,9 +504,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsPvp", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsPvp", squadMinionsPvpStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Fenrir Pup", "Wind-up Cheerleader", "Clockwork Lantern", "Minitek Conveyor", "Protonaught");
+                            SetUpSquadTableHeaders(0, squadMinionsPvpStrings);
 
                             foreach (var c in charas)
                             {
@@ -528,9 +528,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsQuest", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsQuest", squadMinionsQuestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Chigoe Larva", "Cactuar Cutting", "Goobbue Sproutling", "Coeurl Kitten", "Wolf Pup", "Mini Mole", "Wind-up Gentleman", "Accompaniment Node", "Gigi", "Anima", "Palico", "Wind-up Alpha", "The Great Serpent Of Ronka", "Golden Dhyata");
+                            SetUpSquadTableHeaders(0, squadMinionsQuestStrings);
 
                             foreach (var c in charas)
                             {
@@ -561,9 +561,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsRaid", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsRaid", squadMinionsRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Wind-up Onion Knight", "Puff Of Darkness", "Wind-up Echidna", "Faustlet", "Wind-up Calofisteri", "Toy Alexander", "Wind-up Scathach", "Wind-up Exdeath", "Wind-up Kefka", "Construct 8", "OMG", "Wind-up Ramza", "Eden Minor", "Pod 054", "Pod 316", "Wind-up Ryne", "2B Automaton", "2P Automaton", "Wind-up Gaia", "Smaller Stubby", "9S Automaton", "Nosferatu", "Wind-up Azeyma", "Wind-up Erichthonios", "Wind-up Halone");
+                            SetUpSquadTableHeaders(0, squadMinionsRaidStrings);
 
                             foreach (var c in charas)
                             {
@@ -605,9 +605,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsSkybuilder", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsSkybuilder", squadMinionsSkybuilderStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Plush Cushion", "Nutkin", "Atrophied Atomos", "Gaelikitten", "Owlet", "Ugly Duckling", "Clockwork Barrow", "Paissa Brat", "Hunting Hawk", "Morpho", "Calamari", "Dwarf Rabbit", "Shaggy Shoat", "Bullpup", "Baby Brachiosaur", "Pegasus Colt", "Miniature White Knight", "Dress-up Estinien", "Paissa Patissier", "Paissa Threadpuller", "Cerberpup", "Weatherproof Gaelicat", "Petit Pteranodon", "Trike");
+                            SetUpSquadTableHeaders(0, squadMinionsSkybuilderStrings);
 
                             foreach (var c in charas)
                             {
@@ -648,9 +648,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsTreasure", 28, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsTreasure", squadMinionsTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Wind-up Tonberry", "Tiny Bulb", "Bluebird", "Minute Mindflayer", "Baby Opo-opo", "Nutkin", "Tight-beaked Parrot", "Mummy's Little Mummy", "Gaelikitten", "Page 63", "Unicolt", "Lesser Panda", "Owlet", "Ugly Duckling", "Paissa Brat", "Dwarf Rabbit", "Wind-up Namazu", "Wind-up Matanga", "The Gold Whisker", "Capybara Pup", "Hedgehoglet", "Wind-up Fuath", "Sungold Talos", "Golden Beaver", "Royal Lunatender", "Wind-up Aidoneus", "Wind-up Philos");
+                            SetUpSquadTableHeaders(0, squadMinionsTreasureStrings);
 
                             foreach (var c in charas)
                             {
@@ -694,9 +694,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsTrial", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsTrial", squadMinionsTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Wind-up Ultros", "Enkidu", "Poogie", "Giant Beaver");
+                            SetUpSquadTableHeaders(0, squadMinionsTrialStrings);
 
                             foreach (var c in charas)
                             {
@@ -717,9 +717,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsVenture", 26, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsVenture", squadMinionsVentureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Minute Mindflayer", "Tiny Tapir", "Miniature Minecart", "Littlefoot", "Fat Cat", "Gestahl", "Bom Boko", "Odder Otter", "Mameshiba", "Koala Joey", "Axolotl Eft", "Tengu Doll", "Bacon Bits", "Mystic Weapon", "Domakin", "Wind-up Hobgoblin", "Allagan Melon", "Greener Gleaner", "Flag", "Crabe De La Crabe", "Wind-up Grebuloff", "Wind-up Kangaroo", "Chewy", "Blue-footed Booby", "Clockwork Novus D");
+                            SetUpSquadTableHeaders(0, squadMinionsVentureStrings);
 
                             foreach (var c in charas)
                             {
@@ -761,9 +761,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsVoyage", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsVoyage", squadMinionsVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Aurelia Polyp", "Abroader Otter", "Sharksucker-class Insubmersible", "Meerkat", "Silver Dasher", "Syldrion-class Insubmersible", "Benben Stone", "Suzusaurus");
+                            SetUpSquadTableHeaders(0, squadMinionsVoyageStrings);
 
                             foreach (var c in charas)
                             {
@@ -788,9 +788,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadminionsTails", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadMinionsTails", squadMinionsTailsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Dress-up Thancred", "Dress-up Alisaie", "Wind-up Estinien", "Wind-up Khloe", "Wind-up Hien", "Wind-up Zhloe", "Wind-up Omega-M", "Wind-up Omega-F", "Sand Fox", "Anteater", "Brave New Urianger", "Pterosquirrel", "Corgi");
+                            SetUpSquadTableHeaders(0, squadMinionsTailsStrings);
 
                             foreach (var c in charas)
                             {
@@ -826,9 +826,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsGil", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsGil", squadMinionsGilStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Wayward Hatchling", "Cherry Bomb", "Tiny Rat", "Baby Raptor", "Baby Bat", "Mammet #001");
+                                    SetUpSquadTableHeaders(0, squadMinionsGilStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -852,9 +852,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsSaucer", squadMinionsSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Zu Hatchling", "Heavy Hatchling", "Black Coeurl", "Water Imp", "Wind-up Nero Tol Scaeva", "Piggy", "Wind-up Daivadipa", "Mama Automaton");
+                                    SetUpSquadTableHeaders(0, squadMinionsSaucerStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -880,9 +880,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsPoetics", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsPoetics", squadMinionsPoeticsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Wide-eyed Fawn", "Dust Bunny", "Fledgling Dodo");
+                                    SetUpSquadTableHeaders(0, squadMinionsPoeticsStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -903,9 +903,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsHunts", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsHunts", squadMinionsHuntsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Wind-up Succubus", "Treasure Box", "Behemoth Heir", "Griffin Hatchling", "Tora-jiro", "Wind-up Meateater", "Bitty Duckbill", "Cute Justice", "Nagxian Cat", "Wind-up Nu Mou");
+                                    SetUpSquadTableHeaders(0, squadMinionsHuntsStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -933,9 +933,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsGc", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsGc", squadMinionsGcStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Storm Hatchling", "Serpent Hatchling", "Flame Hatchling");
+                                    SetUpSquadTableHeaders(0, squadMinionsGcStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -956,9 +956,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsSanctuary", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsSanctuary", squadMinionsSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Felicitous Fuzzball", "Sky Blue Back");
+                                    SetUpSquadTableHeaders(0, squadMinionsSanctuaryStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -978,9 +978,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadminionsOther", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadMinionsOther", squadMinionsOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Wind-up Sun", "Wind-up Moon");
+                                    SetUpSquadTableHeaders(0, squadMinionsOtherStrings);
 
                                     foreach (var c in charas)
                                     {

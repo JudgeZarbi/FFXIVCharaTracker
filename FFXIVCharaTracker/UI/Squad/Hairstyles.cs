@@ -21,9 +21,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesSaucer", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesSaucer", SquadHairstyleSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Great Lengths", "Lexen-tails", "Styled for Hire", "Fashionably Feathered", "Rainmaker", "Curls", "Adventure", "Ponytails");
+                            SetUpSquadTableHeaders(0, SquadHairstyleSaucerStrings);
 
                             foreach (var c in charas)
                             {
@@ -48,9 +48,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesEureka", 2, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesEureka", SquadHairstyleEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Form and Function");
+                            SetUpSquadTableHeaders(0, SquadHairstyleEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -68,9 +68,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesBozja", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesBozja", SquadHairstyleBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Both Ways", "Early to Rise", "Wind Caller");
+                            SetUpSquadTableHeaders(0, SquadHairstyleBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -90,9 +90,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesDeep", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesDeep", SquadHairstyleDeepDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Gyr Abanian Plait", "Samsonian Locks");
+                            SetUpSquadTableHeaders(0, SquadHairstyleDeepDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -111,9 +111,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesResto", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesResto", SquadHairstyleRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Saintly Style", "Controlled Chaos", "Modern Legend");
+                            SetUpSquadTableHeaders(0, SquadHairstyleRestoStrings);
 
                             foreach (var c in charas)
                             {
@@ -133,9 +133,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesAlliance", SquadHairstyleAllianceStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Scanning for Style", "Battle-ready Bobs");
+                            SetUpSquadTableHeaders(0, SquadHairstyleAllianceStrings);
 
                             foreach (var c in charas)
                             {
@@ -154,9 +154,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesAlliance", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesSanctuary", SquadHairstyleSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Practical Ponytails", "Tall Tails");
+                            SetUpSquadTableHeaders(0, SquadHairstyleSanctuaryStrings);
 
                             foreach (var c in charas)
                             {
@@ -176,9 +176,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadhairstylesMog", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("squadhairstylesMog", SquadHairstyleMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, "Sharlayan Rebellion", "Sharlayan Studies", "Master & Commander", "Scion Special Issue", "Scion Special Issue II", "Scion Special Issue III", "Pulse", "Liberating Locks", "Clowning Around", "A Wicked Wake");
+                            SetUpSquadTableHeaders(0, SquadHairstyleMogStrings);
 
                             foreach (var c in charas)
                             {
