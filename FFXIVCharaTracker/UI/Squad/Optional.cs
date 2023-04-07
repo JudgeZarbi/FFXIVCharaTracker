@@ -26,9 +26,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralHousing", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralHousing", SquadOptionalHousingStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum");
+                                    SetUpSquadTableHeaders(0, SquadOptionalHousingStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -51,9 +51,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralMateria", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralMateria", SquadOptionalGeneralMateriaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Spiritbond", "Materia Melding", "Advanced Materia Melding");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralMateriaStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -74,9 +74,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralAppearance", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralAppearance", SquadOptionalGeneralAppearanceStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Dyeing", "Glamours", "Egi Glamours", "Aesthetician");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralAppearanceStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -98,9 +98,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralZones", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralZones", SquadOptionalGeneralZonesStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Gold Saucer", "White Wolf Gate");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralZonesStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -120,9 +120,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralPvP", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralPvP", SquadOptionalGeneralPvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Crystalline Conflict", "Frontlines", "Rival Wings");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralPvPStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -139,9 +139,9 @@ namespace FFXIVCharaTracker
                             }
                             if (ImGui.BeginTabItem("Hunt"))
                             {
-                                if (ImGui.BeginTable("squadoptionalGeneralHunt", 19))
+                                if (ImGui.BeginTable("squadoptionalGeneralHunt", SquadOptionalGeneralHuntStrings.Length + 1))
                                 {
-                                    SetUpSquadTableHeaders(0, "ARR Hunts", "HW 1-star", "HW 2-star", "HW 3-star", "HW Elite", "SB 1-star", "SB 2-star", "SB 3-star", "SB Elite", "ShB 1-star", "ShB 2-star", "ShB 3-star", "ShB Elite", "EW 1-star", "EW 2-star", "EW 3-star", "EW Elite");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralHuntStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -173,9 +173,9 @@ namespace FFXIVCharaTracker
                             }
                             if (ImGui.BeginTabItem("Tribes"))
                             {
-                                if (ImGui.BeginTable("squadoptionalGeneralTribes", 2))
+                                if (ImGui.BeginTable("squadoptionalGeneralTribes", SquadOptionalGeneralTribesStrings.Length + 1))
                                 {
-                                    SetUpSquadTableHeaders(0, "Amalj'aa", "Sylphs", "Kobolds", "Sahagin", "Ixal", "Vanu Vanu", "Vath", "Moogles", "Kojin", "Ananta", "Namazu", "Pixies", "Qitari", "Dwarves", "Arkasodara", "Omicrons", "Loporrits");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralTribesStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -206,9 +206,9 @@ namespace FFXIVCharaTracker
                             }
                             if (ImGui.BeginTabItem("Collectables"))
                             {
-                                if (ImGui.BeginTable("squadoptionalGeneralCollectables", 7))
+                                if (ImGui.BeginTable("squadoptionalGeneralCollectables", SquadOptionalGeneralCollectablesStrings.Length + 1))
                                 {
-                                    SetUpSquadTableHeaders(0, "Collectables", "Heavensward", "Stormblood", "Shadowbringers", "Endwalker", "Reduction");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralCollectablesStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -228,9 +228,9 @@ namespace FFXIVCharaTracker
                             }
                             if (ImGui.BeginTabItem("Sightseeing Log"))
                             {
-                                if (ImGui.BeginTable("squadoptionalGeneralSightseeing", 6))
+                                if (ImGui.BeginTable("squadoptionalGeneralSightseeing", SquadOptionalGeneralSightseeingStrings.Length + 1))
                                 {
-                                    SetUpSquadTableHeaders(0, "A Realm Reborn", "Heavensward", "Stormblood", "Shadowbringers", "Endwalker");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralSightseeingStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -249,9 +249,9 @@ namespace FFXIVCharaTracker
                             }
                             if (ImGui.TreeNode("Stone, Sea, Sky"))
                             {
-                                if (ImGui.BeginTable("squadoptionalGeneralDummies", 5))
+                                if (ImGui.BeginTable("squadoptionalGeneralDummies", SquadOptionalGeneralDummiesStrings.Length + 1))
                                 {
-                                    SetUpSquadTableHeaders(0, "Heavensward", "Stormblood", "Shadowbringers", "Endwalker");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralDummiesStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -273,9 +273,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadoptionalGeneralOther", 7, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadoptionalGeneralOther", SquadOptionalGeneralOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Ventures", "Desynthesis", "Combat Chocobo", "Chocobo Raising", "Treasure Maps", "Master Recipes", "Challenge Log", "Wondrous Tails", "Faux Hollows");
+                                    SetUpSquadTableHeaders(0, SquadOptionalGeneralOtherStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -311,9 +311,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadDungeonsArr", 21, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadDungeonsArr", SquadDungeonsArrStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Halatali", "The Sunken Temple of Qarn", "Cutter's Cry", "Dzemael Darkhold", "The Aurum Vale", "Amdapor Keep", "The Wanderer's Palace", "Copperbell Mines (Hard)", "Haukke Manor (Hard)", "Pharos Sirius", "Brayflox's Longstop (Hard)", "Halatali (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle", "The Stone Vigil (Hard)", "The Tam-Tara Deepcroft (Hard)", "Sastasha (Hard)", "The Sunken Temple of Qarn (Hard)", "Amdapor Keep (Hard)", "The Wanderer's Palace (Hard)");
+                                    SetUpSquadTableHeaders(0, SquadDungeonsArrStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -351,9 +351,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadTrialsArr", 15, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadTrialsArr", SquadTrialsArrStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Battle on the Big Bridge", "A Relic Reborn: The Chimera", "A Relic Reborn: The Hydra", "The Minstrel's Ballad: Ultima's Bane", "The Howling Eye (Extreme)", "The Navel (Extreme)", "The Bowl of Embers (Extreme)", "The Dragon's Neck", "The Whorleater (Extreme)", "Thornmarch (Extreme)", "The Striking Tree (Extreme)", "Battle in the Big Keep", "Akh Afah Amphitheatre (Extreme)", "Urth's Fount");
+                                    SetUpSquadTableHeaders(0, SquadTrialsArrStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -385,9 +385,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadRaidsArr", 18, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadRaidsArr", SquadRaidsArrStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Binding Coil of Bahamut - Turn 1", "The Binding Coil of Bahamut - Turn 2", "The Binding Coil of Bahamut - Turn 3", "The Binding Coil of Bahamut - Turn 4", "The Binding Coil of Bahamut - Turn 5", "The Second Coil of Bahamut - Turn 1", "The Second Coil of Bahamut - Turn 2", "The Second Coil of Bahamut - Turn 3", "The Second Coil of Bahamut - Turn 4", "The Second Coil of Bahamut - Turn 1 (Savage)", "The Second Coil of Bahamut - Turn 2 (Savage)", "The Second Coil of Bahamut - Turn 3 (Savage)", "The Second Coil of Bahamut - Turn 4 (Savage)", "The Final Coil of Bahamut - Turn 1", "The Final Coil of Bahamut - Turn 2", "The Final Coil of Bahamut - Turn 3", "The Final Coil of Bahamut - Turn 4");
+                                    SetUpSquadTableHeaders(0, SquadRaidsArrStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -432,9 +432,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadDungeonsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadDungeonsHw", SquadDungeonsHwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Dusk Vigil", "Neverreap", "The Fractal Continuum", "Saint Mocianne's Arboretum", "Pharos Sirius (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle (Hard)", "The Great Gubal Library (Hard)", "Sohm Al (Hard)", "The Palace of the Dead");
+                                    SetUpSquadTableHeaders(0, SquadDungeonsHwStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -462,9 +462,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadTrialsHw", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadTrialsHw", SquadTrialsHwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Limitless Blue (Extreme)", "Thok ast Thok (Extreme)", "Containment Bay S1T7", "The Minstrel's Ballad: Thordan's Reign", "Containment Bay S1T7 (Extreme)", "Containment Bay P1T6", "The Minstrel's Ballad: Nidhogg's Rage", "Containment Bay P1T6 (Extreme)", "Containment Bay Z1T9", "Containment Bay Z1T9 (Extreme)");
+                                    SetUpSquadTableHeaders(0, SquadTrialsHwStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -498,9 +498,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadNormalRaidsHw", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadNormalRaidsHw", SquadNormalRaidsHwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "Alexander - The Fist of the Father", "Alexander - The Cuff of the Father", "Alexander - The Arm of the Father", "Alexander - The Burden of the Father", "Alexander - The Fist of the Father (Savage)", "Alexander - The Cuff of the Father (Savage)", "Alexander - The Arm of the Father (Savage)", "Alexander - The Burden of the Father (Savage)", "Alexander - The Fist of the Son", "Alexander - The Cuff of the Son", "Alexander - The Arm of the Son", "Alexander - The Burden of the Son (Savage)", "Alexander - The Fist of the Son (Savage)", "Alexander - The Cuff of the Son (Savage)", "Alexander - The Arm of the Son (Savage)", "Alexander - The Burden of the Son (Savage)", "Alexander - The Eyes of the Creator", "Alexander - The Breath of the Creator", "Alexander - The Heart of the Creator", "Alexander - The Soul of the Creator", "Alexander - The Eyes of the Creator (Savage)", "Alexander - The Breath of the Creator (Savage)", "Alexander - The Heart of the Creator (Savage)", "Alexander - The Soul of the Creator (Savage)");
+                                            SetUpSquadTableHeaders(0, SquadNormalRaidsHwStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -543,9 +543,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadAllianceRaidsHw", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadAllianceRaidsHw", SquadAllianceRaidsHwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "The Void Ark", "The Weeping City of Mhach", "Dun Scaith");
+                                            SetUpSquadTableHeaders(0, SquadAllianceRaidsHwStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -581,9 +581,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadDungeonsSb", 9, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadDungeonsSb", SquadDungeonsSbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Shisui of the Violet Tides", "Kugane Castle", "The Temple of the Fist", "Hell's Lid", "The Fractal Continuum (Hard)", "The Swallow's Compass", "Saint Mocianne's Arboretum (Hard)", "Heaven-on-High");
+                                    SetUpSquadTableHeaders(0, SquadDungeonsSbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -609,9 +609,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadTrialsSb", 14, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadTrialsSb", SquadTrialsSbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Emanation (Extreme)", "The Pool of Tribute (Extreme)", "The Great Hunt", "The Minstrel's Ballad: Shinryu's Domain", "The Jade Stoa", "The Jade Stoa (Extreme)", "The Great Hunt (Extreme)", "The Minstrel's Ballad: Tsukuyomi's Pain", "Hells' Kier", "Kugane Ohashi", "The Wreath of Snakes", "Hells' Kier (Extreme)", "The Wreath of Snakes (Extreme)");
+                                    SetUpSquadTableHeaders(0, SquadTrialsSbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -648,9 +648,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadNormalRaidsSb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadNormalRaidsSb", SquadNormalRaidsSbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "Deltascape V1.0", "Deltascape V2.0", "Deltascape V3.0", "Deltascape V4.0", "Deltascape V1.0 (Savage)", "Deltascape V2.0 (Savage)", "Deltascape V3.0 (Savage)", "Deltascape V4.0 (Savage)", "Sigmascape V1.0", "Sigmascape V2.0", "Sigmascape V3.0", "Sigmascape V4.0", "Sigmascape V1.0 (Savage)", "Sigmascape V2.0 (Savage)", "Sigmascape V3.0 (Savage)", "Sigmascape V4.0 (Savage)", "Alphascape V1.0", "Alphascape V2.0", "Alphascape V3.0", "Alphascape V4.0", "Alphascape V1.0 (Savage)", "Alphascape V2.0 (Savage)", "Alphascape V3.0 (Savage)", "Alphascape V4.0 (Savage)");
+                                            SetUpSquadTableHeaders(0, SquadNormalRaidsSbStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -693,9 +693,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadAllianceRaidsSb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadAllianceRaidsSb", SquadAllianceRaidsSbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "The Royal City of Rabanastre", "The Ridorana Lighthouse", "The Orbonne Monastery");
+                                            SetUpSquadTableHeaders(0, SquadAllianceRaidsSbStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -721,9 +721,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadEurekaSb", 5, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadEurekaSb", SquadEurekaSbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Forbidden Land, Eureka Anemos", "The Forbidden Land, Eureka Pagos", "The Forbidden Land, Eureka Pyros", "The Forbidden Land, Eureka Hydatos");
+                                    SetUpSquadTableHeaders(0, SquadEurekaSbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -755,9 +755,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadDungeonsShb", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadDungeonsShb", SquadDungeonsShbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Akadaemia Anyder", "The Twinning");
+                                    SetUpSquadTableHeaders(0, SquadDungeonsShbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -777,9 +777,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadTrialsShb", 11, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadTrialsShb", SquadTrialsShbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Crown of the Immaculate (Extreme)", "The Minstrel's Ballad: Hades' Elegy", "Cinder Drift", "Cinder Drift (Extreme)", "Memoria Misera (Extreme)", "The Seat of Sacrifice (Extreme)", "Castrum Marinum", "The Cloud Deck", "Castrum Marinum (Extreme)", "The Cloud Deck (Extreme)");
+                                    SetUpSquadTableHeaders(0, SquadTrialsShbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -813,9 +813,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadNormalRaidsShb", 25, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadNormalRaidsShb", SquadNormalRaidsShbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "Eden's Gate: Resurrection", "Eden's Gate: Descent", "Eden's Gate: Inundation", "Eden's Gate: Sepulture", "Eden's Gate: Resurrection (Savage)", "Eden's Gate: Descent (Savage)", "Eden's Gate: Inundation (Savage)", "Eden's Gate: Sepulture (Savage)", "Eden's Verse: Fulmination", "Eden's Verse: Furor", "Eden's Verse: Iconoclasm", "Eden's Verse: Refulgence", "Eden's Verse: Fulmination (Savage)", "Eden's Verse: Furor (Savage)", "Eden's Verse: Iconoclasm (Savage)", "Eden's Verse: Refulgence (Savage)", "Eden's Promise: Umbra", "Eden's Promise: Litany", "Eden's Promise: Anamorphosis", "Eden's Promise: Eternity", "Eden's Promise: Umbra (Savage)", "Eden's Promise: Litany (Savage)", "Eden's Promise: Anamorphosis (Savage)", "Eden's Promise: Eternity (Savage)");
+                                            SetUpSquadTableHeaders(0, SquadNormalRaidsShbStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -858,9 +858,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadAllianceRaidsShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadAllianceRaidsShb", SquadAllianceRaidsShbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "The Copied Factory", "The Puppets' Bunker", "The Tower at Paradigm's Breach");
+                                            SetUpSquadTableHeaders(0, SquadAllianceRaidsShbStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -886,9 +886,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadBozjaShb", 4, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadBozjaShb", SquadBozjaShbStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Bozjan Southern Front", "Zadnor", "Bozja complete");
+                                    SetUpSquadTableHeaders(0, SquadBozjaShbStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -919,9 +919,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadDungeonsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadDungeonsEw", SquadDungeonsEwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Smileton", "The Stigma Dreamscape", "Eureka Orthos");
+                                    SetUpSquadTableHeaders(0, SquadDungeonsEwStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -942,9 +942,9 @@ namespace FFXIVCharaTracker
                                 ImGui.Unindent();
                                 ImGui.Unindent();
 
-                                if (ImGui.BeginTable("squadTrialsEw", 6, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                if (ImGui.BeginTable("squadTrialsEw", SquadTrialsEwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "The Minstrel's Ballad: Hydaelyn's Call", "The Minstrel's Ballad: Zodiark's Fall", "The Minstrel's Ballad: Endsinger's Aria", "Storm's Crown (Extreme)", "Mount Ordeals (Extreme)");
+                                    SetUpSquadTableHeaders(0, SquadTrialsEwStrings);
 
                                     foreach (var c in charas)
                                     {
@@ -973,9 +973,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadNormalRaidsEw", 17, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadNormalRaidsEw", SquadNormalRaidsEwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "Asphodelos: The First Circle", "Asphodelos: The Second Circle", "Asphodelos: The Third Circle", "Asphodelos: The Fourth Circle", "Asphodelos: The First Circle (Savage)", "Asphodelos: The Second Circle (Savage)", "Asphodelos: The Third Circle (Savage)", "Asphodelos: The Fourth Circle (Savage)", "Abyssos: The Fifth Circle", "Abyssos: The Sixth Circle", "Abyssos: The Seventh Circle", "Abyssos: The Eighth Circle", "Abyssos: The Fifth Circle (Savage)", "Abyssos: The Sixth Circle (Savage)", "Abyssos: The Seventh Circle (Savage)", "Abyssos: The Eighth Circle (Savage)");
+                                            SetUpSquadTableHeaders(0, SquadNormalRaidsEwStrings);
 
                                             foreach (var c in charas)
                                             {
@@ -1010,9 +1010,9 @@ namespace FFXIVCharaTracker
                                         ImGui.Unindent();
                                         ImGui.Unindent();
 
-                                        if (ImGui.BeginTable("squadAllianceRaidsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                                        if (ImGui.BeginTable("squadAllianceRaidsEw", SquadAllianceRaidsEwStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                         {
-                                            SetUpSquadTableHeaders(0, "Aglaia", "Euphrosyne");
+                                            SetUpSquadTableHeaders(0, SquadAllianceRaidsEwStrings);
 
                                             foreach (var c in charas)
                                             {

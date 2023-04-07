@@ -133,7 +133,103 @@ namespace FFXIVCharaTracker
         // String lists for the squad listings
 
         public static readonly string[] SquadDoWDoMStrings = 
-            { "Class", "Level", "Story completion", "Low level gear", "Current level gear" };
+                    { "Class", "Level", "Story completion", "Low level gear", "Current level gear" };
+
+        public static readonly string[] SquadOptionalHousingStrings =
+                    { "Mist", "Lavender Beds", "The Goblet", "Shirogane", "Empyreum" };
+
+        public static readonly string[] SquadOptionalGeneralMateriaStrings =
+                    {"Spiritbond", "Materia Melding", "Advanced Materia Melding"};
+
+        public static readonly string[] SquadOptionalGeneralAppearanceStrings =
+                    {"Dyeing", "Glamours", "Egi Glamours", "Aesthetician"};
+
+        public static readonly string[] SquadOptionalGeneralZonesStrings =
+                    {"Gold Saucer", "White Wolf Gate"};
+
+        public static readonly string[] SquadOptionalGeneralPvPStrings =
+                    {"Crystalline Conflict", "Frontlines", "Rival Wings"};
+
+        public static readonly string[] SquadOptionalGeneralHuntStrings =
+                    {"ARR Hunts", "HW 1-star", "HW 2-star", "HW 3-star", "HW Elite", "SB 1-star", "SB 2-star", "SB 3-star", "SB Elite", "ShB 1-star", "ShB 2-star", "ShB 3-star", "ShB Elite", "EW 1-star", "EW 2-star", "EW 3-star", "EW Elite"};
+
+        public static readonly string[] SquadOptionalGeneralTribesStrings =
+                    {"Amalj'aa", "Sylphs", "Kobolds", "Sahagin", "Ixal", "Vanu Vanu", "Vath", "Moogles", "Kojin", "Ananta", "Namazu", "Pixies", "Qitari", "Dwarves", "Arkasodara", "Omicrons", "Loporrits"};
+
+        public static readonly string[] SquadOptionalGeneralCollectablesStrings =
+                    {"Collectables", "Heavensward", "Stormblood", "Shadowbringers", "Endwalker", "Reduction"};
+
+        public static readonly string[] SquadOptionalGeneralSightseeingStrings =
+                    {"A Realm Reborn", "Heavensward", "Stormblood", "Shadowbringers", "Endwalker"};
+
+        public static readonly string[] SquadOptionalGeneralDummiesStrings =
+                    {"Heavensward", "Stormblood", "Shadowbringers", "Endwalker"};
+
+        public static readonly string[] SquadOptionalGeneralOtherStrings =
+                    {"Ventures", "Desynthesis", "Combat Chocobo", "Chocobo Raising", "Treasure Maps", "Master Recipes", "Challenge Log", "Wondrous Tails", "Faux Hollows"};
+
+        public static readonly string[] SquadDungeonsArrStrings =
+                    {"Halatali", "The Sunken Temple of Qarn", "Cutter's Cry", "Dzemael Darkhold", "The Aurum Vale", "Amdapor Keep", "The Wanderer's Palace", "Copperbell Mines (Hard)", "Haukke Manor (Hard)", "Pharos Sirius", "Brayflox's Longstop (Hard)", "Halatali (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle", "The Stone Vigil (Hard)", "The Tam-Tara Deepcroft (Hard)", "Sastasha (Hard)", "The Sunken Temple of Qarn (Hard)", "Amdapor Keep (Hard)", "The Wanderer's Palace (Hard)"};
+
+        public static readonly string[] SquadTrialsArrStrings =
+                    {"Battle on the Big Bridge", "A Relic Reborn: The Chimera", "A Relic Reborn: The Hydra", "The Minstrel's Ballad: Ultima's Bane", "The Howling Eye (Extreme)", "The Navel (Extreme)", "The Bowl of Embers (Extreme)", "The Dragon's Neck", "The Whorleater (Extreme)", "Thornmarch (Extreme)", "The Striking Tree (Extreme)", "Battle in the Big Keep", "Akh Afah Amphitheatre (Extreme)", "Urth's Fount"};
+
+        public static readonly string[] SquadRaidsArrStrings =
+                    {"The Binding Coil of Bahamut - Turn 1", "The Binding Coil of Bahamut - Turn 2", "The Binding Coil of Bahamut - Turn 3", "The Binding Coil of Bahamut - Turn 4", "The Binding Coil of Bahamut - Turn 5", "The Second Coil of Bahamut - Turn 1", "The Second Coil of Bahamut - Turn 2", "The Second Coil of Bahamut - Turn 3", "The Second Coil of Bahamut - Turn 4", "The Second Coil of Bahamut - Turn 1 (Savage)", "The Second Coil of Bahamut - Turn 2 (Savage)", "The Second Coil of Bahamut - Turn 3 (Savage)", "The Second Coil of Bahamut - Turn 4 (Savage)", "The Final Coil of Bahamut - Turn 1", "The Final Coil of Bahamut - Turn 2", "The Final Coil of Bahamut - Turn 3", "The Final Coil of Bahamut - Turn 4"};
+
+        public static readonly string[] SquadDungeonsHwStrings =
+                    {"The Dusk Vigil", "Neverreap", "The Fractal Continuum", "Saint Mocianne's Arboretum", "Pharos Sirius (Hard)", "The Lost City of Amdapor (Hard)", "Hullbreaker Isle (Hard)", "The Great Gubal Library (Hard)", "Sohm Al (Hard)", "The Palace of the Dead"};
+
+        public static readonly string[] SquadTrialsHwStrings =
+                    {"The Limitless Blue (Extreme)", "Thok ast Thok (Extreme)", "Containment Bay S1T7", "The Minstrel's Ballad: Thordan's Reign", "Containment Bay S1T7 (Extreme)", "Containment Bay P1T6", "The Minstrel's Ballad: Nidhogg's Rage", "Containment Bay P1T6 (Extreme)", "Containment Bay Z1T9", "Containment Bay Z1T9 (Extreme)"};
+
+        public static readonly string[] SquadNormalRaidsHwStrings =
+                    {"Alexander - The Fist of the Father", "Alexander - The Cuff of the Father", "Alexander - The Arm of the Father", "Alexander - The Burden of the Father", "Alexander - The Fist of the Father (Savage)", "Alexander - The Cuff of the Father (Savage)", "Alexander - The Arm of the Father (Savage)", "Alexander - The Burden of the Father (Savage)", "Alexander - The Fist of the Son", "Alexander - The Cuff of the Son", "Alexander - The Arm of the Son", "Alexander - The Burden of the Son (Savage)", "Alexander - The Fist of the Son (Savage)", "Alexander - The Cuff of the Son (Savage)", "Alexander - The Arm of the Son (Savage)", "Alexander - The Burden of the Son (Savage)", "Alexander - The Eyes of the Creator", "Alexander - The Breath of the Creator", "Alexander - The Heart of the Creator", "Alexander - The Soul of the Creator", "Alexander - The Eyes of the Creator (Savage)", "Alexander - The Breath of the Creator (Savage)", "Alexander - The Heart of the Creator (Savage)", "Alexander - The Soul of the Creator (Savage)"};
+
+        public static readonly string[] SquadAllianceRaidsHwStrings =
+                    {"The Void Ark", "The Weeping City of Mhach", "Dun Scaith"};
+
+        public static readonly string[] SquadDungeonsSbStrings =
+                    {"Shisui of the Violet Tides", "Kugane Castle", "The Temple of the Fist", "Hell's Lid", "The Fractal Continuum (Hard)", "The Swallow's Compass", "Saint Mocianne's Arboretum (Hard)", "Heaven-on-High"};
+
+        public static readonly string[] SquadTrialsSbStrings =
+                    {"Emanation (Extreme)", "The Pool of Tribute (Extreme)", "The Great Hunt", "The Minstrel's Ballad: Shinryu's Domain", "The Jade Stoa", "The Jade Stoa (Extreme)", "The Great Hunt (Extreme)", "The Minstrel's Ballad: Tsukuyomi's Pain", "Hells' Kier", "Kugane Ohashi", "The Wreath of Snakes", "Hells' Kier (Extreme)", "The Wreath of Snakes (Extreme)"};
+
+        public static readonly string[] SquadNormalRaidsSbStrings =
+                    {"Deltascape V1.0", "Deltascape V2.0", "Deltascape V3.0", "Deltascape V4.0", "Deltascape V1.0 (Savage)", "Deltascape V2.0 (Savage)", "Deltascape V3.0 (Savage)", "Deltascape V4.0 (Savage)", "Sigmascape V1.0", "Sigmascape V2.0", "Sigmascape V3.0", "Sigmascape V4.0", "Sigmascape V1.0 (Savage)", "Sigmascape V2.0 (Savage)", "Sigmascape V3.0 (Savage)", "Sigmascape V4.0 (Savage)", "Alphascape V1.0", "Alphascape V2.0", "Alphascape V3.0", "Alphascape V4.0", "Alphascape V1.0 (Savage)", "Alphascape V2.0 (Savage)", "Alphascape V3.0 (Savage)", "Alphascape V4.0 (Savage)"};
+
+        public static readonly string[] SquadAllianceRaidsSbStrings =
+                    {"The Royal City of Rabanastre", "The Ridorana Lighthouse", "The Orbonne Monastery"};
+
+        public static readonly string[] SquadEurekaSbStrings =
+                    {"The Forbidden Land, Eureka Anemos", "The Forbidden Land, Eureka Pagos", "The Forbidden Land, Eureka Pyros", "The Forbidden Land, Eureka Hydatos"};
+
+        public static readonly string[] SquadDungeonsShbStrings =
+                    {"Akadaemia Anyder", "The Twinning"};
+
+        public static readonly string[] SquadTrialsShbStrings =
+                    {"The Crown of the Immaculate (Extreme)", "The Minstrel's Ballad: Hades' Elegy", "Cinder Drift", "Cinder Drift (Extreme)", "Memoria Misera (Extreme)", "The Seat of Sacrifice (Extreme)", "Castrum Marinum", "The Cloud Deck", "Castrum Marinum (Extreme)", "The Cloud Deck (Extreme)"};
+
+        public static readonly string[] SquadNormalRaidsShbStrings =
+                    {"Eden's Gate: Resurrection", "Eden's Gate: Descent", "Eden's Gate: Inundation", "Eden's Gate: Sepulture", "Eden's Gate: Resurrection (Savage)", "Eden's Gate: Descent (Savage)", "Eden's Gate: Inundation (Savage)", "Eden's Gate: Sepulture (Savage)", "Eden's Verse: Fulmination", "Eden's Verse: Furor", "Eden's Verse: Iconoclasm", "Eden's Verse: Refulgence", "Eden's Verse: Fulmination (Savage)", "Eden's Verse: Furor (Savage)", "Eden's Verse: Iconoclasm (Savage)", "Eden's Verse: Refulgence (Savage)", "Eden's Promise: Umbra", "Eden's Promise: Litany", "Eden's Promise: Anamorphosis", "Eden's Promise: Eternity", "Eden's Promise: Umbra (Savage)", "Eden's Promise: Litany (Savage)", "Eden's Promise: Anamorphosis (Savage)", "Eden's Promise: Eternity (Savage)"};
+
+        public static readonly string[] SquadAllianceRaidsShbStrings =
+                    {"The Copied Factory", "The Puppets' Bunker", "The Tower at Paradigm's Breach"};
+
+        public static readonly string[] SquadBozjaShbStrings =
+                    {"The Bozjan Southern Front", "Zadnor", "Bozja complete"};
+
+        public static readonly string[] SquadDungeonsEwStrings =
+                    {"Smileton", "The Stigma Dreamscape", "Eureka Orthos"};
+
+        public static readonly string[] SquadTrialsEwStrings =
+                    {"The Minstrel's Ballad: Hydaelyn's Call", "The Minstrel's Ballad: Zodiark's Fall", "The Minstrel's Ballad: Endsinger's Aria", "Storm's Crown (Extreme)", "Mount Ordeals (Extreme)"};
+
+        public static readonly string[] SquadNormalRaidsEwStrings =
+                    {"Asphodelos: The First Circle", "Asphodelos: The Second Circle", "Asphodelos: The Third Circle", "Asphodelos: The Fourth Circle", "Asphodelos: The First Circle (Savage)", "Asphodelos: The Second Circle (Savage)", "Asphodelos: The Third Circle (Savage)", "Asphodelos: The Fourth Circle (Savage)", "Abyssos: The Fifth Circle", "Abyssos: The Sixth Circle", "Abyssos: The Seventh Circle", "Abyssos: The Eighth Circle", "Abyssos: The Fifth Circle (Savage)", "Abyssos: The Sixth Circle (Savage)", "Abyssos: The Seventh Circle (Savage)", "Abyssos: The Eighth Circle (Savage)"};
+
+        public static readonly string[] SquadAllianceRaidsEwStrings =
+                    {"Aglaia", "Euphrosyne"};
 
         public static readonly string[] SquadMinionAchievementStrings =
                     { "Black Chocobo Chick", "Beady Eye", "Mammet #003L", "Mammet #003G", "Mammet #003U", "Wind-up Cursor", "Princely Hatchling", "Wind-up Leader", "Minion Of Light", "Wind-up Odin", "Wind-up Warrior Of Light", "Fledgling Apkallu", "Wind-up Goblin", "Wind-up Gilgamesh", "Wind-up Louisoix", "Wind-up Nanamo", "Wind-up Firion", "Shalloweye", "Clockwork Twintania", "Penguin Prince", "Hellpup", "Faepup", "Komainu", "The Major-General", "Malone", "Laladile", "Much-coveted Mora", "Dolphin Calf", "Gull", };
