@@ -921,7 +921,7 @@ namespace FFXIVCharaTracker
 
                                 if (ImGui.BeginTable("squadDungeonsEw", 3, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                                 {
-                                    SetUpSquadTableHeaders(0, "Smileton", "The Stigma Dreamscape");
+                                    SetUpSquadTableHeaders(0, "Smileton", "The Stigma Dreamscape", "Eureka Orthos");
 
                                     foreach (var c in charas)
                                     {
@@ -930,6 +930,7 @@ namespace FFXIVCharaTracker
                                         SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                                         SetCellBackground(c.IsInstanceUnlocked(20030) ? Green : Red);
                                         SetCellBackground(c.IsInstanceUnlocked(79) ? Green : Red);
+                                        SetCellBackground(c.IsQuestComplete(70199) ? Green : Red);
                                     }
                                     ImGui.EndTable();
                                 }

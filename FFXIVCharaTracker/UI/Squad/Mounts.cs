@@ -21,9 +21,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsAchievement", squadMountsAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountAchievement", SquadMountAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsAchievementStrings);
+                            SetUpSquadTableHeaders(0, SquadMountAchievementStrings);
 
                             foreach (var c in charas)
                             {
@@ -55,7 +55,7 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMountUnlocked(145) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(168) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(166) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(141) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(185) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(186) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(183) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(190) ? Green : Red);
@@ -69,42 +69,7 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMountUnlocked(246) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(267) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(304) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-                    }
-                    if (ImGui.BeginTabItem("Tribes"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadMountsTribe", squadMountsTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, squadMountsTribeStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsMountUnlocked(19) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(20) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(26) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(27) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(35) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(53) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(72) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(86) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(136) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(146) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(148) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(164) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(201) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(215) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(223) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(287) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(298) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(308) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
@@ -115,9 +80,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsBozja", squadMountsBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountBozja", SquadMountBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsBozjaStrings);
+                            SetUpSquadTableHeaders(0, SquadMountBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -138,9 +103,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsCrafted", squadMountsCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountCrafted", SquadMountCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsCraftedStrings);
+                            SetUpSquadTableHeaders(0, SquadMountCraftedStrings);
 
                             foreach (var c in charas)
                             {
@@ -159,9 +124,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsDeep", squadMountsDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountDeep", SquadMountDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsDeepStrings);
+                            SetUpSquadTableHeaders(0, SquadMountDeepStrings);
 
                             foreach (var c in charas)
                             {
@@ -171,7 +136,7 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMountUnlocked(92) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(100) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(159) ? Green : Red);
-                                SetCellBackground(c.IsMountUnlocked(303) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(292) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
@@ -182,9 +147,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsDungeon", squadMountsDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountDungeon", SquadMountDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsDungeonStrings);
+                            SetUpSquadTableHeaders(0, SquadMountDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -202,9 +167,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsEureka", squadMountsEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountEureka", SquadMountEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsEurekaStrings);
+                            SetUpSquadTableHeaders(0, SquadMountEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -224,9 +189,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsFate", squadMountsFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountFate", SquadMountFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsFateStrings);
+                            SetUpSquadTableHeaders(0, SquadMountFateStrings);
 
                             foreach (var c in charas)
                             {
@@ -242,14 +207,87 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Mog Station/Collector's Edition"))
+                    if (ImGui.BeginTabItem("Gold Saucer"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsMog", squadMountsMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountSaucer", SquadMountSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsMogStrings);
+                            SetUpSquadTableHeaders(0, SquadMountSaucerStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(46) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(49) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(110) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(142) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(154) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(180) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(284) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(312) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Hunts"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountHunt", SquadMountHuntStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountHuntStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(70) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(207) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(291) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Island Sanctuary"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountSanctuary", SquadMountSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountSanctuaryStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(277) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(255) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(256) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(257) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(286) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Mog Station"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountMog", SquadMountMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountMogStrings);
 
                             foreach (var c in charas)
                             {
@@ -309,14 +347,37 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
+                    if (ImGui.BeginTabItem("Shop"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountShop", SquadMountShopStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountShopStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(252) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(253) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(316) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(317) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
                     if (ImGui.BeginTabItem("PvP"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsPvp", squadMountsPvpStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountPvP", SquadMountPvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsPvpStrings);
+                            SetUpSquadTableHeaders(0, SquadMountPvPStrings);
 
                             foreach (var c in charas)
                             {
@@ -329,14 +390,48 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Raid"))
+                    if (ImGui.BeginTabItem("Quests"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsRaid", squadMountsRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountSidequest", SquadMountSidequestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsRaidStrings);
+                            SetUpSquadTableHeaders(0, SquadMountSidequestStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(1) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(6) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(15) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(47) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(50) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(55) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(45) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(105) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(125) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(181) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(230) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(245) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(254) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(263) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(311) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Raids"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountRaid", SquadMountRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountRaidStrings);
 
                             foreach (var c in charas)
                             {
@@ -363,9 +458,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsSkybuilder", squadMountsSkybuilderStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountResto", SquadMountRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsSkybuilderStrings);
+                            SetUpSquadTableHeaders(0, SquadMountRestoStrings);
 
                             foreach (var c in charas)
                             {
@@ -385,14 +480,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Treasure Hunt"))
+                    if (ImGui.BeginTabItem("Treasure Maps"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsTreasure", squadMountsTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountTreasure", SquadMountTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsTreasureStrings);
+                            SetUpSquadTableHeaders(0, SquadMountTreasureStrings);
 
                             foreach (var c in charas)
                             {
@@ -407,14 +502,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Trial"))
+                    if (ImGui.BeginTabItem("Trials"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsTrial", squadMountsTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountTrial", SquadMountTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsTrialStrings);
+                            SetUpSquadTableHeaders(0, SquadMountTrialStrings);
 
                             foreach (var c in charas)
                             {
@@ -460,14 +555,71 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
+                    if (ImGui.BeginTabItem("Beast Tribes"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountTribe", SquadMountTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountTribeStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(19) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(20) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(26) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(27) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(35) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(53) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(72) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(86) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(136) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(146) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(148) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(164) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(201) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(215) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(223) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(287) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(298) ? Green : Red);
+                                SetCellBackground(c.IsMountUnlocked(285) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Variant/Criterion"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMountVandC", SquadMountVandCStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMountVandCStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMountUnlocked(303) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
                     if (ImGui.BeginTabItem("Voyages"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMountsVoyage", squadMountsVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMountVoyage", SquadMountVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMountsVoyageStrings);
+                            SetUpSquadTableHeaders(0, SquadMountVoyageStrings);
 
                             foreach (var c in charas)
                             {
@@ -475,25 +627,6 @@ namespace FFXIVCharaTracker
 
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                                 SetCellBackground(c.IsMountUnlocked(73) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-                    }
-                    if (ImGui.BeginTabItem("Wondrous Tails/Faux Hollows"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadMountsTails", squadMountsTailsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, squadMountsTailsStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                                 SetCellBackground(c.IsMountUnlocked(130) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(231) ? Green : Red);
                                 SetCellBackground(c.IsMountUnlocked(248) ? Green : Red);
@@ -505,120 +638,10 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Shop"))
-                    {
-                        ImGui.Indent();
-                        if (ImGui.BeginTabBar("squadMountsShop"))
-                        {
-                            if (ImGui.BeginTabItem("Gil"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMountsGil", squadMountsGilStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMountsGilStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMountUnlocked(252) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(253) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(141) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(317) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("MGP"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMountsSaucer", squadMountsSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMountsSaucerStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMountUnlocked(46) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(49) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(110) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(142) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(154) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(180) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(284) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(312) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Hunt Currency"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMountsHunts", squadMountsHuntsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMountsHuntsStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMountUnlocked(70) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(207) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(291) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Island Sanctuary"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMountsSanctuary", squadMountsSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMountsSanctuaryStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMountUnlocked(277) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(255) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(256) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(257) ? Green : Red);
-                                        SetCellBackground(c.IsMountUnlocked(286) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            ImGui.EndTabBar();
-                        }
-                        ImGui.EndTabItem();
-                    }
                     ImGui.EndTabBar();
                 }
                 ImGui.EndTabItem();
             }
-
         }
     }
 }

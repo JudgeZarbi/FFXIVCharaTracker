@@ -20,7 +20,7 @@ namespace FFXIVCharaTracker
     internal class Plugin : IDalamudPlugin
     {
         public string Name => "FFXIVCharaTracker";
-        public static string DataVersion => "0.2.0.1";
+        public static string DataVersion => "0.3.0.0";
 
         [PluginService]
         internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;

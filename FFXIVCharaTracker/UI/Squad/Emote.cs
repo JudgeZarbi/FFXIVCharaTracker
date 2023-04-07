@@ -15,99 +15,14 @@ namespace FFXIVCharaTracker
                 ImGui.Indent();
                 if (ImGui.BeginTabBar("squadEmotes"))
                 {
-                    if (ImGui.BeginTabItem("Sidequests"))
+                    if (ImGui.BeginTabItem("Achievements"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesSidequest", SquadEmoteSidequestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadEmoteAchievement", SquadEmoteAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, SquadEmoteSidequestStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(85) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(101) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(102) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(103) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(104) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(114) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(148) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(198) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(199) ? Green : Red);
-
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-                    }
-                    if (ImGui.BeginTabItem("Tribe"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesTribe", SquadEmoteTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteTribeStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                ImGui.TableSetBgColor(ImGuiTableBgTarget.CellBg, ImGui.GetColorU32(c.IsEmoteUnlocked(120) ? Green : Red));
-                                SetCellBackground(c.IsEmoteUnlocked(126) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(145) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(167) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(64) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(176) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(194) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(217) ? Green : Red);
-
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("Gold Saucer"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesSaucer", SquadEmoteSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteSaucerStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(118) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(119) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(171) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(81) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(216) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(237) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(238) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("Squadron"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesSquadron", SquadEmoteSquadronStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteSquadronStrings);
+                            SetUpSquadTableHeaders(0, SquadEmoteAchievementStrings);
 
                             foreach (var c in charas)
                             {
@@ -122,129 +37,13 @@ namespace FFXIVCharaTracker
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("GC Seals"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesGC", SquadEmoteGCStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteGCStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(164) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(165) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(82) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("Hunts"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesHunts", SquadEmoteHuntStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteHuntStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(170) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(169) ? Green : Red);
-
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("PvP"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesPvP", SquadEmotePvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmotePvPStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(182) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(196) ? Green : Red);
-
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("Deep/Variant Dungeon"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesDeep", SquadEmoteDeepDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteDeepDungeonStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(180) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(246) ? Green : Red);
-
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
-                    }
-                    if (ImGui.BeginTabItem("Eureka"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadEmotesEureka", SquadEmoteEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, SquadEmoteEurekaStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(181) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(189) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(195) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-
                     }
                     if (ImGui.BeginTabItem("Bozja"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesBozja", SquadEmoteBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadEmoteBozja", SquadEmoteBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
                             SetUpSquadTableHeaders(0, SquadEmoteBozjaStrings);
 
@@ -260,67 +59,124 @@ namespace FFXIVCharaTracker
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
-
                     }
-                    if (ImGui.BeginTabItem("Treasure Hunts"))
+                    if (ImGui.BeginTabItem("Deep Dungeon"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesTreasure", SquadEmoteTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadEmoteDeep", SquadEmoteDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, SquadEmoteTreasureStrings);
+                            SetUpSquadTableHeaders(0, SquadEmoteDeepStrings);
 
                             foreach (var c in charas)
                             {
                                 DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(188) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(224) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(225) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(226) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(227) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(180) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
-
                     }
-                    if (ImGui.BeginTabItem("Ishgardian Restoration"))
+                    if (ImGui.BeginTabItem("Eureka"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesResto", SquadEmoteRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadEmoteEureka", SquadEmoteEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, SquadEmoteRestoStrings);
+                            SetUpSquadTableHeaders(0, SquadEmoteEurekaStrings);
 
                             foreach (var c in charas)
                             {
                                 DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsEmoteUnlocked(203) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(208) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(206) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(207) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(213) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(220) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(221) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(223) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(181) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(189) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(195) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Gold Saucer"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
 
+                        if (ImGui.BeginTable("SquadEmoteSaucer", SquadEmoteSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteSaucerStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(118) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(119) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(171) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(81) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(216) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(238) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(237) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Hunts"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteHunt", SquadEmoteHuntStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteHuntStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(169) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(170) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(204) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Other"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteOther", SquadEmoteOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteOtherStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(115) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(191) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
                     }
                     if (ImGui.BeginTabItem("Mog Station"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadEmotesMog", SquadEmoteMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadEmoteMog", SquadEmoteMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
                             SetUpSquadTableHeaders(0, SquadEmoteMogStrings);
 
@@ -332,14 +188,15 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsEmoteUnlocked(109) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(110) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(125) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(130) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(134) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(131) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(135) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(132) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(136) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(130) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(134) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(124) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(146) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(123) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(149) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(143) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(128) ? Green : Red);
@@ -365,35 +222,198 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsEmoteUnlocked(212) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(210) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(211) ? Green : Red);
-                                SetCellBackground(c.IsEmoteUnlocked(229) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(230) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(229) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(235) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(239) ? Green : Red);
                                 SetCellBackground(c.IsEmoteUnlocked(245) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
-                        if (ImGui.BeginTabItem("Other"))
+                    }
+                    if (ImGui.BeginTabItem("Shop"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteShop", SquadEmoteShopStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            ImGui.Unindent();
-                            ImGui.Unindent();
+                            SetUpSquadTableHeaders(0, SquadEmoteShopStrings);
 
-                            if (ImGui.BeginTable("squadEmotesOther", SquadEmoteOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                            foreach (var c in charas)
                             {
-                                SetUpSquadTableHeaders(0, SquadEmoteOtherStrings);
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
-                                foreach (var c in charas)
-                                {
-                                    DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                    SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                    SetCellBackground(c.IsEmoteUnlocked(204) ? Green : Red);
-                                    SetCellBackground(c.IsEmoteUnlocked(113) ? Green : Red);
-                                }
-                                ImGui.EndTable();
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(164) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(165) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(82) ? Green : Red);
                             }
-                            ImGui.EndTabItem();
+                            ImGui.EndTable();
                         }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("PvP"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmotePvP", SquadEmotePvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmotePvPStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(182) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(196) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Quests"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteSidequest", SquadEmoteSidequestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteSidequestStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(59) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(85) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(101) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(102) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(103) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(104) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(113) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(114) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(120) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(121) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(122) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(127) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(126) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(148) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(145) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(154) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(151) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(166) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(172) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(183) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(187) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(190) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(194) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(198) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(199) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(231) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Ishgardian Restoration"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteResto", SquadEmoteRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteRestoStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(203) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(208) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(206) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(207) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(213) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(220) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(221) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(223) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Treasure Maps"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteTreasure", SquadEmoteTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteTreasureStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(188) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(224) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(225) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(226) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(227) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Beast Tribes"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteTribe", SquadEmoteTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteTribeStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(167) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(64) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(176) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(217) ? Green : Red);
+                                SetCellBackground(c.IsEmoteUnlocked(252) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Variant/Criterion"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadEmoteVandC", SquadEmoteVandCStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadEmoteVandCStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsEmoteUnlocked(246) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
                     }
                     ImGui.EndTabBar();
                 }

@@ -21,9 +21,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsAchievement", squadMinionsAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionAchievement", SquadMinionAchievementStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsAchievementStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionAchievementStrings);
 
                             foreach (var c in charas)
                             {
@@ -32,27 +32,27 @@ namespace FFXIVCharaTracker
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                                 SetCellBackground(c.IsMinionUnlocked(54) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(36) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(6) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(7) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(8) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(51) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(75) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(71) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(67) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(76) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(77) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(40) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(49) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(85) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(118) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(84) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(167) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(288) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(6) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(7) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(8) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(75) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(40) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(118) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(163) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(165) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(164) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(234) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(240) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(288) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(375) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(367) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(378) ? Green : Red);
@@ -64,61 +64,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Tribes"))
-                    {
-                        ImGui.Unindent();
-                        ImGui.Unindent();
-
-                        if (ImGui.BeginTable("squadMinionsTribe", squadMinionsTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                        {
-                            SetUpSquadTableHeaders(0, squadMinionsTribeStrings);
-
-                            foreach (var c in charas)
-                            {
-                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsMinionUnlocked(50) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(123) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(58) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(124) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(60) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(60) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(61) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(127) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(125) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(59) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(135) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(172) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(175) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(156) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(184) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(235) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(266) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(323) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(328) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(277) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(322) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(302) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(354) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(369) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(370) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(380) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(444) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(457) ? Green : Red);
-                            }
-                            ImGui.EndTable();
-                        }
-                        ImGui.EndTabItem();
-                    }
                     if (ImGui.BeginTabItem("Bozja"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsBozja", squadMinionsBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionBozja", SquadMinionBozjaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsBozjaStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionBozjaStrings);
 
                             foreach (var c in charas)
                             {
@@ -158,33 +111,29 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsCrafted", squadMinionsCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionCrafted", SquadMinionCraftedStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsCraftedStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionCraftedStrings);
 
                             foreach (var c in charas)
                             {
                                 DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                SetCellBackground(c.IsMinionUnlocked(81) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(140) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(100) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(278) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(29) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(147) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(475) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(22) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(43) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(29) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(39) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(53) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(43) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(66) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(81) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(95) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(100) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(136) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(143) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(140) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(147) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(158) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(255) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(294) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(282) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(436) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(168) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(169) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(170) ? Green : Red);
@@ -194,13 +143,18 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(263) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(261) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(262) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(255) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(265) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(275) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(284) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(278) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(282) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(294) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(303) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(327) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(136) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(414) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(436) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(475) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
@@ -211,9 +165,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsDeep", squadMinionsDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionDeep", SquadMinionDeepStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsDeepStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionDeepStrings);
 
                             foreach (var c in charas)
                             {
@@ -261,8 +215,27 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(263) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(261) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(262) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(265) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(272) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(279) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(290) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(292) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(312) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(321) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(336) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(339) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(347) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(333) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(334) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(349) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(353) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(355) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(361) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(356) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(411) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(433) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(431) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(425) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(473) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
@@ -273,9 +246,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsDungeon", squadMinionsDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionDungeon", SquadMinionDungeonStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsDungeonStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionDungeonStrings);
 
                             foreach (var c in charas)
                             {
@@ -337,8 +310,6 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(425) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(447) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(460) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(463) ? Green : Red);
-                                SetCellBackground(c.IsMinionUnlocked(464) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(471) ? Green : Red);
                             }
                             ImGui.EndTable();
@@ -350,9 +321,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsEureka", squadMinionsEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionEureka", SquadMinionEurekaStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsEurekaStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionEurekaStrings);
 
                             foreach (var c in charas)
                             {
@@ -379,9 +350,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsFate", squadMinionsFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionFate", SquadMinionFateStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsFateStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionFateStrings);
 
                             foreach (var c in charas)
                             {
@@ -413,9 +384,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsGather", squadMinionsGatherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionGather", SquadMinionGatherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsGatherStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionGatherStrings);
 
                             foreach (var c in charas)
                             {
@@ -434,14 +405,120 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Mog Station/Collector's Edition"))
+                    if (ImGui.BeginTabItem("Gold Saucer"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsMog", squadMinionsMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionSaucer", SquadMinionSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsMogStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionSaucerStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(83) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(106) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(20) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(117) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(174) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(187) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(379) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(470) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Hunts"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionHunt", SquadMinionHuntStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionHuntStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(82) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(93) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(148) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(144) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(243) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(256) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(340) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(326) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(358) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(428) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Island Sanctuary"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionSanctuary", SquadMinionSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionSanctuaryStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(456) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(468) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Other"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionOther", SquadMinionOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionOtherStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(65) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(86) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(87) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(88) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(89) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(90) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(115) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(116) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(236) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(386) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Mog Station"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionMog", SquadMinionMogStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionMogStrings);
 
                             foreach (var c in charas)
                             {
@@ -480,6 +557,7 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(250) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(280) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(293) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(313) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(307) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(308) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(311) ? Green : Red);
@@ -494,6 +572,38 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(420) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(421) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(400) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(450) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Shop"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionShop", SquadMinionShopStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionShopStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(3) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(9) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(10) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(11) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(1) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(13) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(17) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(25) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(26) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(28) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(37) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(2) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
@@ -504,9 +614,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsPvp", squadMinionsPvpStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionPvP", SquadMinionPvPStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsPvpStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionPvPStrings);
 
                             foreach (var c in charas)
                             {
@@ -523,14 +633,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Quest"))
+                    if (ImGui.BeginTabItem("Quests"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsQuest", squadMinionsQuestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionSidequest", SquadMinionSidequestStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsQuestStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionSidequestStrings);
 
                             foreach (var c in charas)
                             {
@@ -540,30 +650,43 @@ namespace FFXIVCharaTracker
                                 SetCellBackground(c.IsMinionUnlocked(15) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(33) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(41) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(52) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(19) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(32) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(35) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(45) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(21) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(119) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(130) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(133) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(149) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(173) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(181) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(193) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(224) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(230) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(231) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(276) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(300) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(304) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(337) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(306) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(381) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(441) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(437) ? Green : Red);
                             }
                             ImGui.EndTable();
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Raid"))
+                    if (ImGui.BeginTabItem("Raids"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsRaid", squadMinionsRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionRaid", SquadMinionRaidStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsRaidStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionRaidStrings);
 
                             foreach (var c in charas)
                             {
@@ -605,9 +728,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsSkybuilder", squadMinionsSkybuilderStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionResto", SquadMinionRestoStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsSkybuilderStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionRestoStrings);
 
                             foreach (var c in charas)
                             {
@@ -615,6 +738,7 @@ namespace FFXIVCharaTracker
 
                                 SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                                 SetCellBackground(c.IsMinionUnlocked(66) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(81) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(97) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(136) ? Green : Red);
                                 SetCellBackground(c.IsMinionUnlocked(139) ? Green : Red);
@@ -643,14 +767,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Treasure Hunt"))
+                    if (ImGui.BeginTabItem("Treasure Maps"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsTreasure", squadMinionsTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionTreasure", SquadMinionTreasureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsTreasureStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionTreasureStrings);
 
                             foreach (var c in charas)
                             {
@@ -689,14 +813,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Trial"))
+                    if (ImGui.BeginTabItem("Trials"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsTrial", squadMinionsTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionTrial", SquadMinionTrialStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsTrialStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionTrialStrings);
 
                             foreach (var c in charas)
                             {
@@ -712,14 +836,83 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Venture"))
+                    if (ImGui.BeginTabItem("Beast Tribes"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsVenture", squadMinionsVentureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionTribe", SquadMinionTribeStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsVentureStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionTribeStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(50) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(58) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(60) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(61) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(123) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(124) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(125) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(59) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(126) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(127) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(135) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(172) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(175) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(156) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(184) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(235) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(266) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(277) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(302) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(323) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(322) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(328) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(354) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(369) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(370) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(380) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(444) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(457) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(472) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Variant/Criterion"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionVandC", SquadMinionVandCStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionVandCStrings);
+
+                            foreach (var c in charas)
+                            {
+                                DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
+
+                                SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
+                                SetCellBackground(c.IsMinionUnlocked(463) ? Green : Red);
+                                SetCellBackground(c.IsMinionUnlocked(464) ? Green : Red);
+                            }
+                            ImGui.EndTable();
+                        }
+                        ImGui.EndTabItem();
+                    }
+                    if (ImGui.BeginTabItem("Ventures"))
+                    {
+                        ImGui.Unindent();
+                        ImGui.Unindent();
+
+                        if (ImGui.BeginTable("SquadMinionVenture", SquadMinionVentureStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        {
+                            SetUpSquadTableHeaders(0, SquadMinionVentureStrings);
 
                             foreach (var c in charas)
                             {
@@ -761,9 +954,9 @@ namespace FFXIVCharaTracker
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsVoyage", squadMinionsVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionVoyage", SquadMinionVoyageStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsVoyageStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionVoyageStrings);
 
                             foreach (var c in charas)
                             {
@@ -783,14 +976,14 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Wondrous Tails/Faux Hollows"))
+                    if (ImGui.BeginTabItem("Wondrous Tails"))
                     {
                         ImGui.Unindent();
                         ImGui.Unindent();
 
-                        if (ImGui.BeginTable("squadMinionsTails", squadMinionsTailsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
+                        if (ImGui.BeginTable("SquadMinionTails", SquadMinionTailsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
                         {
-                            SetUpSquadTableHeaders(0, squadMinionsTailsStrings);
+                            SetUpSquadTableHeaders(0, SquadMinionTailsStrings);
 
                             foreach (var c in charas)
                             {
@@ -815,194 +1008,10 @@ namespace FFXIVCharaTracker
                         }
                         ImGui.EndTabItem();
                     }
-                    if (ImGui.BeginTabItem("Shop"))
-                    {
-                        ImGui.Indent();
-                        if (ImGui.BeginTabBar("squadMinionsShop"))
-                        {
-                            if (ImGui.BeginTabItem("Gil"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsGil", squadMinionsGilStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsGilStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(3) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(1) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(13) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(25) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(26) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(2) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("MGP"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsSaucer", squadMinionsSaucerStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsSaucerStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(83) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(106) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(20) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(117) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(174) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(187) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(442) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(470) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Poetics"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsPoetics", squadMinionsPoeticsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsPoeticsStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(17) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(28) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(37) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Hunt Currency"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsHunts", squadMinionsHuntsStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsHuntsStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(82) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(93) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(148) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(144) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(243) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(256) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(340) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(358) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(428) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(326) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Grand Company"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsGc", squadMinionsGcStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsGcStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(9) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(10) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(11) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Island Sanctuary"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsSanctuary", squadMinionsSanctuaryStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsSanctuaryStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(456) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(468) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            if (ImGui.BeginTabItem("Other"))
-                            {
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-                                ImGui.Unindent();
-
-                                if (ImGui.BeginTable("squadMinionsOther", squadMinionsOtherStrings.Length + 1, ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY))
-                                {
-                                    SetUpSquadTableHeaders(0, squadMinionsOtherStrings);
-
-                                    foreach (var c in charas)
-                                    {
-                                        DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
-
-                                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
-                                        SetCellBackground(c.IsMinionUnlocked(65) ? Green : Red);
-                                        SetCellBackground(c.IsMinionUnlocked(236) ? Green : Red);
-                                    }
-                                    ImGui.EndTable();
-                                }
-                                ImGui.EndTabItem();
-                            }
-                            ImGui.EndTabBar();
-                        }
-                        ImGui.EndTabItem();
-                    }
-                    ImGui.EndTabItem();
+                    ImGui.EndTabBar();
                 }
-                ImGui.EndTabBar();
+                ImGui.EndTabItem();
             }
-
         }
     }
 }

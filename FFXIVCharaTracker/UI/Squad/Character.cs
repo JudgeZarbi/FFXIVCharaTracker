@@ -105,6 +105,7 @@ namespace FFXIVCharaTracker
                     {
                         DrawAccountAndWorldInfo(ref lastAccount, ref lastWorld, c);
 
+                        SetCellBackgroundWithText(default, $"{c.Forename} {c.Surname}", White);
                         var nonCombatJobs = new List<uint> { 0, 16, 17, 18 };
 
                         foreach (var retainer in c.Retainers)

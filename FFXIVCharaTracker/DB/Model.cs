@@ -1,4 +1,5 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Game.ClientState;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.MJI;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -239,8 +240,17 @@ namespace FFXIVCharaTracker.DB
 		public string UnobtainedMounts { get; set; }
 		[NotMapped]
 		public ICollection<uint> UnobtainedMountsSet { get; set; } = new HashSet<uint>();
-		public string UncollectedMinerItems { get; set; }
-		[NotMapped]
+        public string UnobtainedOrchestrion { get; set; }
+        [NotMapped]
+        public ICollection<uint> UnobtainedOrchestrionSet { get; set; } = new HashSet<uint>();
+        public string UnobtainedBardings { get; set; }
+        [NotMapped]
+        public ICollection<uint> UnobtainedBardingsSet { get; set; } = new HashSet<uint>();
+        public string UnobtainedFashionAccessories { get; set; }
+        [NotMapped]
+        public ICollection<uint> UnobtainedFashionAccessoriesSet { get; set; } = new HashSet<uint>();
+        public string UncollectedMinerItems { get; set; }
+        [NotMapped]
 		public ICollection<uint> UncollectedMinerItemsSet { get; set; } = new HashSet<uint>();
 		public string UncollectedBotanistItems { get; set; }
 		[NotMapped]
@@ -269,7 +279,8 @@ namespace FFXIVCharaTracker.DB
 			string lockedDuties = "[]", string unobtainedEmotes = "[]", string lockedCustomDeliveries = "[]",
 			string incompleteQuests = "[]", string customDeliveryRanks = "[]", string unobtainedMinions = "[]",
 			string unobtainedMounts = "[]", string uncollectedMinerItems = "[]", string uncollectedBotanistItems = "[]",
-			string uncollectedFisherItems = "[]", string uncollectedSpearfisherItems = "[]", string beastTribeRanks = "[]")
+			string uncollectedFisherItems = "[]", string uncollectedSpearfisherItems = "[]", string beastTribeRanks = "[]",
+            string unobtainedOrchestrion = "[]", string unobtainedBardings = "[]", string unobtainedFashionAccessories = "[]")
 		{
 			CharaID = charaID;
 			WorldID = worldID;
@@ -290,6 +301,9 @@ namespace FFXIVCharaTracker.DB
 			UncollectedFisherItems = uncollectedFisherItems;
 			UncollectedSpearfisherItems = uncollectedSpearfisherItems;
             BeastTribeRanks = beastTribeRanks;
+            UnobtainedOrchestrion = unobtainedOrchestrion;
+            UnobtainedBardings = unobtainedBardings;
+            UnobtainedFashionAccessories = unobtainedFashionAccessories;
 
 			IncompleteFolkloreBooksSet = TryDeserialize<HashSet<uint>>(IncompleteFolkloreBooks, Data.FolkloreIDs);
             IncompleteSecretRecipeBooksSet = TryDeserialize<HashSet<uint>>(IncompleteSecretRecipeBooks, Data.RecipeBookIDs);
@@ -306,7 +320,10 @@ namespace FFXIVCharaTracker.DB
             UncollectedFisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedFisherItems, Data.RetainerFisherItemIDs);
             UncollectedSpearfisherItemsSet = TryDeserialize<HashSet<uint>>(UncollectedSpearfisherItems, Data.RetainerSpearfisherItemIDs);
             BeastTribeRanksList = TryDeserialize<List<uint>>(BeastTribeRanks, Array.Empty<uint>());
-            if (BeastTribeRanksList.Count < Plugin.BeastTribes.RowCount - 1)
+            UnobtainedOrchestrionSet = TryDeserialize<HashSet<uint>>(UnobtainedOrchestrion, Data.OrchestrionIDs);
+            UnobtainedBardingsSet = TryDeserialize<HashSet<uint>>(UnobtainedBardings, Data.BardingIDs);
+            UnobtainedFashionAccessoriesSet = TryDeserialize<HashSet<uint>>(UnobtainedFashionAccessories, Data.FashionIDs);
+            if (charaID == Plugin.ClientState.LocalContentId && BeastTribeRanksList.Count < Plugin.BeastTribes.RowCount - 1)
             {
                 for (var i = BeastTribeRanksList.Count; i < Plugin.BeastTribes.RowCount - 1; i++)
                 {
@@ -314,12 +331,12 @@ namespace FFXIVCharaTracker.DB
                 }
                 BeastTribeRanks = JsonSerializer.Serialize(BeastTribeRanksList);
             }
-            if (CustomDeliveryRanksList.Count < Plugin.SatisfactionNpcs.RowCount - 1)
+            if (charaID == Plugin.ClientState.LocalContentId && CustomDeliveryRanksList.Count < Plugin.SatisfactionNpcs.RowCount - 1)
             {
                 for (var i = CustomDeliveryRanksList.Count; i < Plugin.SatisfactionNpcs.RowCount - 1; i++)
                 {
                     CustomDeliveryRanksList.Add(0);
-        }
+                }
                 CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksList);
             }
         }
@@ -409,6 +426,8 @@ namespace FFXIVCharaTracker.DB
                 UpdateDesynthesisLevels(UiState);
                 UpdateMinions(UiState);
                 UpdateMounts(UiState);
+                UpdateOrchestrions(UiState);
+                UpdateBardings(UiState);
 
                 UpdateGCRank(UiState);
                 UpdateChocobo(UiState);
@@ -451,6 +470,9 @@ namespace FFXIVCharaTracker.DB
 			UncollectedBotanistItemsSet = new HashSet<uint>(Data.RetainerBotanistItemIDs);
 			UncollectedFisherItemsSet = new HashSet<uint>(Data.RetainerFisherItemIDs);
 			UncollectedSpearfisherItemsSet = new HashSet<uint>(Data.RetainerSpearfisherItemIDs);
+            UnobtainedOrchestrionSet = new HashSet<uint>(Data.OrchestrionIDs);
+            UnobtainedBardingsSet = new HashSet<uint>(Data.BardingIDs);
+            UnobtainedFashionAccessoriesSet = new HashSet<uint>(Data.FashionIDs);
 
             UncollectedMinerItems = JsonSerializer.Serialize(UncollectedMinerItemsSet);
             UncollectedBotanistItems = JsonSerializer.Serialize(UncollectedBotanistItemsSet);
@@ -465,6 +487,9 @@ namespace FFXIVCharaTracker.DB
             LockedCustomDeliveries = JsonSerializer.Serialize(LockedCustomDeliveriesSet);
             CustomDeliveryRanks = JsonSerializer.Serialize(CustomDeliveryRanksList);
             IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
+            UnobtainedOrchestrion = JsonSerializer.Serialize(UnobtainedOrchestrionSet);
+            UnobtainedBardings = JsonSerializer.Serialize(UnobtainedBardingsSet);
+            UnobtainedFashionAccessories = JsonSerializer.Serialize(UnobtainedFashionAccessoriesSet);
         }
 
         internal void AddNewDataToCharacterArrays()
@@ -547,7 +572,69 @@ namespace FFXIVCharaTracker.DB
                 IncompleteQuestsSet.Add(68476);
                 IncompleteQuestsSet.Add(69137);
                 IncompleteQuestsSet.Add(69709);
+                IncompleteQuestsSet.Add(70199);
                 IncompleteQuests = JsonSerializer.Serialize(IncompleteQuestsSet);
+                UnobtainedMinionsSet.Add(32);
+                UnobtainedMinionsSet.Add(52);
+                UnobtainedMinionsSet.Add(86);
+                UnobtainedMinionsSet.Add(87);
+                UnobtainedMinionsSet.Add(88);
+                UnobtainedMinionsSet.Add(89);
+                UnobtainedMinionsSet.Add(90);
+                UnobtainedMinionsSet.Add(115);
+                UnobtainedMinionsSet.Add(116);
+                UnobtainedMinionsSet.Add(119);
+                UnobtainedMinionsSet.Add(126);
+                UnobtainedMinionsSet.Add(130);
+                UnobtainedMinionsSet.Add(133);
+                UnobtainedMinionsSet.Add(173);
+                UnobtainedMinionsSet.Add(181);
+                UnobtainedMinionsSet.Add(193);
+                UnobtainedMinionsSet.Add(224);
+                UnobtainedMinionsSet.Add(276);
+                UnobtainedMinionsSet.Add(306);
+                UnobtainedMinionsSet.Add(313);
+                UnobtainedMinionsSet.Add(379);
+                UnobtainedMinionsSet.Add(381);
+                UnobtainedMinionsSet.Add(441);
+                UnobtainedMinionsSet.Add(450);
+                UnobtainedMinionsSet.Add(472);
+                UnobtainedMinionsSet.Add(473);
+                UnobtainedMinions = JsonSerializer.Serialize(UnobtainedMinionsSet);
+                UnobtainedMountsSet.Add(1);
+                UnobtainedMountsSet.Add(6);
+                UnobtainedMountsSet.Add(45);
+                UnobtainedMountsSet.Add(50);
+                UnobtainedMountsSet.Add(55);
+                UnobtainedMountsSet.Add(125);
+                UnobtainedMountsSet.Add(185);
+                UnobtainedMountsSet.Add(285);
+                UnobtainedMountsSet.Add(292);
+                UnobtainedMountsSet.Add(308);
+                UnobtainedMountsSet.Add(316);
+                UnobtainedMounts = JsonSerializer.Serialize(UnobtainedMountsSet);
+                UnobtainedHairstylesSet.Add(39472);
+                UnobtainedHairstylesSet.Add(39473);
+                UnobtainedHairstyles = JsonSerializer.Serialize(UnobtainedHairstylesSet);
+                UnobtainedEmotesSet.Add(59);
+                UnobtainedEmotesSet.Add(115);
+                UnobtainedEmotesSet.Add(121);
+                UnobtainedEmotesSet.Add(122);
+                UnobtainedEmotesSet.Add(154);
+                UnobtainedEmotesSet.Add(166);
+                UnobtainedEmotesSet.Add(172);
+                UnobtainedEmotesSet.Add(183);
+                UnobtainedEmotesSet.Add(190);
+                UnobtainedEmotesSet.Add(191);
+                UnobtainedEmotesSet.Add(235);
+                UnobtainedEmotesSet.Add(252);
+                UnobtainedEmotes = JsonSerializer.Serialize(UnobtainedEmotesSet);
+                UnobtainedOrchestrionSet = new HashSet<uint>(Data.OrchestrionIDs);
+                UnobtainedBardingsSet = new HashSet<uint>(Data.BardingIDs);
+                UnobtainedFashionAccessoriesSet = new HashSet<uint>(Data.FashionIDs);
+                UnobtainedOrchestrion = JsonSerializer.Serialize(UnobtainedOrchestrionSet);
+                UnobtainedBardings = JsonSerializer.Serialize(UnobtainedBardingsSet);
+                UnobtainedFashionAccessories = JsonSerializer.Serialize(UnobtainedFashionAccessoriesSet);
                 PluginDataVersion = "0.3.0.0";
             }
         }
@@ -611,9 +698,8 @@ namespace FFXIVCharaTracker.DB
 			IncompleteSecretRecipeBooks = JsonSerializer.Serialize(IncompleteSecretRecipeBooksSet);
 		}
 
-		internal unsafe bool UpdateHairstyleUnlocks(UIState* UiState)
+		internal unsafe void UpdateHairstyleUnlocks(UIState* UiState)
 		{
-			var waitingOnHairstyles = false;
 			foreach (var hairstyleId in UnobtainedHairstylesSet)
 			{
 				var itemPtr = FFXIVClientStructs.FFXIV.Component.Exd.ExdModule.GetItemRowById(hairstyleId);
@@ -624,13 +710,8 @@ namespace FFXIVCharaTracker.DB
 						UnobtainedHairstylesSet.Remove(hairstyleId);
 					}
 				}
-				else
-				{
-					waitingOnHairstyles = true;
-				}
 			}
 			UnobtainedHairstyles = JsonSerializer.Serialize(UnobtainedHairstylesSet);
-			return waitingOnHairstyles;
 		}
 
 		internal unsafe void UpdateEmoteUnlocks(UIState* UiState)
@@ -759,7 +840,47 @@ namespace FFXIVCharaTracker.DB
 			UnobtainedMounts = JsonSerializer.Serialize(UnobtainedMountsSet);
 		}
 
-		internal unsafe void UpdateCustomDeliveries()
+        internal unsafe void UpdateOrchestrions(UIState* UiState)
+        {
+            foreach (var orchestrionId in UnobtainedOrchestrionSet)
+            {
+                if (UiState->PlayerState.IsOrchestrionRollUnlocked(orchestrionId)!)
+                {
+                    UnobtainedOrchestrionSet.Remove(orchestrionId);
+                }
+            }
+            UnobtainedOrchestrion = JsonSerializer.Serialize(UnobtainedOrchestrionSet);
+        }
+
+        internal unsafe void UpdateBardings(UIState* UiState)
+        {
+            foreach (var bardingId in UnobtainedBardingsSet)
+            {
+                var itemPtr = FFXIVClientStructs.FFXIV.Component.Exd.ExdModule.GetItemRowById(bardingId);
+                if (itemPtr != null)
+                {
+                    if (UiState->IsItemActionUnlocked(itemPtr) == 1)
+                    {
+                        UnobtainedBardingsSet.Remove(bardingId);
+                    }
+                }
+            }
+            UnobtainedBardings = JsonSerializer.Serialize(UnobtainedBardingsSet);
+        }
+
+        internal unsafe void UpdateFashionAccessories(UIState* UiState)
+        {
+            foreach (var fashionId in UnobtainedFashionAccessoriesSet)
+            {
+                if (UiState->PlayerState.IsOrnamentUnlocked(fashionId)!)
+                {
+                    UnobtainedFashionAccessoriesSet.Remove(fashionId);
+                }
+            }
+            UnobtainedFashionAccessories = JsonSerializer.Serialize(UnobtainedFashionAccessoriesSet);
+        }
+
+        internal unsafe void UpdateCustomDeliveries()
 		{
 			for (uint i = 1; i < Plugin.SatisfactionNpcs.RowCount; i++)
 			{
@@ -837,7 +958,22 @@ namespace FFXIVCharaTracker.DB
 			return !UnobtainedMinionsSet.Contains(minionId);
 		}
 
-		internal bool IsMountUnlocked(uint mountId)
+        internal bool IsOrchestrionUnlocked(uint orchestrionId)
+        {
+            return !UnobtainedOrchestrionSet.Contains(orchestrionId);
+        }
+
+        internal bool IsBardingUnlocked(uint bardingId)
+        {
+            return !UnobtainedBardingsSet.Contains(bardingId);
+        }
+
+        internal bool IsFashionUnlocked(uint fashionId)
+        {
+            return !UnobtainedFashionAccessoriesSet.Contains(fashionId);
+        }
+
+        internal bool IsMountUnlocked(uint mountId)
 		{
 			return !UnobtainedMountsSet.Contains(mountId);
 		}

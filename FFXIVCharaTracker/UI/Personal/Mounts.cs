@@ -11,7 +11,7 @@ namespace FFXIVCharaTracker
             {
                 if (ImGui.TreeNode("Achievements"))
                 {
-                    if (ImGui.BeginTable("mountsAchievement", 2))
+                    if (ImGui.BeginTable("MountAchievement", 2))
                     {
                         SetUpTableColumns();
 
@@ -40,7 +40,7 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Magitek Death Claw", charaData.IsMountUnlocked(145));
                         DrawTableRowText("Safeguard System", charaData.IsMountUnlocked(168));
                         DrawTableRowText("Juedi", charaData.IsMountUnlocked(166));
-                        DrawTableRowText("Magitek Avenger A1", charaData.IsMountUnlocked(141));
+                        DrawTableRowText("Magitek Avenger A1", charaData.IsMountUnlocked(185));
                         DrawTableRowText("Demi-Ozma", charaData.IsMountUnlocked(186));
                         DrawTableRowText("War Tiger", charaData.IsMountUnlocked(183));
                         DrawTableRowText("Triceratops", charaData.IsMountUnlocked(190));
@@ -54,35 +54,7 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Al-iklil", charaData.IsMountUnlocked(246));
                         DrawTableRowText("Victor", charaData.IsMountUnlocked(267));
                         DrawTableRowText("Silkie", charaData.IsMountUnlocked(304));
-
-                        ImGui.EndTable();
-                    }
-                    ImGui.TreePop();
-
-                }
-                if (ImGui.TreeNode("Tribes"))
-                {
-                    if (ImGui.BeginTable("mountsTribe", 2))
-                    {
-                        SetUpTableColumns();
-
-                        DrawTableRowText("Cavalry Drake", charaData.IsMountUnlocked(19));
-                        DrawTableRowText("Laurel Goobbue", charaData.IsMountUnlocked(20));
-                        DrawTableRowText("Cavalry Elbst", charaData.IsMountUnlocked(26));
-                        DrawTableRowText("Bomb Palanquin", charaData.IsMountUnlocked(27));
-                        DrawTableRowText("Direwolf", charaData.IsMountUnlocked(35));
-                        DrawTableRowText("Sanuwa", charaData.IsMountUnlocked(53));
-                        DrawTableRowText("Kongamato", charaData.IsMountUnlocked(72));
-                        DrawTableRowText("Cloud Mallow", charaData.IsMountUnlocked(86));
-                        DrawTableRowText("Striped Ray", charaData.IsMountUnlocked(136));
-                        DrawTableRowText("Marid", charaData.IsMountUnlocked(146));
-                        DrawTableRowText("True Griffin", charaData.IsMountUnlocked(148));
-                        DrawTableRowText("Mikoshi", charaData.IsMountUnlocked(164));
-                        DrawTableRowText("Portly Porxie", charaData.IsMountUnlocked(201));
-                        DrawTableRowText("Great Vessel Of Ronka", charaData.IsMountUnlocked(215));
-                        DrawTableRowText("Rolling Tankard", charaData.IsMountUnlocked(223));
-                        DrawTableRowText("Hippo Cart", charaData.IsMountUnlocked(287));
-                        DrawTableRowText("Miw Miisv", charaData.IsMountUnlocked(298));
+                        DrawTableRowText("Aeturna", charaData.IsMountUnlocked(308));
 
                         ImGui.EndTable();
                     }
@@ -90,7 +62,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Bozja"))
                 {
-                    if (ImGui.BeginTable("mountsBozja", 2))
+                    if (ImGui.BeginTable("MountBozja", 2))
                     {
                         SetUpTableColumns();
 
@@ -105,7 +77,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Crafted"))
                 {
-                    if (ImGui.BeginTable("mountsCrafted", 2))
+                    if (ImGui.BeginTable("MountCrafted", 2))
                     {
                         SetUpTableColumns();
 
@@ -118,14 +90,14 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Deep Dungeon"))
                 {
-                    if (ImGui.BeginTable("mountsDeep", 2))
+                    if (ImGui.BeginTable("MountDeep", 2))
                     {
                         SetUpTableColumns();
 
                         DrawTableRowText("Disembodied Head", charaData.IsMountUnlocked(92));
                         DrawTableRowText("Black Pegasus", charaData.IsMountUnlocked(100));
                         DrawTableRowText("Dodo", charaData.IsMountUnlocked(159));
-                        DrawTableRowText("Sil'dihn Throne", charaData.IsMountUnlocked(303));
+                        DrawTableRowText("Orthos Craklaw", charaData.IsMountUnlocked(292));
 
                         ImGui.EndTable();
                     }
@@ -133,7 +105,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Dungeon"))
                 {
-                    if (ImGui.BeginTable("mountsDungeon", 2))
+                    if (ImGui.BeginTable("MountDungeon", 2))
                     {
                         SetUpTableColumns();
 
@@ -145,7 +117,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Eureka"))
                 {
-                    if (ImGui.BeginTable("mountsEureka", 2))
+                    if (ImGui.BeginTable("MountEureka", 2))
                     {
                         SetUpTableColumns();
 
@@ -159,7 +131,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("FATE"))
                 {
-                    if (ImGui.BeginTable("mountsFate", 2))
+                    if (ImGui.BeginTable("MountFate", 2))
                     {
                         SetUpTableColumns();
 
@@ -172,9 +144,58 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Mog Station/Collector's Edition"))
+                if (ImGui.TreeNode("Gold Saucer"))
                 {
-                    if (ImGui.BeginTable("mountsMog", 2))
+                    if (ImGui.BeginTable("MountSaucer", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Adamantoise", charaData.IsMountUnlocked(46));
+                        DrawTableRowText("Fenrir", charaData.IsMountUnlocked(49));
+                        DrawTableRowText("Archon Throne", charaData.IsMountUnlocked(110));
+                        DrawTableRowText("Korpokkur Kolossus", charaData.IsMountUnlocked(142));
+                        DrawTableRowText("Typhon", charaData.IsMountUnlocked(154));
+                        DrawTableRowText("Sabotender Emperador", charaData.IsMountUnlocked(180));
+                        DrawTableRowText("Pod 602", charaData.IsMountUnlocked(284));
+                        DrawTableRowText("Blackjack", charaData.IsMountUnlocked(312));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Hunts"))
+                {
+                    if (ImGui.BeginTable("MountHunt", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Wyvern", charaData.IsMountUnlocked(70));
+                        DrawTableRowText("Forgiven Reticence", charaData.IsMountUnlocked(207));
+                        DrawTableRowText("Vinegaroon", charaData.IsMountUnlocked(291));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Island Sanctuary"))
+                {
+                    if (ImGui.BeginTable("MountSanctuary", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Garlond GL-II", charaData.IsMountUnlocked(277));
+                        DrawTableRowText("Island Mandragora", charaData.IsMountUnlocked(255));
+                        DrawTableRowText("Island Onion Prince", charaData.IsMountUnlocked(256));
+                        DrawTableRowText("Island Eggplant Knight", charaData.IsMountUnlocked(257));
+                        DrawTableRowText("Island Alligator", charaData.IsMountUnlocked(286));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Mog Station"))
+                {
+                    if (ImGui.BeginTable("MountMog", 2))
                     {
                         SetUpTableColumns();
 
@@ -200,8 +221,8 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Aquamarine Carbuncle", charaData.IsMountUnlocked(138));
                         DrawTableRowText("Citrine Carbuncle", charaData.IsMountUnlocked(139));
                         DrawTableRowText("Nezha Chariot", charaData.IsMountUnlocked(135));
-                        DrawTableRowText("Broken Heart", charaData.IsMountUnlocked(152));
-                        DrawTableRowText("Broken Heart", charaData.IsMountUnlocked(153));
+                        DrawTableRowText("Broken Heart (Right)", charaData.IsMountUnlocked(152));
+                        DrawTableRowText("Broken Heart (Left)", charaData.IsMountUnlocked(153));
                         DrawTableRowText("Red Hare", charaData.IsMountUnlocked(143));
                         DrawTableRowText("Indigo Whale", charaData.IsMountUnlocked(160));
                         DrawTableRowText("SDS Fenrir", charaData.IsMountUnlocked(71));
@@ -231,9 +252,24 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
+                if (ImGui.TreeNode("Shop"))
+                {
+                    if (ImGui.BeginTable("MountShop", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Gilded Mikoshi", charaData.IsMountUnlocked(252));
+                        DrawTableRowText("Resplendent Vessel Of Ronka", charaData.IsMountUnlocked(253));
+                        DrawTableRowText("Magitek Avenger G1", charaData.IsMountUnlocked(316));
+                        DrawTableRowText("Chrysomallos", charaData.IsMountUnlocked(317));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
                 if (ImGui.TreeNode("PvP"))
                 {
-                    if (ImGui.BeginTable("mountsPvp", 2))
+                    if (ImGui.BeginTable("MountPvP", 2))
                     {
                         SetUpTableColumns();
 
@@ -243,15 +279,21 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Quest"))
+                if (ImGui.TreeNode("Quests"))
                 {
-                    if (ImGui.BeginTable("mountsQuest", 2))
+                    if (ImGui.BeginTable("MountSidequest", 2))
                     {
                         SetUpTableColumns();
 
+                        DrawTableRowText("Company Chocobo", charaData.IsMountUnlocked(1));
+                        DrawTableRowText("Magitek Armor", charaData.IsMountUnlocked(6));
                         DrawTableRowText("Unicorn", charaData.IsMountUnlocked(15));
                         DrawTableRowText("Kirin", charaData.IsMountUnlocked(47));
+                        DrawTableRowText("Midgardsormr", charaData.IsMountUnlocked(50));
+                        DrawTableRowText("Manacutter", charaData.IsMountUnlocked(55));
+                        DrawTableRowText("Black Chocobo", charaData.IsMountUnlocked(45));
                         DrawTableRowText("Firebird", charaData.IsMountUnlocked(105));
+                        DrawTableRowText("Yol", charaData.IsMountUnlocked(125));
                         DrawTableRowText("Kamuy Of The Nine Tails", charaData.IsMountUnlocked(181));
                         DrawTableRowText("Ehll Tou", charaData.IsMountUnlocked(230));
                         DrawTableRowText("Landerwaffe", charaData.IsMountUnlocked(245));
@@ -263,9 +305,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Raid"))
+                if (ImGui.TreeNode("Raids"))
                 {
-                    if (ImGui.BeginTable("mountsRaid", 2))
+                    if (ImGui.BeginTable("MountRaid", 2))
                     {
                         SetUpTableColumns();
 
@@ -286,7 +328,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Ishgardian Restoration"))
                 {
-                    if (ImGui.BeginTable("mountsSkybuilder", 2))
+                    if (ImGui.BeginTable("MountResto", 2))
                     {
                         SetUpTableColumns();
 
@@ -303,9 +345,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Treasure Hunt"))
+                if (ImGui.TreeNode("Treasure Maps"))
                 {
-                    if (ImGui.BeginTable("mountsTreasure", 2))
+                    if (ImGui.BeginTable("MountTreasure", 2))
                     {
                         SetUpTableColumns();
 
@@ -317,9 +359,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Trial"))
+                if (ImGui.TreeNode("Trials"))
                 {
-                    if (ImGui.BeginTable("mountsTrial", 2))
+                    if (ImGui.BeginTable("MountTrial", 2))
                     {
                         SetUpTableColumns();
 
@@ -362,100 +404,61 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Voyages"))
+                if (ImGui.TreeNode("Beast Tribes"))
                 {
-                    if (ImGui.BeginTable("mountsVoyage", 2))
+                    if (ImGui.BeginTable("MountTribe", 2))
                     {
                         SetUpTableColumns();
 
-                        DrawTableRowText("Zu", charaData.IsMountUnlocked(73));
+                        DrawTableRowText("Cavalry Drake", charaData.IsMountUnlocked(19));
+                        DrawTableRowText("Laurel Goobbue", charaData.IsMountUnlocked(20));
+                        DrawTableRowText("Cavalry Elbst", charaData.IsMountUnlocked(26));
+                        DrawTableRowText("Bomb Palanquin", charaData.IsMountUnlocked(27));
+                        DrawTableRowText("Direwolf", charaData.IsMountUnlocked(35));
+                        DrawTableRowText("Sanuwa", charaData.IsMountUnlocked(53));
+                        DrawTableRowText("Kongamato", charaData.IsMountUnlocked(72));
+                        DrawTableRowText("Cloud Mallow", charaData.IsMountUnlocked(86));
+                        DrawTableRowText("Striped Ray", charaData.IsMountUnlocked(136));
+                        DrawTableRowText("Marid", charaData.IsMountUnlocked(146));
+                        DrawTableRowText("True Griffin", charaData.IsMountUnlocked(148));
+                        DrawTableRowText("Mikoshi", charaData.IsMountUnlocked(164));
+                        DrawTableRowText("Portly Porxie", charaData.IsMountUnlocked(201));
+                        DrawTableRowText("Great Vessel Of Ronka", charaData.IsMountUnlocked(215));
+                        DrawTableRowText("Rolling Tankard", charaData.IsMountUnlocked(223));
+                        DrawTableRowText("Hippo Cart", charaData.IsMountUnlocked(287));
+                        DrawTableRowText("Miw Miisv", charaData.IsMountUnlocked(298));
+                        DrawTableRowText("Moon-hopper", charaData.IsMountUnlocked(285));
 
                         ImGui.EndTable();
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Wondrous Tails/Faux Hollows"))
+                if (ImGui.TreeNode("Variant/Criterion"))
                 {
-                    if (ImGui.BeginTable("mountsTails", 2))
+                    if (ImGui.BeginTable("MountVandC", 2))
                     {
                         SetUpTableColumns();
 
+                        DrawTableRowText("Sil'dihn Throne", charaData.IsMountUnlocked(303));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Voyages"))
+                {
+                    if (ImGui.BeginTable("MountVoyage", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Zu", charaData.IsMountUnlocked(73));
                         DrawTableRowText("Ixion", charaData.IsMountUnlocked(130));
                         DrawTableRowText("Incitatus", charaData.IsMountUnlocked(231));
                         DrawTableRowText("Construct VI-S", charaData.IsMountUnlocked(248));
                         DrawTableRowText("Calydontis", charaData.IsMountUnlocked(266));
                         DrawTableRowText("Troll", charaData.IsMountUnlocked(288));
                         DrawTableRowText("Wondrous Lanner", charaData.IsMountUnlocked(299));
-
                         ImGui.EndTable();
-                    }
-                    ImGui.TreePop();
-                }
-                if (ImGui.TreeNode("Shop"))
-                {
-                    if (ImGui.TreeNode("Gil"))
-                    {
-                        if (ImGui.BeginTable("mountsGil", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Gilded Mikoshi", charaData.IsMountUnlocked(252));
-                            DrawTableRowText("Resplendent Vessel Of Ronka", charaData.IsMountUnlocked(253));
-                            DrawTableRowText("Magitek Avenger G1", charaData.IsMountUnlocked(141));
-                            DrawTableRowText("Chrysomallos", charaData.IsMountUnlocked(317));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("MGP"))
-                    {
-                        if (ImGui.BeginTable("mountsSaucer", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Adamantoise", charaData.IsMountUnlocked(46));
-                            DrawTableRowText("Fenrir", charaData.IsMountUnlocked(49));
-                            DrawTableRowText("Archon Throne", charaData.IsMountUnlocked(110));
-                            DrawTableRowText("Korpokkur Kolossus", charaData.IsMountUnlocked(142));
-                            DrawTableRowText("Typhon", charaData.IsMountUnlocked(154));
-                            DrawTableRowText("Sabotender Emperador", charaData.IsMountUnlocked(180));
-                            DrawTableRowText("Pod 602", charaData.IsMountUnlocked(284));
-                            DrawTableRowText("Blackjack", charaData.IsMountUnlocked(312));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Hunt Currency"))
-                    {
-                        if (ImGui.BeginTable("mountsHunts", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Wyvern", charaData.IsMountUnlocked(70));
-                            DrawTableRowText("Forgiven Reticence", charaData.IsMountUnlocked(207));
-                            DrawTableRowText("Vinegaroon", charaData.IsMountUnlocked(291));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Island Sanctuary"))
-                    {
-                        if (ImGui.BeginTable("mountsSanctuary", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Garlond GL-II", charaData.IsMountUnlocked(277));
-                            DrawTableRowText("Island Mandragora", charaData.IsMountUnlocked(255));
-                            DrawTableRowText("Island Onion Prince", charaData.IsMountUnlocked(256));
-                            DrawTableRowText("Island Eggplant Knight", charaData.IsMountUnlocked(257));
-                            DrawTableRowText("Island Alligator", charaData.IsMountUnlocked(286));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
                     }
                     ImGui.TreePop();
                 }
@@ -463,5 +466,4 @@ namespace FFXIVCharaTracker
             }
         }
     }
-
 }

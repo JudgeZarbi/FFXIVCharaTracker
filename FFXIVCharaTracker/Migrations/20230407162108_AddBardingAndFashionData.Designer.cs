@@ -3,6 +3,7 @@ using System;
 using FFXIVCharaTracker.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FFXIVCharaTracker.Migrations
 {
     [DbContext(typeof(CharaContext))]
-    partial class CharaContextModelSnapshot : ModelSnapshot
+    [Migration("20230407162108_AddBardingAndFashionData")]
+    partial class AddBardingAndFashionData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -149,6 +152,15 @@ namespace FFXIVCharaTracker.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LowGear")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("NextOvulationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OvulationCycleTime")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OvulationCycleVariance")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PluginDataVersion")

@@ -11,33 +11,33 @@ namespace FFXIVCharaTracker
             {
                 if (ImGui.TreeNode("Achievements"))
                 {
-                    if (ImGui.BeginTable("minionsAchievement", 2))
+                    if (ImGui.BeginTable("MinionAchievement", 2))
                     {
                         SetUpTableColumns();
 
                         DrawTableRowText("Black Chocobo Chick", charaData.IsMinionUnlocked(54));
                         DrawTableRowText("Beady Eye", charaData.IsMinionUnlocked(36));
-                        DrawTableRowText("Wind-up Cursor", charaData.IsMinionUnlocked(51));
-                        DrawTableRowText("Wind-up Leader", charaData.IsMinionUnlocked(71));
-                        DrawTableRowText("Minion of Light", charaData.IsMinionUnlocked(67));
-                        DrawTableRowText("Wind-up Odin", charaData.IsMinionUnlocked(76));
-                        DrawTableRowText("Wind-up Warrior of Light ", charaData.IsMinionUnlocked(77));
-                        DrawTableRowText("Wind-up Goblin", charaData.IsMinionUnlocked(49));
-                        DrawTableRowText("Wind-up Gilgamesh", charaData.IsMinionUnlocked(85));
-                        DrawTableRowText("Wind-up Nanamo", charaData.IsMinionUnlocked(84));
-                        DrawTableRowText("Wind-up Firion", charaData.IsMinionUnlocked(167));
-                        DrawTableRowText("Komainu", charaData.IsMinionUnlocked(288));
                         DrawTableRowText("Mammet #003L", charaData.IsMinionUnlocked(6));
                         DrawTableRowText("Mammet #003G", charaData.IsMinionUnlocked(7));
                         DrawTableRowText("Mammet #003U", charaData.IsMinionUnlocked(8));
+                        DrawTableRowText("Wind-up Cursor", charaData.IsMinionUnlocked(51));
                         DrawTableRowText("Princely Hatchling", charaData.IsMinionUnlocked(75));
+                        DrawTableRowText("Wind-up Leader", charaData.IsMinionUnlocked(71));
+                        DrawTableRowText("Minion Of Light", charaData.IsMinionUnlocked(67));
+                        DrawTableRowText("Wind-up Odin", charaData.IsMinionUnlocked(76));
+                        DrawTableRowText("Wind-up Warrior Of Light", charaData.IsMinionUnlocked(77));
                         DrawTableRowText("Fledgling Apkallu", charaData.IsMinionUnlocked(40));
+                        DrawTableRowText("Wind-up Goblin", charaData.IsMinionUnlocked(49));
+                        DrawTableRowText("Wind-up Gilgamesh", charaData.IsMinionUnlocked(85));
                         DrawTableRowText("Wind-up Louisoix", charaData.IsMinionUnlocked(118));
+                        DrawTableRowText("Wind-up Nanamo", charaData.IsMinionUnlocked(84));
+                        DrawTableRowText("Wind-up Firion", charaData.IsMinionUnlocked(167));
                         DrawTableRowText("Shalloweye", charaData.IsMinionUnlocked(163));
                         DrawTableRowText("Clockwork Twintania", charaData.IsMinionUnlocked(165));
                         DrawTableRowText("Penguin Prince", charaData.IsMinionUnlocked(164));
                         DrawTableRowText("Hellpup", charaData.IsMinionUnlocked(234));
                         DrawTableRowText("Faepup", charaData.IsMinionUnlocked(240));
+                        DrawTableRowText("Komainu", charaData.IsMinionUnlocked(288));
                         DrawTableRowText("The Major-General", charaData.IsMinionUnlocked(375));
                         DrawTableRowText("Malone", charaData.IsMinionUnlocked(367));
                         DrawTableRowText("Laladile", charaData.IsMinionUnlocked(378));
@@ -49,48 +49,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Tribes"))
-                {
-                    if (ImGui.BeginTable("minionsTribe", 2))
-                    {
-                        SetUpTableColumns();
-
-                        DrawTableRowText("Wind-up Sylph", charaData.IsMinionUnlocked(50));
-                        DrawTableRowText("Wind-up Violet", charaData.IsMinionUnlocked(123));
-                        DrawTableRowText("Wind-up Amalj'aa", charaData.IsMinionUnlocked(58));
-                        DrawTableRowText("Wind-up Founder", charaData.IsMinionUnlocked(124));
-                        DrawTableRowText("Wind-up Kobold", charaData.IsMinionUnlocked(60));
-                        DrawTableRowText("Wind-up Kobolder", charaData.IsMinionUnlocked(60));
-                        DrawTableRowText("Wind-up Sahagin", charaData.IsMinionUnlocked(61));
-                        DrawTableRowText("Wind-up Sea Devil", charaData.IsMinionUnlocked(127));
-                        DrawTableRowText("Wind-up Dezul Qualan", charaData.IsMinionUnlocked(125));
-                        DrawTableRowText("Wind-up Ixal", charaData.IsMinionUnlocked(59));
-                        DrawTableRowText("Wind-up Gundu Warrior", charaData.IsMinionUnlocked(135));
-                        DrawTableRowText("Wind-up Zundu Warrior", charaData.IsMinionUnlocked(172));
-                        DrawTableRowText("Wind-up Vath", charaData.IsMinionUnlocked(175));
-                        DrawTableRowText("Wind-up Gnath", charaData.IsMinionUnlocked(156));
-                        DrawTableRowText("Wind-up Dragonet", charaData.IsMinionUnlocked(184));
-                        DrawTableRowText("Wind-up Ohl Deeh", charaData.IsMinionUnlocked(235));
-                        DrawTableRowText("Wind-up Kojin", charaData.IsMinionUnlocked(266));
-                        DrawTableRowText("Wind-up Redback", charaData.IsMinionUnlocked(323));
-                        DrawTableRowText("Zephyrous Zabuton", charaData.IsMinionUnlocked(328));
-                        DrawTableRowText("Wind-up Ananta", charaData.IsMinionUnlocked(277));
-                        DrawTableRowText("Wind-up Qalyana", charaData.IsMinionUnlocked(322));
-                        DrawTableRowText("Attendee #777", charaData.IsMinionUnlocked(302));
-                        DrawTableRowText("Wind-up Pixie", charaData.IsMinionUnlocked(354));
-                        DrawTableRowText("The Behelmeted Serpent of Ronka", charaData.IsMinionUnlocked(369));
-                        DrawTableRowText("The Behatted Serpent of Ronka", charaData.IsMinionUnlocked(370));
-                        DrawTableRowText("Lalinator 5.H0", charaData.IsMinionUnlocked(380));
-                        DrawTableRowText("Wind-up Arkasodara", charaData.IsMinionUnlocked(444));
-                        DrawTableRowText("Lumini", charaData.IsMinionUnlocked(457));
-
-                        ImGui.EndTable();
-                    }
-                    ImGui.TreePop();
-                }
                 if (ImGui.TreeNode("Bozja"))
                 {
-                    if (ImGui.BeginTable("minionsBozja", 2))
+                    if (ImGui.BeginTable("MinionBozja", 2))
                     {
                         SetUpTableColumns();
 
@@ -115,7 +76,7 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Sharksucker-class Insubmersible", charaData.IsMinionUnlocked(348));
                         DrawTableRowText("Magitek Helldiver F1", charaData.IsMinionUnlocked(383));
                         DrawTableRowText("Dáinsleif F1", charaData.IsMinionUnlocked(389));
-                        DrawTableRowText("Save the Princess", charaData.IsMinionUnlocked(404));
+                        DrawTableRowText("Save The Princess", charaData.IsMinionUnlocked(404));
                         DrawTableRowText("Wind-up Gunnhildr", charaData.IsMinionUnlocked(418));
 
                         ImGui.EndTable();
@@ -124,28 +85,24 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Crafted"))
                 {
-                    if (ImGui.BeginTable("minionsCrafted", 2))
+                    if (ImGui.BeginTable("MinionCrafted", 2))
                     {
                         SetUpTableColumns();
 
-                        DrawTableRowText("Magic Broom", charaData.IsMinionUnlocked(81));
-                        DrawTableRowText("Clockwork Barrow", charaData.IsMinionUnlocked(140));
-                        DrawTableRowText("Model Magitek Bit", charaData.IsMinionUnlocked(100));
-                        DrawTableRowText("Private Moai", charaData.IsMinionUnlocked(278));
-                        DrawTableRowText("Wind-up Dullahan", charaData.IsMinionUnlocked(29));
-                        DrawTableRowText("Steam-powered Gobwalker G-VII", charaData.IsMinionUnlocked(147));
-                        DrawTableRowText("Bantam Train", charaData.IsMinionUnlocked(475));
                         DrawTableRowText("Gravel Golem", charaData.IsMinionUnlocked(22));
-                        DrawTableRowText("Model Vanguard", charaData.IsMinionUnlocked(43));
+                        DrawTableRowText("Wind-up Dullahan", charaData.IsMinionUnlocked(29));
                         DrawTableRowText("Wind-up Aldgoat", charaData.IsMinionUnlocked(39));
                         DrawTableRowText("Wind-up Qiqirn", charaData.IsMinionUnlocked(53));
+                        DrawTableRowText("Model Vanguard", charaData.IsMinionUnlocked(43));
                         DrawTableRowText("Plush Cushion", charaData.IsMinionUnlocked(66));
+                        DrawTableRowText("Magic Broom", charaData.IsMinionUnlocked(81));
                         DrawTableRowText("Nana Bear", charaData.IsMinionUnlocked(95));
+                        DrawTableRowText("Model Magitek Bit", charaData.IsMinionUnlocked(100));
+                        DrawTableRowText("Atrophied Atomos", charaData.IsMinionUnlocked(136));
+                        DrawTableRowText("Iron Dwarf", charaData.IsMinionUnlocked(143));
+                        DrawTableRowText("Clockwork Barrow", charaData.IsMinionUnlocked(140));
+                        DrawTableRowText("Steam-powered Gobwalker G-VII", charaData.IsMinionUnlocked(147));
                         DrawTableRowText("Wind-up Illuminatus", charaData.IsMinionUnlocked(158));
-                        DrawTableRowText("Wind-up Chimera", charaData.IsMinionUnlocked(255));
-                        DrawTableRowText("Wind-up Sadu", charaData.IsMinionUnlocked(294));
-                        DrawTableRowText("Wind-up Magnai", charaData.IsMinionUnlocked(282));
-                        DrawTableRowText("Adventurer's Basket", charaData.IsMinionUnlocked(436));
                         DrawTableRowText("Wind-up Ifrit", charaData.IsMinionUnlocked(168));
                         DrawTableRowText("Wind-up Garuda", charaData.IsMinionUnlocked(169));
                         DrawTableRowText("Wind-up Titan", charaData.IsMinionUnlocked(170));
@@ -155,13 +112,18 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Wind-up Bismarck", charaData.IsMinionUnlocked(263));
                         DrawTableRowText("Wind-up Susano", charaData.IsMinionUnlocked(261));
                         DrawTableRowText("Wind-up Lakshmi", charaData.IsMinionUnlocked(262));
+                        DrawTableRowText("Wind-up Chimera", charaData.IsMinionUnlocked(255));
                         DrawTableRowText("Wind-up Ravana", charaData.IsMinionUnlocked(265));
                         DrawTableRowText("Wind-up Shinryu", charaData.IsMinionUnlocked(275));
                         DrawTableRowText("Byakko Cub", charaData.IsMinionUnlocked(284));
+                        DrawTableRowText("Private Moai", charaData.IsMinionUnlocked(278));
+                        DrawTableRowText("Wind-up Magnai", charaData.IsMinionUnlocked(282));
+                        DrawTableRowText("Wind-up Sadu", charaData.IsMinionUnlocked(294));
                         DrawTableRowText("Scarlet Peacock", charaData.IsMinionUnlocked(303));
                         DrawTableRowText("Seitei", charaData.IsMinionUnlocked(327));
-                        DrawTableRowText("Atrophied Atomos", charaData.IsMinionUnlocked(136));
                         DrawTableRowText("Wanderer's Campfire", charaData.IsMinionUnlocked(414));
+                        DrawTableRowText("Adventure Basket", charaData.IsMinionUnlocked(436));
+                        DrawTableRowText("Bantam Train", charaData.IsMinionUnlocked(475));
 
                         ImGui.EndTable();
                     }
@@ -169,7 +131,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Deep Dungeon"))
                 {
-                    if (ImGui.BeginTable("minionsDeep", 2))
+                    if (ImGui.BeginTable("MinionDeep", 2))
                     {
                         SetUpTableColumns();
 
@@ -214,8 +176,27 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Wind-up Bismarck", charaData.IsMinionUnlocked(263));
                         DrawTableRowText("Wind-up Susano", charaData.IsMinionUnlocked(261));
                         DrawTableRowText("Wind-up Lakshmi", charaData.IsMinionUnlocked(262));
-                        DrawTableRowText("Wind-up Ravana", charaData.IsMinionUnlocked(265));
+                        DrawTableRowText("Salt & Pepper Seal", charaData.IsMinionUnlocked(272));
+                        DrawTableRowText("White Whittret", charaData.IsMinionUnlocked(279));
+                        DrawTableRowText("Monkey King", charaData.IsMinionUnlocked(290));
                         DrawTableRowText("Frilled Dragon", charaData.IsMinionUnlocked(292));
+                        DrawTableRowText("Mudpie", charaData.IsMinionUnlocked(312));
+                        DrawTableRowText("Wind-up Weapon", charaData.IsMinionUnlocked(321));
+                        DrawTableRowText("Armadillo Bowler", charaData.IsMinionUnlocked(336));
+                        DrawTableRowText("Clionid Larva", charaData.IsMinionUnlocked(339));
+                        DrawTableRowText("Tiny Echevore", charaData.IsMinionUnlocked(347));
+                        DrawTableRowText("Black Hayate", charaData.IsMinionUnlocked(333));
+                        DrawTableRowText("Chameleon", charaData.IsMinionUnlocked(334));
+                        DrawTableRowText("Shoebill", charaData.IsMinionUnlocked(349));
+                        DrawTableRowText("Bacon Bits", charaData.IsMinionUnlocked(353));
+                        DrawTableRowText("Mystic Weapon", charaData.IsMinionUnlocked(355));
+                        DrawTableRowText("Little Leannan", charaData.IsMinionUnlocked(361));
+                        DrawTableRowText("Meerkat", charaData.IsMinionUnlocked(356));
+                        DrawTableRowText("Magitek Predator F1", charaData.IsMinionUnlocked(411));
+                        DrawTableRowText("Prince Lunatender", charaData.IsMinionUnlocked(433));
+                        DrawTableRowText("Hippo Calf", charaData.IsMinionUnlocked(431));
+                        DrawTableRowText("Optimus Omicron", charaData.IsMinionUnlocked(425));
+                        DrawTableRowText("Private Pachypodium", charaData.IsMinionUnlocked(473));
 
                         ImGui.EndTable();
                     }
@@ -223,7 +204,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Dungeon"))
                 {
-                    if (ImGui.BeginTable("minionsDungeon", 2))
+                    if (ImGui.BeginTable("MinionDungeon", 2))
                     {
                         SetUpTableColumns();
 
@@ -282,8 +263,6 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Optimus Omicron", charaData.IsMinionUnlocked(425));
                         DrawTableRowText("Teacup Kapikulu", charaData.IsMinionUnlocked(447));
                         DrawTableRowText("Wind-up Scarmiglione", charaData.IsMinionUnlocked(460));
-                        DrawTableRowText("Sponge Silkie", charaData.IsMinionUnlocked(463));
-                        DrawTableRowText("Sewer Skink", charaData.IsMinionUnlocked(464));
                         DrawTableRowText("Wind-up Cagnazzo", charaData.IsMinionUnlocked(471));
 
                         ImGui.EndTable();
@@ -292,7 +271,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Eureka"))
                 {
-                    if (ImGui.BeginTable("minionsEureka", 2))
+                    if (ImGui.BeginTable("MinionEureka", 2))
                     {
                         SetUpTableColumns();
 
@@ -313,7 +292,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("FATE"))
                 {
-                    if (ImGui.BeginTable("minionsFate", 2))
+                    if (ImGui.BeginTable("MinionFate", 2))
                     {
                         SetUpTableColumns();
 
@@ -339,7 +318,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Gathering"))
                 {
-                    if (ImGui.BeginTable("minionsGather", 2))
+                    if (ImGui.BeginTable("MinionGather", 2))
                     {
                         SetUpTableColumns();
 
@@ -355,9 +334,83 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Mog Station/Collector's Edition"))
+                if (ImGui.TreeNode("Gold Saucer"))
                 {
-                    if (ImGui.BeginTable("minionsMog", 2))
+                    if (ImGui.BeginTable("MinionSaucer", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Zu Hatchling", charaData.IsMinionUnlocked(83));
+                        DrawTableRowText("Heavy Hatchling", charaData.IsMinionUnlocked(106));
+                        DrawTableRowText("Black Coeurl", charaData.IsMinionUnlocked(20));
+                        DrawTableRowText("Water Imp", charaData.IsMinionUnlocked(117));
+                        DrawTableRowText("Wind-up Nero Tol Scaeva", charaData.IsMinionUnlocked(174));
+                        DrawTableRowText("Piggy", charaData.IsMinionUnlocked(187));
+                        DrawTableRowText("Unlucky Rabbit", charaData.IsMinionUnlocked(379));
+                        DrawTableRowText("Mama Automaton", charaData.IsMinionUnlocked(470));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Hunts"))
+                {
+                    if (ImGui.BeginTable("MinionHunt", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Wind-up Succubus", charaData.IsMinionUnlocked(82));
+                        DrawTableRowText("Treasure Box", charaData.IsMinionUnlocked(93));
+                        DrawTableRowText("Behemoth Heir", charaData.IsMinionUnlocked(148));
+                        DrawTableRowText("Griffin Hatchling", charaData.IsMinionUnlocked(144));
+                        DrawTableRowText("Tora-jiro", charaData.IsMinionUnlocked(243));
+                        DrawTableRowText("Wind-up Meateater", charaData.IsMinionUnlocked(256));
+                        DrawTableRowText("Bitty Duckbill", charaData.IsMinionUnlocked(340));
+                        DrawTableRowText("Wind-up Nu Mou", charaData.IsMinionUnlocked(326));
+                        DrawTableRowText("Cute Justice", charaData.IsMinionUnlocked(358));
+                        DrawTableRowText("Nagxian Cat", charaData.IsMinionUnlocked(428));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Island Sanctuary"))
+                {
+                    if (ImGui.BeginTable("MinionSanctuary", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Felicitous Fuzzball", charaData.IsMinionUnlocked(456));
+                        DrawTableRowText("Sky Blue Back", charaData.IsMinionUnlocked(468));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Other"))
+                {
+                    if (ImGui.BeginTable("MinionOther", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Wind-up Sun", charaData.IsMinionUnlocked(65));
+                        DrawTableRowText("Onion Prince", charaData.IsMinionUnlocked(86));
+                        DrawTableRowText("Eggplant Knight", charaData.IsMinionUnlocked(87));
+                        DrawTableRowText("Garlic Jester", charaData.IsMinionUnlocked(88));
+                        DrawTableRowText("Tomato King", charaData.IsMinionUnlocked(89));
+                        DrawTableRowText("Mandragora Queen", charaData.IsMinionUnlocked(90));
+                        DrawTableRowText("Assassin Fry", charaData.IsMinionUnlocked(115));
+                        DrawTableRowText("Demon Box", charaData.IsMinionUnlocked(116));
+                        DrawTableRowText("Wind-up Moon", charaData.IsMinionUnlocked(236));
+                        DrawTableRowText("Allagan Melon", charaData.IsMinionUnlocked(386));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Mog Station"))
+                {
+                    if (ImGui.BeginTable("MinionMog", 2))
                     {
                         SetUpTableColumns();
 
@@ -393,6 +446,7 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Wind-up Gosetsu", charaData.IsMinionUnlocked(250));
                         DrawTableRowText("Motley Egg", charaData.IsMinionUnlocked(280));
                         DrawTableRowText("Wind-up Cirina", charaData.IsMinionUnlocked(293));
+                        DrawTableRowText("Bridesmoogle", charaData.IsMinionUnlocked(313));
                         DrawTableRowText("Little Yin", charaData.IsMinionUnlocked(307));
                         DrawTableRowText("Little Yang", charaData.IsMinionUnlocked(308));
                         DrawTableRowText("Wind-up Tifa", charaData.IsMinionUnlocked(311));
@@ -407,6 +461,30 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Wind-up Rudy", charaData.IsMinionUnlocked(420));
                         DrawTableRowText("Squirrel Emperor", charaData.IsMinionUnlocked(421));
                         DrawTableRowText("Wind-up Porom", charaData.IsMinionUnlocked(400));
+                        DrawTableRowText("Hatching Bunny", charaData.IsMinionUnlocked(450));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Shop"))
+                {
+                    if (ImGui.BeginTable("MinionShop", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Wayward Hatchling", charaData.IsMinionUnlocked(3));
+                        DrawTableRowText("Storm Hatchling", charaData.IsMinionUnlocked(9));
+                        DrawTableRowText("Serpent Hatchling", charaData.IsMinionUnlocked(10));
+                        DrawTableRowText("Flame Hatchling", charaData.IsMinionUnlocked(11));
+                        DrawTableRowText("Cherry Bomb", charaData.IsMinionUnlocked(1));
+                        DrawTableRowText("Tiny Rat", charaData.IsMinionUnlocked(13));
+                        DrawTableRowText("Wide-eyed Fawn", charaData.IsMinionUnlocked(17));
+                        DrawTableRowText("Baby Raptor", charaData.IsMinionUnlocked(25));
+                        DrawTableRowText("Baby Bat", charaData.IsMinionUnlocked(26));
+                        DrawTableRowText("Dust Bunny", charaData.IsMinionUnlocked(28));
+                        DrawTableRowText("Fledgling Dodo", charaData.IsMinionUnlocked(37));
+                        DrawTableRowText("Mammet #001", charaData.IsMinionUnlocked(2));
 
                         ImGui.EndTable();
                     }
@@ -414,7 +492,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("PvP"))
                 {
-                    if (ImGui.BeginTable("minionsPvp", 2))
+                    if (ImGui.BeginTable("MinionPvP", 2))
                     {
                         SetUpTableColumns();
 
@@ -428,34 +506,47 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Quest"))
+                if (ImGui.TreeNode("Quests"))
                 {
-                    if (ImGui.BeginTable("minionsQuest", 2))
+                    if (ImGui.BeginTable("MinionSidequest", 2))
                     {
                         SetUpTableColumns();
 
                         DrawTableRowText("Chigoe Larva", charaData.IsMinionUnlocked(15));
                         DrawTableRowText("Cactuar Cutting", charaData.IsMinionUnlocked(33));
                         DrawTableRowText("Goobbue Sproutling", charaData.IsMinionUnlocked(41));
+                        DrawTableRowText("Wind-up Airship", charaData.IsMinionUnlocked(52));
                         DrawTableRowText("Coeurl Kitten", charaData.IsMinionUnlocked(19));
+                        DrawTableRowText("Buffalo Calf", charaData.IsMinionUnlocked(32));
                         DrawTableRowText("Wolf Pup", charaData.IsMinionUnlocked(35));
                         DrawTableRowText("Mini Mole", charaData.IsMinionUnlocked(45));
                         DrawTableRowText("Wind-up Gentleman", charaData.IsMinionUnlocked(21));
+                        DrawTableRowText("Midgardsormr", charaData.IsMinionUnlocked(119));
+                        DrawTableRowText("Wind-up Alphinaud", charaData.IsMinionUnlocked(130));
+                        DrawTableRowText("Wind-up Cid", charaData.IsMinionUnlocked(133));
                         DrawTableRowText("Accompaniment Node", charaData.IsMinionUnlocked(149));
+                        DrawTableRowText("Wind-up Haurchefant", charaData.IsMinionUnlocked(173));
+                        DrawTableRowText("Poro Roggo", charaData.IsMinionUnlocked(181));
+                        DrawTableRowText("Wind-up Aymeric", charaData.IsMinionUnlocked(193));
+                        DrawTableRowText("Wind-up Moenbryda", charaData.IsMinionUnlocked(224));
                         DrawTableRowText("Gigi", charaData.IsMinionUnlocked(230));
                         DrawTableRowText("Anima", charaData.IsMinionUnlocked(231));
+                        DrawTableRowText("Dress-up Raubahn", charaData.IsMinionUnlocked(276));
                         DrawTableRowText("Palico", charaData.IsMinionUnlocked(300));
                         DrawTableRowText("Wind-up Alpha", charaData.IsMinionUnlocked(304));
                         DrawTableRowText("The Great Serpent Of Ronka", charaData.IsMinionUnlocked(337));
+                        DrawTableRowText("Wind-up G'raha Tia", charaData.IsMinionUnlocked(306));
+                        DrawTableRowText("Wind-up Mystel", charaData.IsMinionUnlocked(381));
+                        DrawTableRowText("Wind-up Herois", charaData.IsMinionUnlocked(441));
                         DrawTableRowText("Golden Dhyata", charaData.IsMinionUnlocked(437));
 
                         ImGui.EndTable();
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Raid"))
+                if (ImGui.TreeNode("Raids"))
                 {
-                    if (ImGui.BeginTable("minionsRaid", 2))
+                    if (ImGui.BeginTable("MinionRaid", 2))
                     {
                         SetUpTableColumns();
 
@@ -491,11 +582,12 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Ishgardian Restoration"))
                 {
-                    if (ImGui.BeginTable("minionsSkybuilder", 2))
+                    if (ImGui.BeginTable("MinionResto", 2))
                     {
                         SetUpTableColumns();
 
                         DrawTableRowText("Plush Cushion", charaData.IsMinionUnlocked(66));
+                        DrawTableRowText("Magic Broom", charaData.IsMinionUnlocked(81));
                         DrawTableRowText("Nutkin", charaData.IsMinionUnlocked(97));
                         DrawTableRowText("Atrophied Atomos", charaData.IsMinionUnlocked(136));
                         DrawTableRowText("Gaelikitten", charaData.IsMinionUnlocked(139));
@@ -524,9 +616,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Treasure Hunt"))
+                if (ImGui.TreeNode("Treasure Maps"))
                 {
-                    if (ImGui.BeginTable("minionsTreasure", 2))
+                    if (ImGui.BeginTable("MinionTreasure", 2))
                     {
                         SetUpTableColumns();
 
@@ -562,9 +654,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Trial"))
+                if (ImGui.TreeNode("Trials"))
                 {
-                    if (ImGui.BeginTable("minionsTrial", 2))
+                    if (ImGui.BeginTable("MinionTrial", 2))
                     {
                         SetUpTableColumns();
 
@@ -577,9 +669,62 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Venture"))
+                if (ImGui.TreeNode("Beast Tribes"))
                 {
-                    if (ImGui.BeginTable("minionsVenture", 2))
+                    if (ImGui.BeginTable("MinionTribe", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Wind-up Sylph", charaData.IsMinionUnlocked(50));
+                        DrawTableRowText("Wind-up Amalj'aa", charaData.IsMinionUnlocked(58));
+                        DrawTableRowText("Wind-up Kobold", charaData.IsMinionUnlocked(60));
+                        DrawTableRowText("Wind-up Sahagin", charaData.IsMinionUnlocked(61));
+                        DrawTableRowText("Wind-up Violet", charaData.IsMinionUnlocked(123));
+                        DrawTableRowText("Wind-up Founder", charaData.IsMinionUnlocked(124));
+                        DrawTableRowText("Wind-up Dezul Qualan", charaData.IsMinionUnlocked(125));
+                        DrawTableRowText("Wind-up Ixal", charaData.IsMinionUnlocked(59));
+                        DrawTableRowText("Wind-up Kobolder", charaData.IsMinionUnlocked(126));
+                        DrawTableRowText("Wind-up Sea Devil", charaData.IsMinionUnlocked(127));
+                        DrawTableRowText("Wind-up Gundu Warrior", charaData.IsMinionUnlocked(135));
+                        DrawTableRowText("Wind-up Zundu Warrior", charaData.IsMinionUnlocked(172));
+                        DrawTableRowText("Wind-up Vath", charaData.IsMinionUnlocked(175));
+                        DrawTableRowText("Wind-up Gnath", charaData.IsMinionUnlocked(156));
+                        DrawTableRowText("Wind-up Dragonet", charaData.IsMinionUnlocked(184));
+                        DrawTableRowText("Wind-up Ohl Deeh", charaData.IsMinionUnlocked(235));
+                        DrawTableRowText("Wind-up Kojin", charaData.IsMinionUnlocked(266));
+                        DrawTableRowText("Wind-up Ananta", charaData.IsMinionUnlocked(277));
+                        DrawTableRowText("Attendee #777", charaData.IsMinionUnlocked(302));
+                        DrawTableRowText("Wind-up Redback", charaData.IsMinionUnlocked(323));
+                        DrawTableRowText("Wind-up Qalyana", charaData.IsMinionUnlocked(322));
+                        DrawTableRowText("Zephyrous Zabuton", charaData.IsMinionUnlocked(328));
+                        DrawTableRowText("Wind-up Pixie", charaData.IsMinionUnlocked(354));
+                        DrawTableRowText("The Behelmeted Serpent Of Ronka", charaData.IsMinionUnlocked(369));
+                        DrawTableRowText("The Behatted Serpent Of Ronka", charaData.IsMinionUnlocked(370));
+                        DrawTableRowText("Lalinator 5.H0", charaData.IsMinionUnlocked(380));
+                        DrawTableRowText("Wind-up Arkasodara", charaData.IsMinionUnlocked(444));
+                        DrawTableRowText("Lumini", charaData.IsMinionUnlocked(457));
+                        DrawTableRowText("Findingway", charaData.IsMinionUnlocked(472));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Variant/Criterion"))
+                {
+                    if (ImGui.BeginTable("MinionVandC", 2))
+                    {
+                        SetUpTableColumns();
+
+                        DrawTableRowText("Sponge Silkie", charaData.IsMinionUnlocked(463));
+                        DrawTableRowText("Sewer Skink", charaData.IsMinionUnlocked(464));
+
+                        ImGui.EndTable();
+                    }
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Ventures"))
+                {
+                    if (ImGui.BeginTable("MinionVenture", 2))
                     {
                         SetUpTableColumns();
 
@@ -615,7 +760,7 @@ namespace FFXIVCharaTracker
                 }
                 if (ImGui.TreeNode("Voyages"))
                 {
-                    if (ImGui.BeginTable("minionsVoyage", 2))
+                    if (ImGui.BeginTable("MinionVoyage", 2))
                     {
                         SetUpTableColumns();
 
@@ -632,9 +777,9 @@ namespace FFXIVCharaTracker
                     }
                     ImGui.TreePop();
                 }
-                if (ImGui.TreeNode("Wondrous Tails/Faux Hollows"))
+                if (ImGui.TreeNode("Wondrous Tails"))
                 {
-                    if (ImGui.BeginTable("minionsTails", 2))
+                    if (ImGui.BeginTable("MinionTails", 2))
                     {
                         SetUpTableColumns();
 
@@ -653,121 +798,6 @@ namespace FFXIVCharaTracker
                         DrawTableRowText("Corgi", charaData.IsMinionUnlocked(467));
 
                         ImGui.EndTable();
-                    }
-                    ImGui.TreePop();
-                }
-                if (ImGui.TreeNode("Shop"))
-                {
-                    if (ImGui.TreeNode("Gil"))
-                    {
-                        if (ImGui.BeginTable("minionsGil", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Wayward Hatchling", charaData.IsMinionUnlocked(3));
-                            DrawTableRowText("Cherry Bomb", charaData.IsMinionUnlocked(1));
-                            DrawTableRowText("Tiny Rat", charaData.IsMinionUnlocked(13));
-                            DrawTableRowText("Baby Raptor", charaData.IsMinionUnlocked(25));
-                            DrawTableRowText("Baby Bat", charaData.IsMinionUnlocked(26));
-                            DrawTableRowText("Mammet #001", charaData.IsMinionUnlocked(2));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("MGP"))
-                    {
-                        if (ImGui.BeginTable("minionsSaucer", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Zu Hatchling", charaData.IsMinionUnlocked(83));
-                            DrawTableRowText("Heavy Hatchling", charaData.IsMinionUnlocked(106));
-                            DrawTableRowText("Black Coeurl", charaData.IsMinionUnlocked(20));
-                            DrawTableRowText("Water Imp", charaData.IsMinionUnlocked(117));
-                            DrawTableRowText("Wind-up Nero Tol Scaeva", charaData.IsMinionUnlocked(174));
-                            DrawTableRowText("Piggy", charaData.IsMinionUnlocked(187));
-                            DrawTableRowText("Wind-up Daivadipa", charaData.IsMinionUnlocked(442));
-                            DrawTableRowText("Mama Automaton", charaData.IsMinionUnlocked(470));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Poetics"))
-                    {
-                        if (ImGui.BeginTable("minionsPoetics", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Wide-eyed Fawn", charaData.IsMinionUnlocked(17));
-                            DrawTableRowText("Dust Bunny", charaData.IsMinionUnlocked(28));
-                            DrawTableRowText("Fledgling Dodo", charaData.IsMinionUnlocked(37));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Hunt Currency"))
-                    {
-                        if (ImGui.BeginTable("minionsHunts", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Wind-up Succubus", charaData.IsMinionUnlocked(82));
-                            DrawTableRowText("Treasure Box", charaData.IsMinionUnlocked(93));
-                            DrawTableRowText("Behemoth Heir", charaData.IsMinionUnlocked(148));
-                            DrawTableRowText("Griffin Hatchling", charaData.IsMinionUnlocked(144));
-                            DrawTableRowText("Tora-jiro", charaData.IsMinionUnlocked(243));
-                            DrawTableRowText("Wind-up Meateater", charaData.IsMinionUnlocked(256));
-                            DrawTableRowText("Bitty Duckbill", charaData.IsMinionUnlocked(340));
-                            DrawTableRowText("Cute Justice", charaData.IsMinionUnlocked(358));
-                            DrawTableRowText("Nagxian Cat", charaData.IsMinionUnlocked(428));
-                            DrawTableRowText("Wind-up Nu Mou", charaData.IsMinionUnlocked(326));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Grand Company"))
-                    {
-                        if (ImGui.BeginTable("minionsGc", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Storm Hatchling", charaData.IsMinionUnlocked(9));
-                            DrawTableRowText("Serpent Hatchling", charaData.IsMinionUnlocked(10));
-                            DrawTableRowText("Flame Hatchling", charaData.IsMinionUnlocked(11));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Island Sanctuary"))
-                    {
-                        if (ImGui.BeginTable("minionsSanctuary", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Felicitous Fuzzball", charaData.IsMinionUnlocked(456));
-                            DrawTableRowText("Sky Blue Back", charaData.IsMinionUnlocked(468));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
-                    }
-                    if (ImGui.TreeNode("Other"))
-                    {
-                        if (ImGui.BeginTable("minionsOther", 2))
-                        {
-                            SetUpTableColumns();
-
-                            DrawTableRowText("Wind-up Sun", charaData.IsMinionUnlocked(65));
-                            DrawTableRowText("Wind-up Moon", charaData.IsMinionUnlocked(236));
-
-                            ImGui.EndTable();
-                        }
-                        ImGui.TreePop();
                     }
                     ImGui.TreePop();
                 }

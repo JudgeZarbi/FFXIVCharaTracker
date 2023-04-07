@@ -24,6 +24,9 @@ namespace FFXIVCharaTracker
                         DrawSquadHairstylesSection(charas);
                         DrawSquadMinionsSection(charas);
                         DrawSquadMountsSection(charas);
+                        DrawSquadBardingsSection(charas);
+                        DrawSquadFashionSection(charas);
+                        DrawSquadOrchestrionSection(charas);
                         DrawSquadOptionalSection(charas);
 
                         ImGui.EndTabBar();

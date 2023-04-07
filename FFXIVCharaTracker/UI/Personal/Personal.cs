@@ -31,6 +31,9 @@ namespace FFXIVCharaTracker
                     DrawHairstylesSection(charaData);
                     DrawMinionsSection(charaData);
                     DrawMountsSection(charaData);
+                    DrawBardingsSection(charaData);
+                    DrawFashionSection(charaData);
+                    DrawOrchestrionSection(charaData);
                     DrawOptionalContentSection(charaData);
                 }
                 ImGui.EndTabItem();
