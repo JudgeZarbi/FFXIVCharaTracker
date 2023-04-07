@@ -52,7 +52,6 @@ namespace FFXIVCharaTracker
 
         internal bool CharaLoaded = false;
         internal bool WaitingOnRetainer = false;
-        internal bool WaitingOnHairstyles = false;
         internal Task? DatabaseSave;
 
         internal readonly Stopwatch SwUpdate = new();
@@ -207,14 +206,6 @@ namespace FFXIVCharaTracker
                 SwUpdate.Restart();
 			}
 
-			if (WaitingOnHairstyles)
-            {
-                unsafe
-                {
-					var UiState = UIState.Instance();
-					CurCharaData.UpdateHairstyleUnlocks(UiState);
-				}
-			}
 			DatabaseSave = Task.Run(Context.SaveChanges);
 		}
 
